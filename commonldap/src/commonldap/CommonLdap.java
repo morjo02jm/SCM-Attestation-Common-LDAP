@@ -30,17 +30,29 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 
+import java.security.Key;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 public class CommonLdap {
 	private static String sBCC= "Team-GIS-ToolsSolutions-Global@ca.com";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
 	private static int iReturnCode = 0;
+	private static int nEmployees = 0;
 
 	// Column names cLDAP 
 	private static String tagSAMAccountName = "sAMAccountName";
-	private static String tagMail = "mail";
-	private static String tagPhone = "ipPhone";
+	private static String tagMail           = "mail";
+	private static String tagPhone          = "ipPhone";
+	private static String tagDisplayName    = "displayName";
+	private static String tagEmployeeType   = "employeeType";
+	private static String tagDN             = "distinguishedName";
+	
 	private static String sAdminPassword = "";
+	
+    private static Key aesKey = new SecretKeySpec("Bar12345Bar12345".getBytes(), "AES");
+    private static Cipher cipher;    	
 	
 	private String[] regions = { "ou=users,ou=north america",
             					 "ou=users,ou=itc hyderabad",
@@ -73,10 +85,20 @@ public class CommonLdap {
 		    System.err.println(e);			
 		    System.exit(iReturnCode);		    
 		}
+		
+		try {
+			cipher = Cipher.getInstance("AES");			
+		} catch(Exception e) {
+			iReturnCode = 1003;
+		    System.err.println(e);			
+		    System.exit(iReturnCode);		    
+        } 
+
 
 		Map<String, String> environ = System.getenv();
         for (String envName : environ.keySet()) {
         	if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) sAdminPassword = environ.get(envName);
+        	//if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) sAdminPassword = AESDecrypt(environ.get(envName));
         }
 		
 		Hashtable env = new Hashtable();
@@ -102,7 +124,8 @@ public class CommonLdap {
 		}
 
 		// Show cLDAP statistics
-		printLog("Number of CA.COM user containers read: " + cLDAP.getKeyElementCount(tagMail));
+		printLog("Number of CA.COM user containers read: " + cLDAP.getKeyElementCount(tagMail)+
+				" (Employees:"+nEmployees+")");
 		
 	}
 
@@ -115,7 +138,7 @@ public class CommonLdap {
 	    return sb.toString();
 	}
 
-	public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+	public JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
 	    InputStream is = new URL(url).openStream();
 	    try {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -126,7 +149,7 @@ public class CommonLdap {
 	    }
 	}
 
-	public static JSONArray readJsonArrayFromUrl(String url) throws IOException, JSONException {
+	public JSONArray readJsonArrayFromUrl(String url) throws IOException, JSONException {
 	    InputStream is = new URL(url).openStream();
 	    try {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -137,7 +160,7 @@ public class CommonLdap {
 	    }
 	}	
 	
-	public static void printLog(String str)
+	public void printLog(String str)
 	{
 		System.out.println(str);
 		Log.println(str);
@@ -148,7 +171,7 @@ public class CommonLdap {
 		printLog(sMessage);
 	}
 	
-	public static void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
+	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
         // sets SMTP server properties
 		
 	     // Recipient's email ID needs to be mentioned.
@@ -211,7 +234,7 @@ public class CommonLdap {
 	
 
 
-	private static void processInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
+	public void processInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
 	{
 		File file = new File(sInputFileName);         
 		BufferedReader reader = null;  
@@ -260,7 +283,7 @@ public class CommonLdap {
 		} 	
 	}
 	
-	public static String readTextResource(String sInputFileName, String sArg1, String sArg2, String sArg3) {
+	public String readTextResource(String sInputFileName, String sArg1, String sArg2, String sArg3) {
 		File file = new File(sInputFileName); 
 		//InputStream inputStream = githubrepldap.class.getResourceAsStream(InputFileName); //TBD
 		
@@ -320,36 +343,48 @@ public class CommonLdap {
 
 		if (attributes.size() >= 3)
 		{
-		    boolean bMail = false;
-		    boolean bPhone = false;
+		    boolean bMail    = false;
+		    boolean bPhone   = false;
+		    boolean bGeneric = true;
 		    try {
 				for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
 				    Attribute attr = (Attribute)ae.next();
 				    for (NamingEnumeration e = attr.getAll(); e.hasMore(); )
 				    {
 				    	String sAttr = attr.getID();
-				    	if (sAttr.equalsIgnoreCase(tagMail)) bMail = true;
-				    	if (sAttr.equalsIgnoreCase(tagPhone)) bPhone = true;
-				    	cLDAP.setString(sAttr, (String)e.next(), cIndex);
+				    	String sValue = (String)e.next();
+				    	
+				    	if (sAttr.equalsIgnoreCase(tagMail)) 
+				    		bMail = true;
+				    	else if (sAttr.equalsIgnoreCase(tagPhone)) 
+				    		bPhone = true;
+				    	
+				    	if (sAttr.equalsIgnoreCase(tagEmployeeType)) 
+				    		bGeneric=false;
+				    	else
+				    		cLDAP.setString(sAttr, sValue, cIndex);
 				    	
 				    }
 				}
 
 				String sID = cLDAP.getString(tagSAMAccountName, cIndex);
+				/*
+				bGeneric = !(isNormalUser &&
+				             sID.length() == 7 &&
+					         !sID.equalsIgnoreCase("clate98") &&
+					         !sID.equalsIgnoreCase("clate99") &&
+					         !sID.equalsIgnoreCase("urctest") &&
+					         !sID.equalsIgnoreCase("BEStest"));
+			    */
 				
 				if (!bMail) 
 					cLDAP.setString(tagMail, "unknown", cIndex);
 				if (!bPhone) 
 					cLDAP.setString(tagPhone, "", cIndex);
 									
+				if (!bGeneric) nEmployees++;
 				cLDAP.setString("haspmfkey", 
-						        (isNormalUser &&
-// TODO need a separate routine for validating the user id belongs to a user or not.						        		
-					             sID.length() == 7 &&
-					             !sID.equalsIgnoreCase("clate98") &&
-					             !sID.equalsIgnoreCase("clate99") &&
-					             !sID.equalsIgnoreCase("urctest") &&
-					             !sID.equalsIgnoreCase("BEStest"))? "Y" : "N", 
+						        (!bGeneric)? "Y" : "N", 
 					            cIndex);
 			 
 			} catch (NamingException e) {
@@ -376,7 +411,7 @@ public class CommonLdap {
 			String filter = "(&(!(objectclass=computer))(&(objectclass=person)(sAMAccountName=*)))";
 			
 			// Specify the ids of the attributes to return
-			String[] attrIDs = {tagSAMAccountName, "displayName", "distinguishedName", tagPhone, tagMail};
+			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail,tagEmployeeType};
 			ctls.setReturningAttributes(attrIDs);
 	
 			// Search for objects that have those matching attributes
@@ -399,5 +434,60 @@ public class CommonLdap {
 		    //System.exit(iReturnCode);
 		}	
 	} // end ProcessLDAPRegion
-		
+	
+	
+// Encrption/Decryption	
+	public String AESEncrypt(String sDecrypted) {
+		String sEncrypted = "";
+		try {
+	        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+	        byte[] encrypted = cipher.doFinal(sDecrypted.getBytes());
+             
+            for (byte b: encrypted) {
+            	int iB = (int) b;
+            	sEncrypted += ":"+ Integer.toHexString(iB & 0xFF);
+            }
+		} catch(Exception e) {
+			iReturnCode = 1003;
+		    System.err.println(e);			
+		    System.exit(iReturnCode);		    
+	    }
+		return sEncrypted;
+	}
+	
+	public String AESDecrypt(String myString) {
+		String sDecrypted = "";
+		try {
+			int nLength = 0;
+			byte[] bbi = new byte[myString.length()];
+			while (!myString.isEmpty()) {
+				myString = myString.substring(1);
+				int nIndex = myString.indexOf(":");
+				if (nIndex < 0) {
+					bbi[nLength++] = (byte)Integer.parseInt(myString, 16);
+					myString = "";
+				}
+				else {
+					String myByte = myString.substring(0, nIndex);
+					bbi[nLength++] = (byte)Integer.parseInt(myByte, 16);
+					myString = myString.substring(nIndex);
+				}
+			}
+				
+			byte[] bb = new byte[nLength];
+            for (int i=0; i<nLength; i++) {
+                bb[i] = (byte) bbi[i];
+            }
+ 
+			cipher.init(Cipher.DECRYPT_MODE, aesKey);
+		    byte[] decrypted = cipher.doFinal(bb);
+	        sDecrypted = new String(decrypted);		
+		} catch(Exception e) {
+			iReturnCode = 1003;
+		    System.err.println(e);			
+		    System.exit(iReturnCode);		    
+	    }
+		return sDecrypted;
+	}
+	
 }
