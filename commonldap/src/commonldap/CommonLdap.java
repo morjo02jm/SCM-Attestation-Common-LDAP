@@ -1,8 +1,8 @@
 package commonldap;
 
-import com.ca.harvest.jhsdk.*;
-import com.ca.harvest.jhsdk.hutils.*;
-import com.ca.harvest.jhsdk.logger.*;
+//import com.ca.harvest.jhsdk.*;
+//import com.ca.harvest.jhsdk.hutils.*;
+//import com.ca.harvest.jhsdk.logger.*;
 
 import gvjava.org.json.*;
 
