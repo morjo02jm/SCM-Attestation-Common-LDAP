@@ -97,8 +97,8 @@ public class CommonLdap {
 
 		Map<String, String> environ = System.getenv();
         for (String envName : environ.keySet()) {
-        	if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) sAdminPassword = environ.get(envName);
-        	//if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) sAdminPassword = AESDecrypt(environ.get(envName));
+        	if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) 
+        		sAdminPassword = AESDecrypt(environ.get(envName));
         }
 		
 		Hashtable env = new Hashtable();
