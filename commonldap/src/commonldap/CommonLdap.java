@@ -6,7 +6,7 @@ package commonldap;
 
 import gvjava.org.json.*;
 
-import java.sql.*;
+//import java.sql.*;
 
 import java.util.Date;
 import java.text.DateFormat;
@@ -21,14 +21,14 @@ import java.nio.charset.Charset;
 import javax.naming.*;
 import javax.naming.directory.*;
 
-import org.eclipse.core.runtime.*;
+//import org.eclipse.core.runtime.*;
 
-import junit.framework.*;
+//import junit.framework.*;
 
-import java.util.*;
+//import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
+//import javax.activation.*;
 
 import java.security.Key;
 import javax.crypto.Cipher;
@@ -367,8 +367,8 @@ public class CommonLdap {
 				    }
 				}
 
-				String sID = cLDAP.getString(tagSAMAccountName, cIndex);
 				/*
+				String sID = cLDAP.getString(tagSAMAccountName, cIndex);
 				bGeneric = !(isNormalUser &&
 				             sID.length() == 7 &&
 					         !sID.equalsIgnoreCase("clate98") &&
