@@ -1,12 +1,7 @@
 package commonldap;
 
-//import com.ca.harvest.jhsdk.*;
-//import com.ca.harvest.jhsdk.hutils.*;
-//import com.ca.harvest.jhsdk.logger.*;
 
 import gvjava.org.json.*;
-
-//import java.sql.*;
 
 import java.util.Date;
 import java.text.DateFormat;
@@ -21,14 +16,9 @@ import java.nio.charset.Charset;
 import javax.naming.*;
 import javax.naming.directory.*;
 
-//import org.eclipse.core.runtime.*;
 
-//import junit.framework.*;
-
-//import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-//import javax.activation.*;
 
 import java.security.Key;
 import javax.crypto.Cipher;
@@ -382,7 +372,8 @@ public class CommonLdap {
 				if (!bPhone) 
 					cLDAP.setString(tagPhone, "", cIndex);
 									
-				if (!bGeneric) nEmployees++;
+				if (!bGeneric) 
+					nEmployees++;
 				cLDAP.setString("haspmfkey", 
 						        (!bGeneric)? "Y" : "N", 
 					            cIndex);
