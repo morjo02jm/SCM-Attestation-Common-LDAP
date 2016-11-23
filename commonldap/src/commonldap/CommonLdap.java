@@ -30,6 +30,7 @@ public class CommonLdap {
 	private static String sLogName = "";
 	private static int iReturnCode = 0;
 	private static int nEmployees = 0;
+	private DirContext ctx;
 
 	// Column names cLDAP 
 	private static String tagSAMAccountName = "sAMAccountName";
@@ -99,7 +100,7 @@ public class CommonLdap {
 		
 		try {
 	        // Read user containers for CA.COM
-			DirContext ctx = new InitialDirContext(env);
+			ctx = new InitialDirContext(env);
 			
 			for (int i=0; i<regions.length; i++)
 			{
@@ -481,4 +482,174 @@ public class CommonLdap {
 		return sDecrypted;
 	}
 	
-}
+	
+	public void readUserListToContainer(JCaContainer cUserList,
+            							String InputFileName )
+	{
+        File file = new File(InputFileName);         
+        BufferedReader reader = null;  
+        int iIndex = 0;
+        
+        try {             
+        	reader = new BufferedReader(new FileReader(file));             
+        	String text = null; 
+        	String name = null;
+        	// repeat until all lines is read             
+        	while ((text = reader.readLine()) != null) 
+        	{     
+        		name = text;
+        		int cIndex = text.indexOf('(');
+        		if ( cIndex >= 0)
+        		{
+        			int eIndex = text.indexOf(')');
+        			if (eIndex < 0) eIndex = text.length()-1;
+        			if (cIndex > 0) name = text.substring(0, cIndex);
+        			text = text.substring(cIndex+1, eIndex);
+        		}
+        		cUserList.setString("pmfkey", text, iIndex);
+        		cUserList.setString("name", name, iIndex++);
+        	}         
+        } catch (FileNotFoundException e) {             
+        	//e.printStackTrace();         
+        } catch (IOException e) {             
+        	//e.printStackTrace();        
+        } finally {             
+        	try {                 
+        		if (reader != null) 
+        		{                     
+        			reader.close();                 
+        		}             
+        	} catch (IOException e) {                 
+        		//e.printStackTrace();             
+        	}         
+        } 	
+	}
+	
+// LDAP-related routines
+	
+	public boolean addUserToLDAPGroup(String sDLLDAPUserGroup, 
+			                          String sUserDN)
+	{		
+		try {
+			String sDN = sUserDN;
+			
+			//add to the required LDAP role   
+			ModificationItem[] roleMods = new ModificationItem[]    
+			{   
+			    new ModificationItem( DirContext.ADD_ATTRIBUTE, new BasicAttribute( "member", sDN ) )   
+			};  
+			
+			
+			ctx.modifyAttributes(sDLLDAPUserGroup, roleMods );  
+
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1;
+			System.err.println(e);
+			System.exit(iReturnCode);
+			
+		// attempt to reacquire the authentication information
+		} catch (NamingException e)	{
+		    // Handle the error
+			String sException = e.getMessage();
+			if (sException.indexOf("ENTRY_EXISTS") < 0 ) 
+			{
+				iReturnCode = 2;
+			    System.err.println(e);
+			    System.exit(iReturnCode);
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public boolean removeUserFromLDAPGroup(String sDLLDAPUserGroup, 
+                                           String sUserDN)
+	{		
+		try {
+			String sDN = sUserDN;
+			
+			//add to the required LDAP role   
+			ModificationItem[] roleMods = new ModificationItem[]    
+			{   
+				new ModificationItem( DirContext.REMOVE_ATTRIBUTE, new BasicAttribute( "member", sDN ) )   
+			};  
+						
+			ctx.modifyAttributes( sDLLDAPUserGroup, roleMods );  
+		
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1;
+			System.err.println(e);
+			System.exit(iReturnCode);
+		
+		// attempt to reacquire the authentication information
+		} catch (NamingException e)	{
+			// Handle the error
+			String sException = e.getMessage();
+			if (sException.indexOf("ENTRY_NOT_FOUND") < 0 &&
+				sException.indexOf("WILL_NOT_PERFORM") < 0) //forced deletion
+			{
+				iReturnCode = 1007;
+				System.err.println(e);
+				System.exit(iReturnCode);
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	
+	
+	public void readLDAPUserGroupToContainer(String sDLLDAPUserGroup, 
+			                                 JCaContainer cDLUsers)
+	{
+		try {
+			// Retrieve attributes for a specific container
+			int cIndex = 0;		
+			if (cDLUsers.getKeyCount() > 0)
+			{
+				cIndex = cDLUsers.getKeyElementCount("member");
+			}
+			
+			Attributes attributes = ctx.getAttributes(sDLLDAPUserGroup);
+			for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+			    Attribute attr = (Attribute)ae.next();
+			    //printLog("attribute: " + attr.getID());
+			    
+			    if (attr.getID().indexOf("member")==0)
+			    {
+				    /* Process each member attribute */
+				    for (NamingEnumeration e = attr.getAll(); 
+				         e.hasMore();
+					     //printLog("value: " + e.next()) ) ;
+				         )
+				    {
+				    	String dn = (String)e.next();
+				    	//printLog("DN:" + dn);
+				    	int iStart = dn.indexOf("CN=");
+				    	int iEnd   = dn.indexOf(',', iStart);
+				    	String pmfkey = dn.substring(iStart+3, iEnd);
+				    	int iDL[] = cDLUsers.find("member", pmfkey);
+				    	if (iDL.length == 0) {
+				    		cDLUsers.setString("dn",     dn,     cIndex);
+				    		cDLUsers.setString("member", pmfkey, cIndex++);
+				    	    //printLog("member: "+pmfkey); //temp
+				    	}
+				    }
+				}
+			}
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1006;
+		    System.err.println(e);
+		    System.exit(iReturnCode);		    
+	    // attempt to reacquire the authentication information
+		} catch (NamingException e)
+		{
+		    // just skip region
+			//iReturnCode = 2;
+		    //System.err.println(e);
+			//System.exit(iReturnCode);
+		}	
+	}
+	
+} //end of class definition
