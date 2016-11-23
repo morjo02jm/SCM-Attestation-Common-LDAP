@@ -28,6 +28,7 @@ public class CommonLdap {
 	private static String sBCC= "Team-GIS-ToolsSolutions-Global@ca.com";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
+	private static String sDumpFile = "";
 	private static int iReturnCode = 0;
 	private static int nEmployees = 0;
 	private DirContext ctx;
@@ -403,7 +404,7 @@ public class CommonLdap {
 			String filter = "(&(!(objectclass=computer))(&(objectclass=person)(sAMAccountName=*)))";
 			
 			// Specify the ids of the attributes to return
-			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail,tagEmployeeType};
+			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType};
 			ctls.setReturningAttributes(attrIDs);
 	
 			// Search for objects that have those matching attributes
@@ -652,4 +653,161 @@ public class CommonLdap {
 		}	
 	}
 	
+	private void processLDAPGroupUsers(JCaContainer cLDAP,
+								       JCaContainer cDLUsers,
+						               JCaContainer cAddUsers, 
+						               JCaContainer cDelUsers,
+						               String DLLDAPUserGroup,
+						               String sAuthName) 
+{
+
+	printLog("Processing: " + sAuthName);
+	
+	try {
+		boolean found=false;
+		
+		// 1. Active user accounts in CA.COM but with no DLUser privilege
+		printLog("1. Remove BlackDuckSuite Users ");
+		if (!cDelUsers.isEmpty())
+		{
+			for (int i=0; i<cDelUsers.getKeyElementCount("pmfkey"); i++ )
+			{
+				String sID = cDelUsers.getString("pmfkey", i);
+				
+				int iLDAP[] = cLDAP.find("sAMAccountName", sID);
+				if (iLDAP.length > 0)
+				{
+					String sUser  = cLDAP.getString("displayName", iLDAP[0]);
+					String userDN = cLDAP.getString("distinguishedName", iLDAP[0]);									
+					
+					// Force removal if a valid user in directory
+					if (removeUserFromLDAPGroup(DLLDAPUserGroup, userDN))
+					{
+						printLog(">>>User (deactivate): "+sUser+ "("+ sID+")");									
+					}
+				} // valid directory user
+			
+			}  //loop over user accounts						
+		}	/* Delete List is not empty */
+		
+		// 2. LDAP users with no RTC user account
+		printLog("2. Add BlackDuckSuite Users");
+		if (!cAddUsers.isEmpty())
+		{
+			for (int i=0; i<cAddUsers.getKeyElementCount("pmfkey"); i++ )
+			{					
+				String sID = cAddUsers.getString("pmfkey", i);
+				
+				int iLDAP[] = cLDAP.find("sAMAccountName", sID);
+				if (iLDAP.length > 0)
+				{
+					String sUser  = cLDAP.getString("displayName", iLDAP[0]);
+					String userDN = cLDAP.getString("distinguishedName", iLDAP[0]);									
+					
+					int iUser[] = cDLUsers.find("dn", userDN);
+					
+					if (iUser.length == 0) {
+						if (addUserToLDAPGroup(DLLDAPUserGroup, userDN))
+						{
+							// Add user to LDAP DLUser group
+							printLog(">>>User (activate): "+sUser+ "("+ sID+")");											
+						}							
+					} // user not found in DL 
+				} //  user in directory 
+			}  // loop over user accounts						
+		} /* Add list is not empty */	
+		
+		// 3. Dump Request
+		printLog("3. Dump User DL");
+		if (!sDumpFile.isEmpty())
+		{		
+			File file = new File(sDumpFile);
+			
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			int nSize = cDLUsers.getKeyElementCount("dn");
+			if (nSize < 1500) {					
+				for (int i=0; i<nSize; i++ )
+				{
+					String sDN = cDLUsers.getString("dn", i);
+					int iLDAP[] = cLDAP.find("distinguishedName", sDN);
+					if (iLDAP.length > 0)
+					{
+						String sUser = cLDAP.getString("displayName", iLDAP[0]);
+						String sID   = cLDAP.getString("sAMAccountName", iLDAP[0]);									
+						//printLog(sUser+ " ("+ sID+")");	
+						bw.write(sUser+ " ("+ sID+")\n");
+					} // user exists in domain
+				}  // loop over DL members						
+			} // DL size does not exceed 1499
+			else {
+				for (int i=0; i<cLDAP.getKeyElementCount("sAMAccountName"); i++) {
+					String sID    = cLDAP.getString("sAMAccountName", i);	
+					String sUser  = cLDAP.getString("displayName", i);
+					String userDN = cLDAP.getString("distinguishedName", i);
+					
+					int iUser[]=cDLUsers.find("dn", userDN);
+					if (iUser.length > 0)
+					{
+						bw.write(sUser + " ("+ sID + ")\n");
+					}
+					else {
+						if (addUserToLDAPGroup(DLLDAPUserGroup, userDN)) {
+						removeUserFromLDAPGroup(DLLDAPUserGroup, userDN);
+					}
+					else {
+						bw.write(sUser + " ("+ sID + ")\n");								
+					}
+					} // loop over DL members
+				}
+			} // DL size exceeds 1499
+			bw.close();
+		} /* Dump Users */	
+	} /* try block */
+	catch (Throwable e) {
+		System.out.println("exception happened - here's what I know: ");
+		e.printStackTrace();
+		System.exit(-1);
+	}
+	finally { }
+} // processLDAPGroupUsers
+
+	
+	public void processStandardDL(String[][]     aAuthSchemas, 
+			                      String[][]     aDLLDAPGroupFormat, 
+			                      JCaContainer   cLDAP, 
+			                      JCaContainer[] cDLUsers, 
+			                      JCaContainer   cAddUsers, 
+			                      JCaContainer   cDelUsers,
+			                      int            iUserType,
+			                      String         sHaveDumpFile,
+			                      boolean        bS) 
+	{
+		sDumpFile = sHaveDumpFile;
+		// Read DL LDAP group users
+		for (int i=0; i<aAuthSchemas[iUserType].length; i++)
+		{
+			String[] aDLLDAPGroup = new String[aDLLDAPGroupFormat[iUserType].length];
+			
+			for (int j=0; j<aDLLDAPGroupFormat[iUserType].length; j++)
+			{
+				String sDLLDAPUserGroup = aDLLDAPGroupFormat[iUserType][j].replaceAll("%s", aAuthSchemas[iUserType][j]);
+				//String sDLLDAPUserGroup = aDLLDAPGroup[j].format(aDLLDAPGroupFormat[iUserType][j],aAuthSchemas[iUserType][j]);
+				
+				readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers[i]);
+				processLDAPGroupUsers(cLDAP,
+					                  cDLUsers[i],
+                                      cAddUsers, 
+                                      cDelUsers,
+                                      sDLLDAPUserGroup,
+                                      aAuthSchemas[iUserType][j]);
+			}
+		}
+	}
 } //end of class definition
