@@ -667,7 +667,7 @@ public class CommonLdap {
 		boolean found=false;
 		
 		// 1. Active user accounts in CA.COM but with no DLUser privilege
-		printLog("1. Remove BlackDuckSuite Users ");
+		printLog("1. Remove Users ");
 		if (!cDelUsers.isEmpty())
 		{
 			for (int i=0; i<cDelUsers.getKeyElementCount("pmfkey"); i++ )
@@ -691,7 +691,7 @@ public class CommonLdap {
 		}	/* Delete List is not empty */
 		
 		// 2. LDAP users with no RTC user account
-		printLog("2. Add BlackDuckSuite Users");
+		printLog("2. Add Users");
 		if (!cAddUsers.isEmpty())
 		{
 			for (int i=0; i<cAddUsers.getKeyElementCount("pmfkey"); i++ )
