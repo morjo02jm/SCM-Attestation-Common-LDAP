@@ -76,7 +76,7 @@ public class CommonLdap {
 	        Log = new PrintWriter(osLogStream, true);
 		} catch (FileNotFoundException e) {
 			iReturnCode = 1001;
-		    System.err.println(e);			
+		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 		}
 		
@@ -84,7 +84,7 @@ public class CommonLdap {
 			cipher = Cipher.getInstance("AES");			
 		} catch(Exception e) {
 			iReturnCode = 1003;
-		    System.err.println(e);			
+		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
         } 
 
@@ -113,7 +113,7 @@ public class CommonLdap {
 		    // attempt to re-acquire the authentication information
 		    // Handle the error
 			iReturnCode = 1002;
-		    System.err.println(e);
+		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);			    
 		}
 
@@ -160,7 +160,7 @@ public class CommonLdap {
 		Log.println(str);
 	}
 
-	public void printErr(String str)
+	public static void printErr(String str)
 	{
 		System.err.println(str);
 		Log.println("Error: "+str);
@@ -226,7 +226,7 @@ public class CommonLdap {
 
 	          // Send message
 	          Transport.send(message);
-	          System.out.println("Sent message successfully to: "+email);
+	          printLog("Sent message successfully to: "+email);
 	       } catch (MessagingException mex) {
 	          mex.printStackTrace();
 	       }	      
@@ -268,7 +268,7 @@ public class CommonLdap {
 				bFirst = false;
 			}    
 		} catch (FileNotFoundException e) {             
-			e.printStackTrace();         
+			printErr(e.getStackTrace().toString());
 		} catch (IOException e) {             
 			e.printStackTrace();        
 		} finally {             
@@ -278,7 +278,7 @@ public class CommonLdap {
 					reader.close();                 
 				}             
 			} catch (IOException e) {                 
-				e.printStackTrace();             
+				printErr(e.getStackTrace().toString());
 			}         
 		} 	
 	}
@@ -313,9 +313,9 @@ public class CommonLdap {
 				bodyText += text;
 			}    
 		} catch (FileNotFoundException e) {             
-			e.printStackTrace();         
+			printErr(e.getStackTrace().toString());
 		} catch (IOException e) {             
-			e.printStackTrace();        
+			printErr(e.getStackTrace().toString());
 		} finally {             
 			try {                 
 				if (reader != null) 
@@ -323,7 +323,7 @@ public class CommonLdap {
 					reader.close();                 
 				}             
 			} catch (IOException e) {                 
-				e.printStackTrace();             
+				printErr(e.getStackTrace().toString());
 			}         
 		} 		
 		
@@ -391,7 +391,7 @@ public class CommonLdap {
 			} catch (NamingException e) {
 			    // Handle the error
 				iReturnCode = 1005;
-			    System.err.println(e);
+			    printErr(e.getLocalizedMessage());
 			    System.exit(iReturnCode);
 			}
 		}
@@ -654,10 +654,7 @@ public class CommonLdap {
 	    // attempt to reacquire the authentication information
 		} catch (NamingException e)
 		{
-		    // just skip region
-			//iReturnCode = 2;
-		    //System.err.println(e);
-			//System.exit(iReturnCode);
+			//printErr(e.getLocalizedMessage());
 		}	
 	}
 	
