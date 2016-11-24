@@ -25,6 +25,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class CommonLdap {
+	private static String sAppName = "commonldap";
 	private static String sBCC= "Team-GIS-ToolsSolutions-Global@ca.com";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
@@ -65,7 +66,8 @@ public class CommonLdap {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH_mm_ss");
 		Date date = new Date();
-		if (!aAppName.isEmpty()) {			
+		if (!aAppName.isEmpty()) {	
+			sAppName = aAppName;
 			sLogName = aLogPath+"\\"+aAppName+"_" +dateFormat.format(date) +".log";
 		}
 
@@ -156,6 +158,12 @@ public class CommonLdap {
 	{
 		System.out.println(str);
 		Log.println(str);
+	}
+
+	public void printErr(String str)
+	{
+		System.err.println(str);
+		Log.println("Error: "+str);
 	}
 
 	public void handleMessage(String sMessage)
@@ -442,7 +450,7 @@ public class CommonLdap {
             }
 		} catch(Exception e) {
 			iReturnCode = 1003;
-		    System.err.println(e);			
+		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 	    }
 		return sEncrypted;
@@ -477,7 +485,7 @@ public class CommonLdap {
 	        sDecrypted = new String(decrypted);		
 		} catch(Exception e) {
 			iReturnCode = 1003;
-		    System.err.println(e);			
+		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 	    }
 		return sDecrypted;
@@ -545,7 +553,7 @@ public class CommonLdap {
 
 		} catch (javax.naming.AuthenticationException e) {
 			iReturnCode = 1;
-			System.err.println(e);
+			printErr(e.getLocalizedMessage());
 			System.exit(iReturnCode);
 			
 		// attempt to reacquire the authentication information
@@ -555,7 +563,7 @@ public class CommonLdap {
 			if (sException.indexOf("ENTRY_EXISTS") < 0 ) 
 			{
 				iReturnCode = 2;
-			    System.err.println(e);
+			    printErr(e.getLocalizedMessage());
 			    System.exit(iReturnCode);
 			}
 			return false;
@@ -580,7 +588,7 @@ public class CommonLdap {
 		
 		} catch (javax.naming.AuthenticationException e) {
 			iReturnCode = 1;
-			System.err.println(e);
+			printErr(e.getLocalizedMessage());
 			System.exit(iReturnCode);
 		
 		// attempt to reacquire the authentication information
@@ -591,7 +599,7 @@ public class CommonLdap {
 				sException.indexOf("WILL_NOT_PERFORM") < 0) //forced deletion
 			{
 				iReturnCode = 1007;
-				System.err.println(e);
+				printErr(e.getLocalizedMessage());
 				System.exit(iReturnCode);
 			}
 			return false;
@@ -641,7 +649,7 @@ public class CommonLdap {
 			}
 		} catch (javax.naming.AuthenticationException e) {
 			iReturnCode = 1006;
-		    System.err.println(e);
+		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);		    
 	    // attempt to reacquire the authentication information
 		} catch (NamingException e)
@@ -667,7 +675,7 @@ public class CommonLdap {
 		boolean found=false;
 		
 		// 1. Active user accounts in CA.COM but with no DLUser privilege
-		printLog("1. Remove Users ");
+		printLog("1. Remove "+sAppName+" Users ");
 		if (!cDelUsers.isEmpty())
 		{
 			for (int i=0; i<cDelUsers.getKeyElementCount("pmfkey"); i++ )
@@ -691,7 +699,7 @@ public class CommonLdap {
 		}	/* Delete List is not empty */
 		
 		// 2. LDAP users with no RTC user account
-		printLog("2. Add Users");
+		printLog("2. Add "+sAppName+" Users");
 		if (!cAddUsers.isEmpty())
 		{
 			for (int i=0; i<cAddUsers.getKeyElementCount("pmfkey"); i++ )
@@ -718,7 +726,7 @@ public class CommonLdap {
 		} /* Add list is not empty */	
 		
 		// 3. Dump Request
-		printLog("3. Dump User DL");
+		printLog("3. Dump "+sAppName+" User DL");
 		if (!sDumpFile.isEmpty())
 		{		
 			File file = new File(sDumpFile);
@@ -771,8 +779,7 @@ public class CommonLdap {
 		} /* Dump Users */	
 	} /* try block */
 	catch (Throwable e) {
-		System.out.println("exception happened - here's what I know: ");
-		e.printStackTrace();
+		printErr(e.getStackTrace().toString());
 		System.exit(-1);
 	}
 	finally { }
