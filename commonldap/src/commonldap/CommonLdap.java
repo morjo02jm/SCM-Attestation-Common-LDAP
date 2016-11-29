@@ -33,6 +33,7 @@ public class CommonLdap {
 	private static int iReturnCode = 0;
 	private static int nEmployees = 0;
 	private DirContext ctx;
+	private static boolean bFileAppend = false;
 
 	// Column names cLDAP 
 	private static String tagSAMAccountName = "sAMAccountName";
@@ -232,25 +233,29 @@ public class CommonLdap {
 	       }	      
 	}
 	
+	public void setFileAppend(boolean bAppend) {
+		bFileAppend = bAppend;
+	}
+	
 	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep)
 	{
 		File fout = new File(sOutputFileName);
 		
 		try {
-			FileOutputStream fos = new FileOutputStream(fout);
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(sOutputFileName, bFileAppend));
 			String[] keylist = cList.getKeyList();
-			//int[] ord = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
-			
+			// was int[] ord = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
 			String line = "";
-			for (int i=0; i<keylist.length; i++) {
-				if (!line.isEmpty()) 
-					line += sep;
-				//line += keylist[ord[i]];
-				line += keylist[i];
+			
+			if (!bFileAppend) {				
+				for (int i=0; i<keylist.length; i++) {
+					if (!line.isEmpty()) 
+						line += sep;				
+					line += keylist[i]; // was line += keylist[ord[i]];
+				}
+				bw.write(line);
+				bw.newLine();
 			}
-			bw.write(line);
-			bw.newLine();
 			
 			for (int i=0; i < cList.getKeyElementCount(keylist[0]); i++) {
 				if (!cList.getString("APP", i).isEmpty()) 
@@ -258,9 +263,8 @@ public class CommonLdap {
 					line = "";
 					for (int j=0; j<keylist.length; j++) {
 						if (!line.isEmpty())
-							line += sep;
-						//line += cList.getString(keylist[ord[j]], i);
-						line += cList.getString(keylist[j], i);
+							line += sep;					
+						line += cList.getString(keylist[j], i);  //was line += cList.getString(keylist[ord[j]], i);
 					}
 					bw.write(line);
 					bw.newLine();
