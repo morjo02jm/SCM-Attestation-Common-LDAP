@@ -232,9 +232,55 @@ public class CommonLdap {
 	       }	      
 	}
 	
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep)
+	{
+		File fout = new File(sOutputFileName);
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(fout);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			String[] keylist = cList.getKeyList();
+			//int[] ord = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
+			
+			String line = "";
+			for (int i=0; i<keylist.length; i++) {
+				if (!line.isEmpty()) 
+					line += sep;
+				//line += keylist[ord[i]];
+				line += keylist[i];
+			}
+			bw.write(line);
+			bw.newLine();
+			
+			for (int i=0; i < cList.getKeyElementCount(keylist[0]); i++) {
+				if (!cList.getString("APP", i).isEmpty()) 
+				{
+					line = "";
+					for (int j=0; j<keylist.length; j++) {
+						if (!line.isEmpty())
+							line += sep;
+						//line += cList.getString(keylist[ord[j]], i);
+						line += cList.getString(keylist[j], i);
+					}
+					bw.write(line);
+					bw.newLine();
+				}
+			}
+		 
+			bw.close();
+		} catch (FileNotFoundException e) {             
+			iReturnCode = 201;
+		    System.err.println(e);			
+		    System.exit(iReturnCode);
+		} catch (IOException e) {             
+			iReturnCode = 202;
+		    System.err.println(e);			
+		    System.exit(iReturnCode);
+		}
+	}	
 
 
-	public void processInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
+	public void readInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
 	{
 		File file = new File(sInputFileName);         
 		BufferedReader reader = null;  
@@ -282,8 +328,10 @@ public class CommonLdap {
 			}         
 		} 	
 	}
+
 	
-	public String readTextResource(String sInputFileName, String sArg1, String sArg2, String sArg3) {
+	
+	public String readTextResource(String sInputFileName, String sArg1, String sArg2, String sArg3, String sArg4) {
 		File file = new File(sInputFileName); 
 		//InputStream inputStream = githubrepldap.class.getResourceAsStream(InputFileName); //TBD
 		
@@ -309,6 +357,10 @@ public class CommonLdap {
 				nIndex = text.indexOf("%3");
 				if (nIndex >= 0) {
 					text = text.substring(0, nIndex) + sArg3 + text.substring(nIndex+2);
+				}
+				nIndex = text.indexOf("%4");
+				if (nIndex >= 0) {
+					text = text.substring(0, nIndex) + sArg4 + text.substring(nIndex+2);
 				}
 				bodyText += text;
 			}    
