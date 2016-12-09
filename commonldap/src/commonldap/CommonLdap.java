@@ -92,7 +92,7 @@ public class CommonLdap {
 
 		Map<String, String> environ = System.getenv();
         for (String envName : environ.keySet()) {
-        	if (envName.equalsIgnoreCase("FLOWDOCK_ADMIN_PASSWORD")) 
+        	if (envName.equalsIgnoreCase("DL_ADMINISTRATOR_PASSWORD")) 
         		sAdminPassword = AESDecrypt(environ.get(envName));
         }
 		
@@ -789,8 +789,7 @@ public class CommonLdap {
 				file.createNewFile();
 			}
 			
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), bFileAppend));
 			
 			int nSize = cDLUsers.getKeyElementCount("dn");
 			if (nSize < 1500) {					
