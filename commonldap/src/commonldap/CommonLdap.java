@@ -869,4 +869,202 @@ public class CommonLdap {
 			}
 		}
 	}
+		
+	public void readSourceMinderContacts(JCaContainer cApplicationContacts, String sApplication) {
+		int nIndex = 0;
+		JCaContainer cContacts = new JCaContainer();
+		
+		readInputListGeneric(cContacts, "SourceMinder_Product_Contacts.tsv", '\t');
+		
+		for (int iIndex=0; iIndex<cContacts.getKeyElementCount("PROD_NAME"); iIndex++) {
+			boolean bActive = true;
+			if (cContacts.getString("SRC_MNGMT_TOOL", iIndex).contains(sApplication)) {
+				switch(cContacts.getString("PROD_STAT", iIndex).toLowerCase()) {
+				case "end of life":
+					bActive = false;
+				case "active":
+				case "stabilized":
+				case "internal":
+					boolean bDoit = false;
+					String sProduct = "", sLocation = "";
+					switch (sApplication.toLowerCase()) {
+					case "harvest":
+						bDoit = cContacts.getString("NON_MAINFRAME_SRC_PHYS_LOC", iIndex).toLowerCase().contains("cscr");
+						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
+						sLocation = cContacts.getString("NON_MAINFRAME_SRC_PHYS_LOC", iIndex).replace("\"", "");
+						break;
+					case "endevor":
+						bDoit = cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null");
+						sProduct = cContacts.getString("ENDEVOR_PRODUCT", iIndex).trim();
+						sLocation = "";
+						break;
+					}
+					if (bDoit) {
+						String sRelease  = cContacts.getString("RELEASE", iIndex).replace("\"", "");
+						
+						String sApprovers = cContacts.getString("APPROVERS_PMFKEY", iIndex);
+						sApprovers = sApprovers.replace("\"[", "[");
+						sApprovers = sApprovers.replace("]\"", "]");
+						sApprovers = sApprovers.replace("\"\"", "\"");
+						
+						try {				
+							JSONArray ja = new JSONArray(sApprovers);
+							sApprovers = "";
+							for (int j=0; j<ja.length(); j++) {
+								if (!sApprovers.isEmpty()) sApprovers += ";";
+								sApprovers += ja.getJSONObject(j).getString("PMFKEY");
+							}
+						}  catch (JSONException e) {
+							iReturnCode = 1008;
+						    printErr(e.getLocalizedMessage());
+						    System.exit(iReturnCode);		    							
+						}
+
+						cApplicationContacts.setString("Product",  sProduct, nIndex);
+						cApplicationContacts.setString("Release",  sRelease, nIndex);
+						cApplicationContacts.setString("Location", sLocation, nIndex);
+						cApplicationContacts.setString("Active", bActive? "Y":"N", nIndex);
+						cApplicationContacts.setString("Approver", sApprovers, nIndex++);								
+					}
+					break;
+					
+				default:
+					break;
+				}
+			} // Harvest Contact
+		} // loop over SourceMinder contact list
+
+	} // readSourceMinderContacts
+
+	
+	public String[] readAssignedApprovers(String sApprovers) {
+		List<String> lObj = new ArrayList<String>();
+		
+		String sToken = sApprovers;
+		
+		while (!sToken.isEmpty()) {
+			int nIndex = sToken.indexOf(';');
+			String sApprover = sToken;
+			if (nIndex >= 0) {
+				sApprover = sToken.substring(0, nIndex);
+				sToken = sToken.substring(nIndex+1);
+			}
+			else 
+				sToken = "";
+			
+			lObj.add(sApprover);
+		}
+		
+		String[] lStrings = new String[lObj.size()];
+		ListIterator<String> lIter = lObj.listIterator();
+		int i=0;
+		
+		while (lIter.hasNext()) {
+			lStrings[i++] = (String)lIter.next();
+		}
+		return lStrings;
+	} // readAssignedApprovers
+	
+	public String[] readAssignedBrokerProjects(String sLocation, String sBroker) {
+		List<String> lObj = new ArrayList<String>();
+		
+		boolean bFound = false;		
+		String sToken = sLocation;
+		while (!bFound && !sToken.isEmpty()) {
+			int nIndex = sToken.indexOf(';');
+			String sNextBroker = sToken;
+			if (nIndex >= 0) {
+				sNextBroker = sToken.substring(0, nIndex);
+				sToken = sToken.substring(nIndex+1);
+			}
+			else 
+				sToken = "";
+			
+			if (sNextBroker.startsWith(sBroker) || sBroker.isEmpty()) {
+				bFound = true;
+				int mIndex = -1;
+				boolean bAllProjects = false;
+				if (sBroker.isEmpty()) { // Endevor
+					mIndex = -1;
+					bAllProjects = true;
+				}
+				else { // Harvest
+					mIndex = sNextBroker.indexOf('/');
+					bAllProjects = mIndex == -1;
+				}
+				if (bAllProjects) 
+					lObj.add("");
+				else {
+					String sNextProject = sNextBroker.substring(mIndex+1);
+					while (!sNextProject.isEmpty()) {
+						int lIndex = sNextProject.indexOf(',');
+						String sProject = sNextProject;
+						if (lIndex>=0) {
+							sProject = sNextProject.substring(0, lIndex);
+							sNextProject = sNextProject.substring(lIndex+1);
+						}
+						else 
+							sNextProject = "";
+						
+						lObj.add(sProject);
+					}
+				} // parse out leading project names					
+			} // current broker found
+			
+		} // loop over broker specifications
+		
+		String[] lStrings = new String[lObj.size()];
+		ListIterator<String> lIter = lObj.listIterator();
+		int i=0;
+		
+		while (lIter.hasNext()) {
+			lStrings[i++] = (String)lIter.next();
+		}
+		return lStrings;
+	} // readAssignedBrokerProjects
+	
+	
+	public boolean processProjectReleases(String sProject, String sReleases, boolean bActive) {
+		boolean bIsActive = bActive;
+		
+		if (bIsActive && !sReleases.isEmpty()) {
+			boolean bFound = false;		
+			String sToken = sReleases;
+			while (!bFound && !sToken.isEmpty()) {
+				int nIndex = sToken.indexOf(';');
+				String sNextRelease = sToken;
+				if (nIndex >= 0) {
+					sNextRelease = sToken.substring(0, nIndex);
+					sToken = sToken.substring(nIndex+1);
+				}
+				else 
+					sToken = "";
+				
+				sNextRelease = sNextRelease.toLowerCase();
+				if (sNextRelease.startsWith("r")) {
+					sNextRelease = sNextRelease.substring(1);
+				}
+				if (sNextRelease.endsWith("*")) {
+					sNextRelease = sNextRelease.replace("*", "");
+				}
+				
+				String[] aCheck = {
+						sNextRelease,
+						sNextRelease.replace(".", "_"),
+						sNextRelease.replace(".", "")
+				};
+				
+				for (int i=0; i<aCheck.length && !bFound; i++) {
+					if (sProject.contains(aCheck[i]))
+						bFound = true;
+				}
+				
+			} // loop over broker specifications
+			
+			bIsActive = bFound;
+		}
+		
+		return bIsActive;
+	} // processProjectReleases
+	
 } //end of class definition
