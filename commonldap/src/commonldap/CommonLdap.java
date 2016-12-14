@@ -846,7 +846,7 @@ public class CommonLdap {
 			                      JCaContainer   cDelUsers,
 			                      int            iUserType,
 			                      String         sHaveDumpFile,
-			                      boolean        bS) 
+			                      boolean        bSynch) 
 	{
 		sDumpFile = sHaveDumpFile;
 		// Read DL LDAP group users
