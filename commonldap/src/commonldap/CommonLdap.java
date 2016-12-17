@@ -894,9 +894,9 @@ public class CommonLdap {
 						sLocation = cContacts.getString("NON_MAINFRAME_SRC_PHYS_LOC", iIndex).replace("\"", "");
 						break;
 					case "endevor":
-						bDoit = cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null");
-						sProduct = cContacts.getString("ENDEVOR_PRODUCT", iIndex).trim();
-						sLocation = "";
+						bDoit = !cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null");
+						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
+						sLocation = cContacts.getString("ENDEVOR_PRODUCT", iIndex).trim();
 						break;
 					}
 					if (bDoit) {
@@ -971,7 +971,7 @@ public class CommonLdap {
 		boolean bFound = false;		
 		String sToken = sLocation;
 		while (!bFound && !sToken.isEmpty()) {
-			int nIndex = sToken.indexOf(';');
+			int nIndex = sToken.indexOf(";");
 			String sNextBroker = sToken;
 			if (nIndex >= 0) {
 				sNextBroker = sToken.substring(0, nIndex);
@@ -986,7 +986,7 @@ public class CommonLdap {
 				boolean bAllProjects = false;
 				if (sBroker.isEmpty()) { // Endevor
 					mIndex = -1;
-					bAllProjects = true;
+					bAllProjects = false;
 				}
 				else { // Harvest
 					mIndex = sNextBroker.indexOf('/');
