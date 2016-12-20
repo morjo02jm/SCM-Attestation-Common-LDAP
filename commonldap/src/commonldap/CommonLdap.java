@@ -676,33 +676,62 @@ public class CommonLdap {
 				cIndex = cDLUsers.getKeyElementCount("member");
 			}
 			
-			Attributes attributes = ctx.getAttributes(sDLLDAPUserGroup);
-			for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
-			    Attribute attr = (Attribute)ae.next();
-			    //printLog("attribute: " + attr.getID());
+			boolean endString = true;
+			int loopValue = 0;
+			while (endString) {
+			    int startValue = loopValue * 1000;
+			    int endvalue = (loopValue + 1) * 1000;
+			    SearchControls searchCtls = new SearchControls();
+			    String[] returnedAttrs = new String[1];
+			    String range = startValue + "-" + endvalue;
+			    returnedAttrs[0] = "member;range=" + range;
+			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+			    searchCtls.setReturningAttributes(returnedAttrs);
+			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int jIndex = sDLLDAPUserGroup.indexOf(',');
+			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
+			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
+			    String sFilter = "(&(objectClass=group)(sAMAccountName="+sName+"))";
 			    
-			    if (attr.getID().indexOf("member")==0)
-			    {
-				    /* Process each member attribute */
-				    for (NamingEnumeration e = attr.getAll(); 
-				         e.hasMore();
-					     //printLog("value: " + e.next()) ) ;
-				         )
-				    {
-				    	String dn = (String)e.next();
-				    	//printLog("DN:" + dn);
-				    	int iStart = dn.indexOf("CN=");
-				    	int iEnd   = dn.indexOf(',', iStart);
-				    	String pmfkey = dn.substring(iStart+3, iEnd);
-				    	int iDL[] = cDLUsers.find("member", pmfkey);
-				    	if (iDL.length == 0) {
-				    		cDLUsers.setString("dn",     dn,     cIndex);
-				    		cDLUsers.setString("member", pmfkey, cIndex++);
-				    	    //printLog("member: "+pmfkey); //temp
-				    	}
-				    }
-				}
+			    NamingEnumeration answer = ctx.search(sRegion, sFilter, searchCtls);
+			    while (answer.hasMore()) {
+			        SearchResult entry = (SearchResult) answer.next();
+			        
+			        Attributes attributes = entry.getAttributes();
+			        for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+					    Attribute attr = (Attribute)ae.next();
+					    
+					    if (attr.getID().indexOf("member")==0)
+					    {
+						    // Process each member attribute 
+						    for (NamingEnumeration e = attr.getAll(); 
+						         e.hasMore();
+						         )
+						    {
+						    	String dn = (String)e.next();
+						    	//printLog("DN:" + dn);
+						    	int iStart = dn.indexOf("CN=");
+						    	int iEnd   = dn.indexOf(',', iStart);
+						    	String pmfkey = dn.substring(iStart+3, iEnd);
+						    	int iDL[] = cDLUsers.find("member", pmfkey);
+						    	if (iDL.length == 0) {
+						    		cDLUsers.setString("dn",     dn,     cIndex);
+						    		cDLUsers.setString("member", pmfkey, cIndex++);
+						    	}
+						    }
+						}
+			        	
+			        }
+			        
+			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
+			            endString = false;
+			        }
+			    }
+			    loopValue++;
 			}
+			
+			//printLog("Number of Entries: "+cIndex);
+			
 		} catch (javax.naming.AuthenticationException e) {
 			iReturnCode = 1006;
 		    printErr(e.getLocalizedMessage());
@@ -792,43 +821,24 @@ public class CommonLdap {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), bFileAppend));
 			
 			int nSize = cDLUsers.getKeyElementCount("dn");
-			if (nSize < 1500) {					
-				for (int i=0; i<nSize; i++ )
+			for (int i=0; i<nSize; i++ )
+			{
+				String sDN = cDLUsers.getString("dn", i);
+				int iLDAP[] = cLDAP.find("distinguishedName", sDN);
+				if (iLDAP.length > 0)
 				{
-					String sDN = cDLUsers.getString("dn", i);
-					int iLDAP[] = cLDAP.find("distinguishedName", sDN);
-					if (iLDAP.length > 0)
-					{
-						String sUser = cLDAP.getString("displayName", iLDAP[0]);
-						String sID   = cLDAP.getString("sAMAccountName", iLDAP[0]);									
-						//printLog(sUser+ " ("+ sID+")");	
-						bw.write(sUser+ " ("+ sID+")\n");
-					} // user exists in domain
-				}  // loop over DL members						
-			} // DL size does not exceed 1499
-			else {
-				for (int i=0; i<cLDAP.getKeyElementCount("sAMAccountName"); i++) {
-					String sID    = cLDAP.getString("sAMAccountName", i);	
-					String sUser  = cLDAP.getString("displayName", i);
-					String userDN = cLDAP.getString("distinguishedName", i);
-					
-					int iUser[]=cDLUsers.find("dn", userDN);
-					if (iUser.length > 0)
-					{
-						bw.write(sUser + " ("+ sID + ")\n");
-					}
-					else {
-						if (addUserToLDAPGroup(DLLDAPUserGroup, userDN)) {
-						removeUserFromLDAPGroup(DLLDAPUserGroup, userDN);
-					}
-					else {
-						bw.write(sUser + " ("+ sID + ")\n");								
-					}
-					} // loop over DL members
-				}
-			} // DL size exceeds 1499
+					String sUser = cLDAP.getString("displayName", iLDAP[0]);
+					String sID   = cLDAP.getString("sAMAccountName", iLDAP[0]);	
+					int iIndex = sUser.indexOf('(');
+					if (iIndex > 0)
+						sUser = sUser.substring(0, iIndex).trim();
+					bw.write(sUser+ " ("+ sID+")\n");
+				} // user exists in domain
+			}  // loop over DL members		
+				
 			bw.close();
 		} /* Dump Users */	
+		
 	} /* try block */
 	catch (Throwable e) {
 		printErr(e.getStackTrace().toString());

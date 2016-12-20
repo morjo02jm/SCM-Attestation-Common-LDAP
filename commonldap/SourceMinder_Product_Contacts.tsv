@@ -416,7 +416,7 @@ PANS		Active	CSCRE/Endevor	PANS		"[{""PMFKEY"":""kazri01""},{""PMFKEY"":""tunem0
 PANV		Active	CSCRE/Endevor	PANV		"[{""PMFKEY"":""svami01""}]"	hodda01	svami01	watke08
 PAZ		Active	CSCRE/Endevor	PAZ		"[{""PMFKEY"":""berbe02""}]"			berbe02
 PMACB		Active	CSCRE/Endevor	PMACB		"[{""PMFKEY"":""damda01""}]"			damda01
-PRFCH		Active	CSCRE/Endevor	PRFCH		"[{""PMFKEY"":""berbe02""}]"			berbe02
+PRFCH		Active	CSCRE/Endevor	PFRCH		"[{""PMFKEY"":""berbe02""}]"			berbe02
 PTST		Active	CSCRE/Endevor	PTST		"[{""PMFKEY"":""tucjo02""},{""PMFKEY"":""eduja01""}]"	hodda01	eduja01	tucjo02
 QFS		Active	CSCRE/Endevor	QFS		"[{""PMFKEY"":""jambr01""},{""PMFKEY"":""esqfr01""}]"	hodda01	jambr01	esqfr01
 RCM		Active	CSCRE/Endevor	RCM		"[{""PMFKEY"":""tucjo02""},{""PMFKEY"":""eduja01""}]"	hodda01	eduja01	tucjo02
