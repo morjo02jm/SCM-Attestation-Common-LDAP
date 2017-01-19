@@ -333,6 +333,68 @@ public class CommonLdap {
 		} 	
 	}
 
+	public void readInputListGenericWithColumnList( JCaContainer cUserList, String sInputFileName, char sep, String[] aColumnList)
+	{
+		File file = new File(sInputFileName);         
+		BufferedReader reader = null;  
+		
+		try {             
+			reader = new BufferedReader(new FileReader(file));             
+			// repeat until all lines is read   
+			String text;
+			
+			List<String> headings = new ArrayList<String>();
+			boolean bFirst = true;
+			
+			int index =0;
+			while ((text = reader.readLine()) != null) {
+				List<String> entries = new ArrayList<String>();
+				int cIndex = -1;
+				while ((cIndex=text.indexOf(sep))>=0) {
+					entries.add(text.substring(0, cIndex));
+					text = text.substring(cIndex+1);
+				}
+				entries.add(text);
+				
+				if (bFirst) {
+					for (int i=0; i<entries.size(); i++) {
+						boolean bFound = false;
+						for (int j=0; j<aColumnList.length && !bFound; j++) {
+							headings.add(entries.get(i));
+							bFound = true;
+						}
+					}
+					headings = entries;
+				}
+				else {
+					for (int i=0; i<headings.size(); i++) {
+						boolean bFound = false;
+						for (int j=0; j<aColumnList.length && !bFound; j++) {
+							if (aColumnList[j].equals(headings.get(i))) {
+								cUserList.setString(headings.get(i), entries.get(i), index);
+								bFound = true;
+							}
+						}
+					}
+					index++;
+				};
+				bFirst = false;
+			}    
+		} catch (FileNotFoundException e) {             
+			printErr(e.getStackTrace().toString());
+		} catch (IOException e) {             
+			e.printStackTrace();        
+		} finally {             
+			try {                 
+				if (reader != null) 
+				{                     
+					reader.close();                 
+				}             
+			} catch (IOException e) {                 
+				printErr(e.getStackTrace().toString());
+			}         
+		} 	
+	}
 	
 	
 	public String readTextResource(String sInputFileName, String sArg1, String sArg2, String sArg3, String sArg4) {
