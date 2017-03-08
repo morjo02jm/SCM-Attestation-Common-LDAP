@@ -961,14 +961,21 @@ public class CommonLdap {
 					String sProduct = "", sLocation = "";
 					switch (sApplication.toLowerCase()) {
 					case "harvest":
-						bDoit = cContacts.getString("NON_MAINFRAME_SRC_PHYS_LOC", iIndex).toLowerCase().contains("cscr");
+						bDoit = cContacts.getString("SRC_PHYS_LOC", iIndex).toLowerCase().contains("cscr");
 						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
-						sLocation = cContacts.getString("NON_MAINFRAME_SRC_PHYS_LOC", iIndex).replace("\"", "");
+						sLocation = cContacts.getString("SRC_PHYS_LOC", iIndex).replace("\"", "");
 						break;
 					case "endevor":
 						bDoit = !cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null");
 						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
 						sLocation = cContacts.getString("ENDEVOR_PRODUCT", iIndex).trim();
+						break;
+					case "mainframe":
+					default: // mainframe
+						bDoit = cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null") &&
+						        !cContacts.getString("SRC_PHYS_LOC", iIndex).toLowerCase().contains("cscr");
+						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
+						sLocation = cContacts.getString("SRC_PHYS_LOC", iIndex).replace("\"", "");
 						break;
 					}
 					if (bDoit) {
