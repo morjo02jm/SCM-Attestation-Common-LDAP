@@ -950,7 +950,8 @@ public class CommonLdap {
 		
 		for (int iIndex=0; iIndex<cContacts.getKeyElementCount("PROD_NAME"); iIndex++) {
 			boolean bActive = true;
-			if (cContacts.getString("SRC_MNGMT_TOOL", iIndex).contains(sApplication)) {
+			if (cContacts.getString("SRC_MNGMT_TOOL", iIndex).contains(sApplication) ||
+				sApplication.equalsIgnoreCase("mainframe")) {
 				switch(cContacts.getString("PROD_STAT", iIndex).toLowerCase()) {
 				case "end of life":
 					bActive = false;

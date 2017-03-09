@@ -1,4 +1,4 @@
-PROD_NAME	RELEASE	PROD_STAT	SRC_MNGMT_TOOL	ENDEVOR_PRODUCT	NON_MAINFRAME_SRC_PHYS_LOC	APPROVERS_PMFKEY	ERC	SEM	SCAS  
+PROD_NAME	RELEASE	PROD_STAT	SRC_MNGMT_TOOL	ENDEVOR_PRODUCT	SRC_PHYS_LOC	APPROVERS_PMFKEY	ERC	SEM	SCAS  
 1	12;12.6;11.5;14.0	Active	CSCRE/Endevor	"CA1,CTS,GATE"	The source resides on Endevor pool volumes MOTMxx;SMDxxx and ASMxxx volumes accessible from TSO1;CA11 and CA31.;Islandia Data Center	"[{""PMFKEY"":""mayja07""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""yeomi01""},{""PMFKEY"":""carju01""}]"	hodda01	mayja07	casjo02
 7	r11.1;r11.3;r12.0	Active	CSCRE/Endevor;MOTM/Endevor	CA7	N/A	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""hawba03""}]"	madmi06	simdo01	macco01;hawba03
 11	r3.0; r11	Active	CSCRE/Endevor	AL7	N/A	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""davfe01""}]"	madmi06	simdo01	macco01;davfe01
