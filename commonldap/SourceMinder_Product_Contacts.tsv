@@ -7,7 +7,7 @@ $LSRVDSN		Active	CSCRE/Endevor	$LSRVDSN		"[{""PMFKEY"":""damda01""}]"			damda01
 **		Active	CSCRE/Endevor	**		"[{""PMFKEY"":""armfr01""}]"			armfr01
 1 Copycat	11	Active	PDS and Source Code Control System (SCCS)	null	CATC000.*	"[{""PMFKEY"":""mayja07""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""carju01""}]"	hodda01	mayja07	casjo02
 "7 Distributed Components (Job Flow Illustrator, CPS)"	r11.1;r11.3;r12.0	Active	CSCR/Harvest	null	CSCR102	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""hawba03""}]"	madmi06	simdo01	macco01;hawba03
-"7 Distributed Components (Job Flow Illustrator, CPS)"	r11.1;r11.3;r12.0	Active	Other	null	APC.MOTM.CA7*;APC.MOTM.IAS*	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""hawba03""}]"	madmi06	simdo01	macco01;hawba03
+"7 Distributed Components (Job Flow Illustrator, CPS)"	r11.1;r11.3;r12.0	Active	CSCRE/Endevor	null	APC.MOTM.CA7*;APC.MOTM.IAS*	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""hawba03""}]"	madmi06	simdo01	macco01;hawba03
 ACCUCHECK	1.2	Active	CSCRE/Endevor	null	ASM.ACUCHKL2.CK120011.*;ASMDSK.CSCRE.ACCU.R12.*	"[{""PMFKEY"":""mayja07""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""hurro01""}]"	hodda01	mayja07	casjo02
 ACF2 for z/OS	r14;r15	Active	Endevor;PDS	ACF	Islandia	"[{""PMFKEY"":""petja04""}]"	hodda01	cheje18	pflda02
 ACM	r2.3	Stabilized	CSCR/Harvest	null	CSCR806/ACM	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"	hodda01	stoda04	cafjo01
@@ -195,7 +195,7 @@ ESCJ		Active	CSCRE/Endevor	ESCJ		"[{""PMFKEY"":""berbe02""}]"			berbe02
 ESD		Active	CSCRE/Endevor	ESD		"[{""PMFKEY"":""damda01""}]"			damda01
 ESP	r11.3	Active	CSCRE/Endevor	null	N/A	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""davfe01""}]"	madmi06	simdo01	macco01;davfe01
 ESP		Active	CSCRE/Endevor	ESP		"[{""PMFKEY"":""mayja07""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""carju01""}]"	hodda01	mayja07	casjo02
-ESP	r11.3	Active	CSCRE/Endevor;Other	null	APC.CSCRE.PESP.*;APC.CSCRE.PCPE.*	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""davfe01""}]"	madmi06	simdo01	macco01;davfe01
+ESP	r11.3	Active	CSCRE/Endevor	null	APC.CSCRE.PESP.*;APC.CSCRE.PCPE.*	"[{""PMFKEY"":""simdo01""},{""PMFKEY"":""macco01""},{""PMFKEY"":""davfe01""}]"	madmi06	simdo01	macco01;davfe01
 ESP Distributed Components	r5.5; r11.3	Active	CVS	null	APC.CSCRE.**;APC.CSCRE.PESP.*	"[{""PMFKEY"":""macco01""},{""PMFKEY"":""simdo01""},{""PMFKEY"":""davfe01""}]"	madmi06	simdo01	davfe01;macco01
 ESTG		Active	CSCRE/Endevor	ESTG		"[{""PMFKEY"":""damda01""}]"			damda01
 eTrust Policy Compliance		Active	CSCR/Harvest	null	CSCR403	"[{""PMFKEY"":""kumhe02""}]"			kumhe02
@@ -573,3 +573,5 @@ XPRINT (Express Print)	r3.3	Active	CMS	null	SFS;Directories:;EPRAPVTM	"[{""PMFKE
 XPS		Active	CSCRE/Endevor	XPS		"[{""PMFKEY"":""mayja07""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""carju01""}]"	hodda01	mayja07	casjo02
 Z2L		Active	CSCRE/Endevor	Z2L		"[{""PMFKEY"":""damda01""}]"			damda01
 zIIP Enablement BlackBox	v1.0	Internal	PDS	null	AUPK0.ZIIP.GL1502.*	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02
+	AIC-r3.6c; r3.6b; r3.6a; r3.6; r3.5; r3.4; r3.3; r3.2								
+	GRW-r4.7d; r4.7c; r4.7b; r4.7a; r4.7; r4.6; r4.5; r4.4								
