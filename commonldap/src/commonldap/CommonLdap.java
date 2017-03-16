@@ -320,7 +320,7 @@ public class CommonLdap {
 		} catch (FileNotFoundException e) {             
 			printErr(e.getStackTrace().toString());
 		} catch (IOException e) {             
-			e.printStackTrace();        
+			printErr(e.getStackTrace().toString());
 		} finally {             
 			try {                 
 				if (reader != null) 
