@@ -248,15 +248,15 @@ public class CommonLdap {
 			String line = "";
 			int uIndex = -1;
 			
-			if (!bFileAppend) {				
-				for (int i=0; i<keylist.length; i++) {
-					if (!line.isEmpty()) 
-						line += sep;				
-					line += keylist[i]; 
-					if (keylist[i].equalsIgnoreCase("user id")) {
-						uIndex = i;
-					}
+			for (int i=0; i<keylist.length; i++) {
+				if (!line.isEmpty()) 
+					line += sep;				
+				line += keylist[i]; 
+				if (keylist[i].equalsIgnoreCase("user id")) {
+					uIndex = i;
 				}
+			}
+			if (!bFileAppend) {				
 				if (cLDAP!=null && uIndex>=0) {
 					line += sep + "Manager ID";
 				}
