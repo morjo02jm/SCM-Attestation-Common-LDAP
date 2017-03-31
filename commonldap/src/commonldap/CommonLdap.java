@@ -42,6 +42,7 @@ public class CommonLdap {
 	private static String tagDisplayName    = "displayName";
 	private static String tagEmployeeType   = "employeeType";
 	private static String tagDN             = "distinguishedName";
+	private static String tagManager        = "manager";
 	
 	private static String sAdminPassword = "";
 	
@@ -237,21 +238,27 @@ public class CommonLdap {
 		bFileAppend = bAppend;
 	}
 	
-	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep)
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP)
 	{
 		File fout = new File(sOutputFileName);
 		
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(sOutputFileName, bFileAppend));
 			String[] keylist = cList.getKeyList();
-			// was int[] ord = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
 			String line = "";
+			int uIndex = -1;
 			
 			if (!bFileAppend) {				
 				for (int i=0; i<keylist.length; i++) {
 					if (!line.isEmpty()) 
 						line += sep;				
-					line += keylist[i]; // was line += keylist[ord[i]];
+					line += keylist[i]; 
+					if (keylist[i].equalsIgnoreCase("user id")) {
+						uIndex = i;
+					}
+				}
+				if (cLDAP!=null && uIndex>=0) {
+					line += sep + "Manager ID";
 				}
 				bw.write(line);
 				bw.newLine();
@@ -264,7 +271,17 @@ public class CommonLdap {
 					for (int j=0; j<keylist.length; j++) {
 						if (!line.isEmpty())
 							line += sep;					
-						line += cList.getString(keylist[j], i);  //was line += cList.getString(keylist[ord[j]], i);
+						line += cList.getString(keylist[j], i);  
+					}
+					if (cLDAP!=null && uIndex>=0) {
+						String sManagerID = "";
+						String sID = cList.getString(keylist[uIndex], i);
+						
+						int[] lUser=cLDAP.find(tagSAMAccountName, sID);
+						if (lUser.length > 0) {
+							sManagerID = cLDAP.getString(tagManager, lUser[0]);
+						}
+						line += sep + sManagerID;
 					}
 					bw.write(line);
 					bw.newLine();
@@ -283,7 +300,11 @@ public class CommonLdap {
 		}
 	}	
 
-
+	public void writeCSVFileFromListGeneric(JCaContainer cList, String sOutputFileName, char sep)
+	{
+		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, null);
+	}
+	
 	public void readInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
 	{
 		File file = new File(sInputFileName);         
@@ -464,6 +485,7 @@ public class CommonLdap {
 		    boolean bMail    = false;
 		    boolean bPhone   = false;
 		    boolean bGeneric = true;
+		    boolean bManager = false;
 		    try {
 				for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
 				    Attribute attr = (Attribute)ae.next();
@@ -476,6 +498,10 @@ public class CommonLdap {
 				    		bMail = true;
 				    	else if (sAttr.equalsIgnoreCase(tagPhone)) 
 				    		bPhone = true;
+				    	else if (sAttr.equalsIgnoreCase(tagManager)) {
+				    		int nIndex = sValue.indexOf(",");
+				    		sValue=sValue.substring(3, nIndex);
+				    	}
 				    	
 				    	if (sAttr.equalsIgnoreCase(tagEmployeeType)) 
 				    		bGeneric=false;
@@ -499,6 +525,8 @@ public class CommonLdap {
 					cLDAP.setString(tagMail, "unknown", cIndex);
 				if (!bPhone) 
 					cLDAP.setString(tagPhone, "", cIndex);
+				if (!bManager)
+					cLDAP.setString(tagManager, "", cIndex);
 									
 				if (!bGeneric) 
 					nEmployees++;
@@ -530,7 +558,7 @@ public class CommonLdap {
 			String filter = "(&(!(objectclass=computer))(&(objectclass=person)(sAMAccountName=*)))";
 			
 			// Specify the ids of the attributes to return
-			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType};
+			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType, tagManager};
 			ctls.setReturningAttributes(attrIDs);
 	
 			// Search for objects that have those matching attributes
