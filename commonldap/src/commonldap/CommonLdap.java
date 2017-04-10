@@ -501,6 +501,7 @@ public class CommonLdap {
 				    	else if (sAttr.equalsIgnoreCase(tagManager)) {
 				    		int nIndex = sValue.indexOf(",");
 				    		sValue=sValue.substring(3, nIndex);
+				    		bManager = true;
 				    	}
 				    	
 				    	if (sAttr.equalsIgnoreCase(tagEmployeeType)) 
