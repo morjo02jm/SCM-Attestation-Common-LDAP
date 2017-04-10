@@ -44,6 +44,9 @@ public class CommonLdap {
 	private static String tagDN             = "distinguishedName";
 	private static String tagManager        = "manager";
 	
+	private static String tagUserID         = "USERID";
+	private static String tagManagerID      = "MANAGERID";
+	
 	private static String sAdminPassword = "";
 	
     private static Key aesKey = new SecretKeySpec("Bar12345Bar12345".getBytes(), "AES");
@@ -252,13 +255,13 @@ public class CommonLdap {
 				if (!line.isEmpty()) 
 					line += sep;				
 				line += keylist[i]; 
-				if (keylist[i].equalsIgnoreCase("user id")) {
+				if (keylist[i].equalsIgnoreCase("tagUserID")) {
 					uIndex = i;
 				}
 			}
 			if (!bFileAppend) {				
 				if (cLDAP!=null && uIndex>=0) {
-					line += sep + "Manager ID";
+					line += sep + "tagManagerID";
 				}
 				bw.write(line);
 				bw.newLine();
@@ -281,7 +284,7 @@ public class CommonLdap {
 						if (lUser.length > 0) {
 							sManagerID = cLDAP.getString(tagManager, lUser[0]);
 						}
-						line += sep + sManagerID;
+						line += sep + tagManagerID;
 					}
 					bw.write(line);
 					bw.newLine();
