@@ -255,13 +255,13 @@ public class CommonLdap {
 				if (!line.isEmpty()) 
 					line += sep;				
 				line += keylist[i]; 
-				if (keylist[i].equalsIgnoreCase("tagUserID")) {
+				if (keylist[i].equalsIgnoreCase(tagUserID)) {
 					uIndex = i;
 				}
 			}
 			if (!bFileAppend) {				
 				if (cLDAP!=null && uIndex>=0) {
-					line += sep + "tagManagerID";
+					line += sep + tagManagerID;
 				}
 				bw.write(line);
 				bw.newLine();
@@ -284,7 +284,7 @@ public class CommonLdap {
 						if (lUser.length > 0) {
 							sManagerID = cLDAP.getString(tagManager, lUser[0]);
 						}
-						line += sep + tagManagerID;
+						line += sep + sManagerID;
 					}
 					bw.write(line);
 					bw.newLine();
