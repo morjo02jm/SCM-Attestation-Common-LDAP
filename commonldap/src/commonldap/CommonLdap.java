@@ -514,17 +514,7 @@ public class CommonLdap {
 				    	
 				    }
 				}
-
-				/*
-				String sID = cLDAP.getString(tagSAMAccountName, cIndex);
-				bGeneric = !(isNormalUser &&
-				             sID.length() == 7 &&
-					         !sID.equalsIgnoreCase("clate98") &&
-					         !sID.equalsIgnoreCase("clate99") &&
-					         !sID.equalsIgnoreCase("urctest") &&
-					         !sID.equalsIgnoreCase("BEStest"));
-			    */
-				
+		
 				if (!bMail) 
 					cLDAP.setString(tagMail, "unknown", cIndex);
 				if (!bPhone) 
