@@ -182,7 +182,7 @@ public class CommonLdap {
 	     // Recipient's email ID needs to be mentioned.
 	      String to = email;
 	      // Sender's email ID needs to be mentioned
-	      String from = "Toolsadmin@ca.com";
+	      String from = "ToolsSolutionsCommunications@ca.com";
 	      String include = sBCC ;
 	      // Assuming you are sending email from localhost
 	      String host = "mail.ca.com";
