@@ -237,15 +237,17 @@ GIS		Active	CSCR/Harvest	null	CSCR1101/Business Analytics	"[{""PMFKEY"":""nimsn0
 GIS		Active	CSCR/Harvest	null	CSCR1101/CASSL	"[{""PMFKEY"":""darsw01""}]"			darsw01
 GIS		Active	CSCR/Harvest	null	CSCR1101/ContractLifecycleManagement	"[{""PMFKEY"":""govva01""}]"			govva01
 GIS		Active	CSCR/Harvest	null	CSCR1101/Architecture	"[{""PMFKEY"":""kotve04""}]"			kotve04
-GIS		Active	CSCR/Harvest	null	CSCR1101/Core_Cope	"[{""PMFKEY"":""krivi03""}]"			krivi03
+GIS		End of Life	CSCR/Harvest	null	CSCR1101/Core_Cope	"[{""PMFKEY"":""ramna08""}]"			ramna08
 GIS		Active	CSCR/Harvest	null	CSCR1101/CorporateReporting	"[{""PMFKEY"":""batra01""}]"			batra01
 GIS		Active	CSCR/Harvest	null	CSCR1101/FinanceAdmin	"[{""PMFKEY"":""kotve04""}]"			kotve04
 GIS		Active	CSCR/Harvest	null	CSCR1101/GIS - Cloud Migration	"[{""PMFKEY"":""krivi03""}]"			krivi03
 GIS		Active	CSCR/Harvest	null	CSCR1101/GIS_CKM	"[{""PMFKEY"":""madpu02""}]"			madpu02
-GIS		Active	CSCR/Harvest	null	CSCR1101/OLP	"[{""PMFKEY"":""krivi03""}]"			krivi03
+GIS		Active	CSCR/Harvest	null	"CSCR1101/OLP,Core_Olp_"	"[{""PMFKEY"":""krivi03""}]"			krivi03
+GIS		End of Life	CSCR/Harvest	null	CSCR1101/Core_OlpAdmin	"[{""PMFKEY"":""ramna08""}]"			ramna08
 GIS		Active	CSCR/Harvest	null	CSCR1101/Sales	"[{""PMFKEY"":""pench08""}]"			pench08
 GIS		Active	CSCR/Harvest	null	CSCR1101/Services	"[{""PMFKEY"":""dwipr01""}]"			dwipr01
-GIS		Active	CSCR/Harvest	null	CSCR1101/Services_Clarity	"[{""PMFKEY"":""vijla01""}]"			vijla01
+GIS		Active	CSCR/Harvest	null	CSCR1101/Services_Clarity	"[{""PMFKEY"":""ramna08""},{""PMFKEY"":""vijla01""}]"			ramna08;vijla01
+GIS		Active	CSCR/Harvest	null	CSCR1101/CompPlanning	"[{""PMFKEY"":""ramna08""}]"			ramna08
 GIS		Active	CSCR/Harvest	null	CSCR1101/Support	"[{""PMFKEY"":""vursh01""}]"			vursh01
 GIS		Active	CSCR/Harvest	null	CSCR1101	"[{""PMFKEY"":""ambri01""}]"			ambri01
 GIS DBA		Active	CSCR/Harvest	null	CSCR1103	"[{""PMFKEY"":""kotra06""}]"			kotra06
