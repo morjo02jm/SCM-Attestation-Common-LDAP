@@ -426,7 +426,7 @@ Secondary Index	r14;r15;r16;r18;19.0	Active	SCLM;Endevor	IMS	Source resides on D
 Secondary Index Builder for IMS	r14;r15;r16;r18;19.0	Active	SCLM;Endevor	IMS	Source resides on DEV DASD packs.    	"[{""PMFKEY"":""strji02""}]"		eduja01	strji02
 Service Catalog		Active	CSCR/Harvest	null	CSCR621	"[{""PMFKEY"":""vakmo01""}]"			vakmo01
 Service Desk Manager		Active	CSCR/Harvest	null	CSCR616/SDMAF;CSCR927/SDM	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01
-Service Desk Manager	R12;12.1;12.5;12.6;12.7;12.9;14.1;14.1.01;14.1.02;14.1.03	Active	CSCR/Harvest	null	CSCR927/SDr	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01
+Service Desk Manager	R12;12.1;12.5;12.6;12.7;12.9;14.1;14.1.01;14.1.02;14.1.03;17	Active	CSCR/Harvest	null	CSCR927/SDr	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01
 Service Desk Manager - Catalyst Connector		Active	CSCR/Harvest	null	CSCR709/cmdb	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01
 Smartphone Challenge		Active	CSCR/Harvest	null	CSCR1400	"[{""PMFKEY"":""kabni01""}]"			kabni01
 SMF Director	12.0;12.6;12.7	Active	CSCRE	null	PMAREST.MOTM.SMFD120.*	"[{""PMFKEY"":""jambr01""},{""PMFKEY"":""esqfr01""}]"		jambr01	esqfr01
@@ -516,8 +516,8 @@ Utilities Online	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Active	SCLM;Endevor	D
 Utility General Recovery	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	SCLM;Endevor	DBT	Source resides on DEV DASD packs.;The GA releases of the datasets are stored on DEVR volumes which are tier-1 backed up DASD volumes.   For the pre-beta and BETA releases;the datasets are allocated on DEV volumes which are not part of DR.    When the products are moved into GA;the datasets are moved to the DEVR volumes.	"[{""PMFKEY"":""tucjo02""}]"		eduja01	tucjo02
 V/SEG	r1.5a;1.6;1.7	Active	CPM	null	Type:;SFS	"[{""PMFKEY"":""jambr01""},{""PMFKEY"":""esqfr01""}]"		jambr01	esqfr01
 Vantage SRM	12;12.5;12.6;14.0	Active	CSCRE/Endevor;Harvest	VANT	Islandia	"[{""PMFKEY"":""kucka01""}]"			kucka01
-Vantage SRM/CA GMI Windows Client UI		Active	CSCR/Harvest	null	CSCR504/CA Vantage SRM Windows Client	"[{""PMFKEY"":""seqiv01""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""falmi03""},{""PMFKEY"":""lorva01""}]"			seqiv01;casjo02
-Vantage SRM/CA GMI Web User Interface	12;12.5;14.0	Active	Harvest	null	"CSCR504/Vantage,CA Vantage,CA-Vantage"	"[{""PMFKEY"":""casjo02""},{""PMFKEY"":""seqiv01""},{""PMFKEY"":""falmi03""},{""PMFKEY"":""kovjo04""}]"			casjo02;seqiv01
+Vantage SRM/CA GMI Windows Client UI	12;Development	Active	CSCR/Harvest	null	CSCR504/CA Vantage SRM Windows Client	"[{""PMFKEY"":""seqiv01""},{""PMFKEY"":""casjo02""},{""PMFKEY"":""falmi03""},{""PMFKEY"":""lorva01""}]"			seqiv01;casjo02
+Vantage SRM/CA GMI Web User Interface	12;12.5;14.0;Development	Active	CSCR/Harvest	null	"CSCR504/Vantage,CA Vantage,CA-Vantage"	"[{""PMFKEY"":""casjo02""},{""PMFKEY"":""seqiv01""},{""PMFKEY"":""falmi03""},{""PMFKEY"":""kovjo04""}]"			casjo02;seqiv01
 Verify for CICS	8.5;9.0;Base	Active	CSCRE/Endevor	VERFY	Mainframe	"[{""PMFKEY"":""dubmi01""},{""PMFKEY"":""davsc01""}]"		dubmi01	davsc01;dubmi01
 Verify for VTAM	8.5;9.0;Base	Active	CSCRE/Endevor	VERFY	Mainframe	"[{""PMFKEY"":""dubmi01""},{""PMFKEY"":""davsc01""}]"		dubmi01	davsc01;dubmi01
 VIEW	r11.5;12.0;12.1;12.2;11.6;11.7	Active	CSCRE/Endevor	VIEW	N/A	"[{""PMFKEY"":""niead01""},{""PMFKEY"":""obega01""},{""PMFKEY"":""strmi03""}]"		kokja01	niead01;obega01;strmi03
