@@ -963,6 +963,83 @@ public class CommonLdap {
 			}
 		}
 	}
+	
+	
+	public String expandDistributionListforEmail(String sDLLDAPUserGroup, JCaContainer cLDAP) {
+		String sResult = "";
+		try {
+			boolean endString = true;
+			int loopValue = 0;
+			while (endString) {
+			    int startValue = loopValue * 1000;
+			    int endvalue = (loopValue + 1) * 1000;
+			    SearchControls searchCtls = new SearchControls();
+			    String[] returnedAttrs = new String[1];
+			    String range = startValue + "-" + endvalue;
+			    returnedAttrs[0] = "member;range=" + range;
+			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+			    searchCtls.setReturningAttributes(returnedAttrs);
+			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int jIndex = sDLLDAPUserGroup.indexOf(',');
+			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
+			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
+			    String sFilter = "(&(objectClass=group)(sAMAccountName="+sName+"))";
+			    
+			    NamingEnumeration answer = ctx.search(sRegion, sFilter, searchCtls);
+			    while (answer.hasMore()) {
+			        SearchResult entry = (SearchResult) answer.next();
+			        
+			        Attributes attributes = entry.getAttributes();
+			        for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+					    Attribute attr = (Attribute)ae.next();
+					    
+					    if (attr.getID().indexOf("member")==0)
+					    {
+						    // Process each member attribute 
+						    for (NamingEnumeration e = attr.getAll(); 
+						         e.hasMore();
+						         )
+						    {
+						    	String dn = (String)e.next();
+						    	//printLog("DN:" + dn);
+						    	int iStart = dn.indexOf("CN=");
+						    	int iEnd   = dn.indexOf(',', iStart);
+						    	String pmfkey = dn.substring(iStart+3, iEnd);
+						    	
+						    	int[] iLDAP = cLDAP.find("pmfkey", pmfkey);
+						    	if (iLDAP.length > 0) {
+						    		String eMail = cLDAP.getString(tagMail, iLDAP[0]);
+						    		if (!eMail.equalsIgnoreCase("unknown")) {
+						    			sResult += ";" + eMail;
+						    		}
+						    	}
+						    }
+						}
+			        	
+			        }
+			        
+			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
+			            endString = false;
+			        }
+			    }
+			    loopValue++;
+			}
+			
+			//printLog("Number of Entries: "+cIndex);
+			
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1006;
+		    printErr(e.getLocalizedMessage());
+		    System.exit(iReturnCode);		    
+	    // attempt to reacquire the authentication information
+		} catch (NamingException e)
+		{
+			//printErr(e.getLocalizedMessage());
+		}	
+		
+		return sResult;
+	}
+	
 		
 	public void readSourceMinderContacts(JCaContainer cApplicationContacts, String sApplication) {
 		int nIndex = 0;
