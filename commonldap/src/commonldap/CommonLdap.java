@@ -1006,7 +1006,7 @@ public class CommonLdap {
 						    	int iEnd   = dn.indexOf(',', iStart);
 						    	String pmfkey = dn.substring(iStart+3, iEnd);
 						    	
-						    	int[] iLDAP = cLDAP.find("pmfkey", pmfkey);
+						    	int[] iLDAP = cLDAP.find(tagSAMAccountName, pmfkey);
 						    	if (iLDAP.length > 0) {
 						    		String eMail = cLDAP.getString(tagMail, iLDAP[0]);
 						    		if (!eMail.equalsIgnoreCase("unknown")) {
