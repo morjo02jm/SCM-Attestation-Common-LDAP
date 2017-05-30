@@ -43,6 +43,7 @@ public class CommonLdap {
 	private static String tagEmployeeType   = "employeeType";
 	private static String tagDN             = "distinguishedName";
 	private static String tagManager        = "manager";
+	private static String tagDirectReports  = "directReports";
 	
 	private static String tagUserID         = "USERID";
 	private static String tagManagerID      = "MANAGERID";
@@ -485,10 +486,13 @@ public class CommonLdap {
 
 		if (attributes.size() >= 3)
 		{
-		    boolean bMail    = false;
-		    boolean bPhone   = false;
-		    boolean bGeneric = true;
-		    boolean bManager = false;
+		    boolean bMail          = false;
+		    boolean bPhone         = false;
+		    boolean bGeneric       = true;
+		    boolean bManager       = false;
+		    boolean bDirectReports = false;
+		    
+		    String sDirectReports = "";
 		    try {
 				for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
 				    Attribute attr = (Attribute)ae.next();
@@ -506,6 +510,14 @@ public class CommonLdap {
 				    		sValue=sValue.substring(3, nIndex);
 				    		bManager = true;
 				    	}
+				    	else if (sAttr.equalsIgnoreCase(tagDirectReports)) {
+				    		bDirectReports = true;
+				    		int nIndex = sValue.indexOf(",");
+				    		sValue=sValue.substring(3, nIndex);
+				    		if (!sDirectReports.isEmpty())
+				    			sValue = sDirectReports + ";" + sValue;
+				    		sDirectReports = sValue;
+				    	}
 				    	
 				    	if (sAttr.equalsIgnoreCase(tagEmployeeType)) 
 				    		bGeneric=false;
@@ -521,6 +533,8 @@ public class CommonLdap {
 					cLDAP.setString(tagPhone, "", cIndex);
 				if (!bManager)
 					cLDAP.setString(tagManager, "", cIndex);
+				if (!bDirectReports)
+					cLDAP.setString(tagDirectReports, "", cIndex);
 									
 				if (!bGeneric) 
 					nEmployees++;
@@ -552,7 +566,7 @@ public class CommonLdap {
 			String filter = "(&(!(objectclass=computer))(&(objectclass=person)(sAMAccountName=*)))";
 			
 			// Specify the ids of the attributes to return
-			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType, tagManager};
+			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType, tagManager, tagDirectReports};
 			ctls.setReturningAttributes(attrIDs);
 	
 			// Search for objects that have those matching attributes
@@ -812,6 +826,8 @@ public class CommonLdap {
 			        }
 			    }
 			    loopValue++;
+			    if (cIndex == 0) // nothing in this DL
+			    	endString = false;
 			}
 			
 			//printLog("Number of Entries: "+cIndex);
@@ -827,7 +843,7 @@ public class CommonLdap {
 		}	
 	}
 	
-	private void processLDAPGroupUsers(JCaContainer cLDAP,
+	public void processLDAPGroupUsers(JCaContainer cLDAP,
 								       JCaContainer cDLUsers,
 						               JCaContainer cAddUsers, 
 						               JCaContainer cDelUsers,
@@ -963,7 +979,79 @@ public class CommonLdap {
 			}
 		}
 	}
-	
+
+	public String expandDistributionListforId(String sDLLDAPUserGroup, JCaContainer cLDAP) {
+		String sResult = "";
+		try {
+			boolean endString = true;
+			int loopValue = 0;
+			while (endString) {
+			    int startValue = loopValue * 1000;
+			    int endvalue = (loopValue + 1) * 1000;
+			    SearchControls searchCtls = new SearchControls();
+			    String[] returnedAttrs = new String[1];
+			    String range = startValue + "-" + endvalue;
+			    returnedAttrs[0] = "member;range=" + range;
+			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+			    searchCtls.setReturningAttributes(returnedAttrs);
+			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int jIndex = sDLLDAPUserGroup.indexOf(',');
+			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
+			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
+			    String sFilter = "(&(objectClass=group)(sAMAccountName="+sName+"))";
+			    
+			    NamingEnumeration answer = ctx.search(sRegion, sFilter, searchCtls);
+			    while (answer.hasMore()) {
+			        SearchResult entry = (SearchResult) answer.next();
+			        
+			        Attributes attributes = entry.getAttributes();
+			        for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+					    Attribute attr = (Attribute)ae.next();
+					    
+					    if (attr.getID().indexOf("member")==0)
+					    {
+						    // Process each member attribute 
+						    for (NamingEnumeration e = attr.getAll(); 
+						         e.hasMore();
+						         )
+						    {
+						    	String dn = (String)e.next();
+						    	//printLog("DN:" + dn);
+						    	int iStart = dn.indexOf("CN=");
+						    	int iEnd   = dn.indexOf(',', iStart);
+						    	String pmfkey = dn.substring(iStart+3, iEnd);
+						    	
+						    	int[] iLDAP = cLDAP.find(tagSAMAccountName, pmfkey);
+						    	if (iLDAP.length > 0) {
+						    		String sID = cLDAP.getString(tagMail, iLDAP[0]);
+						    	    sResult += sResult.isEmpty()?"":";" + sID;
+						    	}
+						    }
+						}
+			        	
+			        }
+			        
+			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
+			            endString = false;
+			        }
+			    }
+			    loopValue++;
+			}
+			
+			//printLog("Number of Entries: "+cIndex);
+			
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1006;
+		    printErr(e.getLocalizedMessage());
+		    System.exit(iReturnCode);		    
+	    // attempt to reacquire the authentication information
+		} catch (NamingException e)
+		{
+			//printErr(e.getLocalizedMessage());
+		}	
+		
+		return sResult;
+	}
 	
 	public String expandDistributionListforEmail(String sDLLDAPUserGroup, JCaContainer cLDAP) {
 		String sResult = "";
