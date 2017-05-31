@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
-	private static String sBCC= "Team-GIS-ToolsSolutions-Global@ca.com";
+	private static String sBCC= "Team-GIS-ToolsSolutions-ITC@ca.com;morjo02@ca.com";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
 	private static String sDumpFile = "";
@@ -128,7 +128,7 @@ public class CommonLdap {
 				" (Employees:"+nEmployees+")");
 		
 	}
-
+	
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -175,6 +175,24 @@ public class CommonLdap {
 	public void handleMessage(String sMessage)
 	{
 		printLog(sMessage);
+	}
+
+	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sCommand = "curl -X \"DELETE\" -H \"Authorization: token "+sAccessToken+
+				          "\"  https://"+sAPI+"/orgs/"+sOrg+"/memberships/"+sID;
+		try {
+			Process p = Runtime.getRuntime().exec(sCommand);
+	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));	
+	        //BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        
+	        // read the output from the command
+	        printLog(">>>Removing user: "+ sID +" from organization: "+sOrg);
+	        String s;
+	        while ((s = stdInput.readLine()) != null) {
+	        }	
+		} catch (IOException e) {             
+		}
 	}
 	
 	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
