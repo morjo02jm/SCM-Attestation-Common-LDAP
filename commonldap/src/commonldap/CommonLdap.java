@@ -875,9 +875,9 @@ public class CommonLdap {
 		boolean found=false;
 		
 		// 1. Active user accounts in CA.COM but with no DLUser privilege
-		printLog("1. Remove "+sAppName+" Users ");
 		if (!cDelUsers.isEmpty())
 		{
+			printLog("Remove "+sAppName+" Users ");
 			for (int i=0; i<cDelUsers.getKeyElementCount("pmfkey"); i++ )
 			{
 				String sID = cDelUsers.getString("pmfkey", i);
@@ -899,9 +899,9 @@ public class CommonLdap {
 		}	/* Delete List is not empty */
 		
 		// 2. LDAP users with no RTC user account
-		printLog("2. Add "+sAppName+" Users");
 		if (!cAddUsers.isEmpty())
 		{
+			printLog("Add "+sAppName+" Users");
 			for (int i=0; i<cAddUsers.getKeyElementCount("pmfkey"); i++ )
 			{					
 				String sID = cAddUsers.getString("pmfkey", i);
@@ -926,9 +926,9 @@ public class CommonLdap {
 		} /* Add list is not empty */	
 		
 		// 3. Dump Request
-		printLog("3. Dump "+sAppName+" User DL");
 		if (!sDumpFile.isEmpty())
 		{		
+			printLog("Dump "+sAppName+" User DL");
 			File file = new File(sDumpFile);
 			
 			// if file doesnt exists, then create it
