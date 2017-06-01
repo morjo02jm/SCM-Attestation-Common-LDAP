@@ -239,8 +239,17 @@ public class CommonLdap {
 	          message.setRecipients(Message.RecipientType.TO, recipientAddress);
 
 	          // Set To: header field of the header.
-	          if (!include.isEmpty())
-	        	  message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
+	          if (!include.isEmpty()) {
+	        	  //message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
+		          String[] includeList = include.split(";");
+		          InternetAddress[] includeAddress = new InternetAddress[includeList.length];
+		          counter = 0;
+		          for (String recip2 : includeList) {
+		              includeAddress[counter] = new InternetAddress(recip2.trim());
+		              counter++;
+		          }
+		          message.setRecipients(Message.RecipientType.BCC, includeAddress);
+	          }
 	          
 	          // Set Subject: header field
 	          message.setSubject(subjectText);
