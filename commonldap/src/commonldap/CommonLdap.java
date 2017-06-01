@@ -779,10 +779,14 @@ public class CommonLdap {
 		return true;
 	}
 	
-	
+	public void readLDAPUserGroupToContainer(String sDLLDAPUserGroup, 
+                                             JCaContainer cDLUsers) {
+		readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers, null);
+	}	
 	
 	public void readLDAPUserGroupToContainer(String sDLLDAPUserGroup, 
-			                                 JCaContainer cDLUsers)
+			                                 JCaContainer cDLUsers,
+			                                 JCaContainer cLDAP)
 	{
 		try {
 			// Retrieve attributes for a specific container
@@ -825,11 +829,20 @@ public class CommonLdap {
 						         )
 						    {
 						    	String dn = (String)e.next();
-						    	//printLog("DN:" + dn);
-						    	int iStart = dn.indexOf("CN=");
-						    	int iEnd   = dn.indexOf(',', iStart);
-						    	String pmfkey = dn.substring(iStart+3, iEnd);
-						    	int iDL[] = cDLUsers.find("member", pmfkey);
+						    	int iDL[];
+						    	String pmfkey = "";
+						    	if (cLDAP == null) {
+							    	int iStart = dn.indexOf("CN=");
+							    	int iEnd   = dn.indexOf(',', iStart);
+							    	pmfkey = dn.substring(iStart+3, iEnd);
+						    	}
+						    	else {
+						    		iDL = cLDAP.find(tagDN, dn);
+						    		if (iDL.length > 0) 
+						    			pmfkey = cLDAP.getString(tagSAMAccountName, iDL[0]);
+						    	}
+					    		iDL = cDLUsers.find("member", pmfkey);
+						    	
 						    	if (iDL.length == 0) {
 						    		cDLUsers.setString("dn",     dn,     cIndex);
 						    		cDLUsers.setString("member", pmfkey, cIndex++);
@@ -987,7 +1000,7 @@ public class CommonLdap {
 				String sDLLDAPUserGroup = aDLLDAPGroupFormat[iUserType][j].replaceAll("%s", aAuthSchemas[iUserType][j]);
 				//String sDLLDAPUserGroup = aDLLDAPGroup[j].format(aDLLDAPGroupFormat[iUserType][j],aAuthSchemas[iUserType][j]);
 				
-				readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers[i]);
+				readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers[i], cLDAP);
 				processLDAPGroupUsers(cLDAP,
 					                  cDLUsers[i],
                                       cAddUsers, 
