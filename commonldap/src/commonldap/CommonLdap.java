@@ -29,7 +29,7 @@ import java.lang.*;
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
-	private static String sBCC= "Team-GIS-ToolsSolutions-ITC@ca.com;morjo02@ca.com";
+	private static String sBCC= "";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
 	private static String sDumpFile = "";
@@ -124,6 +124,11 @@ public class CommonLdap {
 			iReturnCode = 1002;
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);			    
+		}
+		
+		if (sBCC.isEmpty()) {
+			sBCC = "faudo01@ca.com;morjo02@ca.com";
+			sBCC += expandDistributionListforEmail("CN=Team - GIS - Tools Solutions - ITC,OU=Groups,OU=North America", cLDAP);
 		}
 
 		// Show cLDAP statistics
