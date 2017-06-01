@@ -24,6 +24,9 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+
+import java.lang.*;
+
 public class CommonLdap {
 	private static String sAppName = "commonldap";
 	private static String sBCC= "Team-GIS-ToolsSolutions-ITC@ca.com;morjo02@ca.com";
@@ -830,9 +833,9 @@ public class CommonLdap {
 						    {
 						    	String dn = (String)e.next();
 						    	int iDL[];
-						    	String pmfkey = "";
+						    	String pmfkey = "<<<>>>";
 						    	if (cLDAP == null) {
-							    	int iStart = dn.indexOf("CN=");
+							    	int iStart = Math.max(dn.indexOf("CN="),dn.indexOf("cn="));
 							    	int iEnd   = dn.indexOf(',', iStart);
 							    	pmfkey = dn.substring(iStart+3, iEnd);
 						    	}
@@ -1025,7 +1028,7 @@ public class CommonLdap {
 			    returnedAttrs[0] = "member;range=" + range;
 			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 			    searchCtls.setReturningAttributes(returnedAttrs);
-			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int iIndex = Math.max(sDLLDAPUserGroup.indexOf("cn="),sDLLDAPUserGroup.indexOf("CN="));
 			    int jIndex = sDLLDAPUserGroup.indexOf(',');
 			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
 			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
@@ -1047,19 +1050,14 @@ public class CommonLdap {
 						         )
 						    {
 						    	String dn = (String)e.next();
-						    	//printLog("DN:" + dn);
-						    	int iStart = dn.indexOf("CN=");
-						    	int iEnd   = dn.indexOf(',', iStart);
-						    	String pmfkey = dn.substring(iStart+3, iEnd);
-						    	
-						    	int[] iLDAP = cLDAP.find(tagSAMAccountName, pmfkey);
+						    	int[] iLDAP = cLDAP.find(tagDN, dn);
 						    	if (iLDAP.length > 0) {
+						    		String pmfkey=cLDAP.getString(tagSAMAccountName, iLDAP[0]);
 						    		String sID = cLDAP.getString(tagMail, iLDAP[0]);
 						    	    sResult += sResult.isEmpty()?"":";" + sID;
-						    	}
-						    }
-						}
-			        	
+						    	} // DN found in directory users
+						    } // loop over member attributes
+						} // attr contains "member"		        	
 			        }
 			        
 			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
@@ -1098,7 +1096,7 @@ public class CommonLdap {
 			    returnedAttrs[0] = "member;range=" + range;
 			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 			    searchCtls.setReturningAttributes(returnedAttrs);
-			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int iIndex = Math.max(sDLLDAPUserGroup.indexOf("cn="),sDLLDAPUserGroup.indexOf("CN="));
 			    int jIndex = sDLLDAPUserGroup.indexOf(',');
 			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
 			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
@@ -1120,21 +1118,15 @@ public class CommonLdap {
 						         )
 						    {
 						    	String dn = (String)e.next();
-						    	//printLog("DN:" + dn);
-						    	int iStart = dn.indexOf("CN=");
-						    	int iEnd   = dn.indexOf(',', iStart);
-						    	String pmfkey = dn.substring(iStart+3, iEnd);
-						    	
-						    	int[] iLDAP = cLDAP.find(tagSAMAccountName, pmfkey);
+						    	int[] iLDAP = cLDAP.find(tagDN, dn);
 						    	if (iLDAP.length > 0) {
 						    		String eMail = cLDAP.getString(tagMail, iLDAP[0]);
 						    		if (!eMail.equalsIgnoreCase("unknown")) {
 						    			sResult += ";" + eMail;
 						    		}
-						    	}
-						    }
-						}
-			        	
+						    	} // DN found in LDAP users
+						    } // loop over member attributes
+						} // attribute contains "member"		        	
 			        }
 			        
 			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
