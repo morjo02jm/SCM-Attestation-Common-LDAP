@@ -184,6 +184,71 @@ public class CommonLdap {
 	{
 		printLog(sMessage);
 	}
+	
+	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/teams?access_token="+sAccessToken+"&&per_page=1000";
+		
+		int iIndex = 0;
+		
+		try {		
+			JSONArray ja = readJsonArrayFromUrl(sURL);
+			for (int j=0; j<ja.length(); j++) {
+				String sNameJSON = ja.getJSONObject(j).getString("name");
+				String sIdJSON = ja.getJSONObject(j).getString("id");
+				
+				cTeam.setString("Organization", sOrg, iIndex);
+				cTeam.setString("Team", sNameJSON, iIndex);
+				cTeam.setString("Team ID", sIdJSON, iIndex++);							
+			}
+		}
+		catch (IOException e) {
+			iReturnCode = 2;
+		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+		    System.exit(iReturnCode);						
+		}
+		catch (JSONException e) {						
+			iReturnCode = 3;
+		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+		    System.exit(iReturnCode);						
+		}									
+	} //readGitHubOrganizationTeams
+	
+	public void readGitHubOrganizationRepositories(String sOrg, JCaContainer cRepo, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		
+		int nPage = 1;
+		int nRepos = 0;
+		int iIndex = 0;
+		
+		do {
+			nRepos = 0;
+			// Run the API to get the organizations repositories.
+			String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/repos?access_token="+sAccessToken+"&&page="+nPage+"&&per_page=100";
+			
+			try {		
+				JSONArray ja = readJsonArrayFromUrl(sURL);
+				for (int j=0; j<ja.length(); j++) {
+					String sNameJSON = ja.getJSONObject(j).getString("name");
+					
+					cRepo.setString("Organization", sOrg, iIndex);
+					cRepo.setString("Repository", sNameJSON, iIndex++);
+					nRepos++;
+				}
+			}
+			catch (IOException e) {
+				iReturnCode = 2;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}
+			catch (JSONException e) {						
+				iReturnCode = 3;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}	
+			nPage++;
+		} while (nRepos>=100);	
+	}
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
