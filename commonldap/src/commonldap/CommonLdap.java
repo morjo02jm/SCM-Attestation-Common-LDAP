@@ -342,7 +342,7 @@ public class CommonLdap {
 		bFileAppend = bAppend;
 	}
 	
-	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP)
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP, boolean bGovernance)
 	{
 		File fout = new File(sOutputFileName);
 		
@@ -369,7 +369,7 @@ public class CommonLdap {
 			}
 			
 			for (int i=0; i < cList.getKeyElementCount(keylist[0]); i++) {
-				if (!cList.getString("APP", i).isEmpty()) 
+				if (!bGovernance || !cList.getString("APP", i).isEmpty()) 
 				{
 					line = "";
 					for (int j=0; j<keylist.length; j++) {
@@ -406,7 +406,12 @@ public class CommonLdap {
 
 	public void writeCSVFileFromListGeneric(JCaContainer cList, String sOutputFileName, char sep)
 	{
-		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, null);
+		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, null, true);
+	}
+	
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP)
+	{
+		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, cLDAP, true);
 	}
 	
 	public void readInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
