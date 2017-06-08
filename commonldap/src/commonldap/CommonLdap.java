@@ -24,9 +24,12 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+
+import java.lang.*;
+
 public class CommonLdap {
 	private static String sAppName = "commonldap";
-	private static String sBCC= "Team-GIS-ToolsSolutions-Global@ca.com";
+	private static String sBCC= "";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
 	private static String sDumpFile = "";
@@ -43,6 +46,7 @@ public class CommonLdap {
 	private static String tagEmployeeType   = "employeeType";
 	private static String tagDN             = "distinguishedName";
 	private static String tagManager        = "manager";
+	private static String tagDirectReports  = "directReports";
 	
 	private static String tagUserID         = "USERID";
 	private static String tagManagerID      = "MANAGERID";
@@ -121,13 +125,18 @@ public class CommonLdap {
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);			    
 		}
+		
+		if (sBCC.isEmpty()) {
+			sBCC = "faudo01@ca.com;morjo02@ca.com";
+			sBCC += expandDistributionListforEmail("CN=Team - GIS - Tools Solutions - ITC,OU=Groups,OU=North America", cLDAP);
+		}
 
 		// Show cLDAP statistics
 		printLog("Number of CA.COM user containers read: " + cLDAP.getKeyElementCount(tagMail)+
 				" (Employees:"+nEmployees+")");
 		
 	}
-
+	
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -176,6 +185,89 @@ public class CommonLdap {
 		printLog(sMessage);
 	}
 	
+	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/teams?access_token="+sAccessToken+"&&per_page=1000";
+		
+		int iIndex = 0;
+		
+		try {		
+			JSONArray ja = readJsonArrayFromUrl(sURL);
+			for (int j=0; j<ja.length(); j++) {
+				String sNameJSON = ja.getJSONObject(j).getString("name");
+				String sIdJSON = ja.getJSONObject(j).getString("id");
+				
+				cTeam.setString("Organization", sOrg, iIndex);
+				cTeam.setString("Team", sNameJSON, iIndex);
+				cTeam.setString("Team ID", sIdJSON, iIndex++);							
+			}
+		}
+		catch (IOException e) {
+			iReturnCode = 2;
+		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+		    System.exit(iReturnCode);						
+		}
+		catch (JSONException e) {						
+			iReturnCode = 3;
+		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+		    System.exit(iReturnCode);						
+		}									
+	} //readGitHubOrganizationTeams
+	
+	public void readGitHubOrganizationRepositories(String sOrg, JCaContainer cRepo, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		
+		int nPage = 1;
+		int nRepos = 0;
+		int iIndex = 0;
+		
+		do {
+			nRepos = 0;
+			// Run the API to get the organizations repositories.
+			String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/repos?access_token="+sAccessToken+"&&page="+nPage+"&&per_page=100";
+			
+			try {		
+				JSONArray ja = readJsonArrayFromUrl(sURL);
+				for (int j=0; j<ja.length(); j++) {
+					String sNameJSON = ja.getJSONObject(j).getString("name");
+					
+					cRepo.setString("Organization", sOrg, iIndex);
+					cRepo.setString("Repository", sNameJSON, iIndex++);
+					nRepos++;
+				}
+			}
+			catch (IOException e) {
+				iReturnCode = 2;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}
+			catch (JSONException e) {						
+				iReturnCode = 3;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}	
+			nPage++;
+		} while (nRepos>=100);	
+	}
+
+	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sCommand = "curl -X \"DELETE\" -H \"Authorization: token "+sAccessToken+
+				          "\"  https://"+sAPI+"/orgs/"+sOrg+"/memberships/"+sID;
+		try {
+			Process p = Runtime.getRuntime().exec(sCommand);
+	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));	
+	        //BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        
+	        // read the output from the command
+	        printLog(">>>Removing user: "+ sID +" from organization: "+sOrg);
+	        String s;
+	        while ((s = stdInput.readLine()) != null) {
+	        }	
+		} catch (IOException e) {             
+		}
+	}
+	
 	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
         // sets SMTP server properties
 		
@@ -212,8 +304,17 @@ public class CommonLdap {
 	          message.setRecipients(Message.RecipientType.TO, recipientAddress);
 
 	          // Set To: header field of the header.
-	          if (!include.isEmpty())
-	        	  message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
+	          if (!include.isEmpty()) {
+	        	  //message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
+		          String[] includeList = include.split(";");
+		          InternetAddress[] includeAddress = new InternetAddress[includeList.length];
+		          counter = 0;
+		          for (String recip2 : includeList) {
+		              includeAddress[counter] = new InternetAddress(recip2.trim());
+		              counter++;
+		          }
+		          message.setRecipients(Message.RecipientType.BCC, includeAddress);
+	          }
 	          
 	          // Set Subject: header field
 	          message.setSubject(subjectText);
@@ -241,7 +342,7 @@ public class CommonLdap {
 		bFileAppend = bAppend;
 	}
 	
-	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP)
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP, boolean bGovernance)
 	{
 		File fout = new File(sOutputFileName);
 		
@@ -268,7 +369,7 @@ public class CommonLdap {
 			}
 			
 			for (int i=0; i < cList.getKeyElementCount(keylist[0]); i++) {
-				if (!cList.getString("APP", i).isEmpty()) 
+				if (!bGovernance || !cList.getString("APP", i).isEmpty()) 
 				{
 					line = "";
 					for (int j=0; j<keylist.length; j++) {
@@ -305,7 +406,12 @@ public class CommonLdap {
 
 	public void writeCSVFileFromListGeneric(JCaContainer cList, String sOutputFileName, char sep)
 	{
-		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, null);
+		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, null, true);
+	}
+	
+	public void writeCSVFileFromListGeneric( JCaContainer cList, String sOutputFileName, char sep, JCaContainer cLDAP)
+	{
+		writeCSVFileFromListGeneric(cList, sOutputFileName, sep, cLDAP, true);
 	}
 	
 	public void readInputListGeneric( JCaContainer cUserList, String sInputFileName, char sep )
@@ -485,10 +591,13 @@ public class CommonLdap {
 
 		if (attributes.size() >= 3)
 		{
-		    boolean bMail    = false;
-		    boolean bPhone   = false;
-		    boolean bGeneric = true;
-		    boolean bManager = false;
+		    boolean bMail          = false;
+		    boolean bPhone         = false;
+		    boolean bGeneric       = true;
+		    boolean bManager       = false;
+		    boolean bDirectReports = false;
+		    
+		    String sDirectReports = "";
 		    try {
 				for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
 				    Attribute attr = (Attribute)ae.next();
@@ -506,6 +615,14 @@ public class CommonLdap {
 				    		sValue=sValue.substring(3, nIndex);
 				    		bManager = true;
 				    	}
+				    	else if (sAttr.equalsIgnoreCase(tagDirectReports)) {
+				    		bDirectReports = true;
+				    		int nIndex = sValue.indexOf(",");
+				    		sValue=sValue.substring(3, nIndex);
+				    		if (!sDirectReports.isEmpty())
+				    			sValue = sDirectReports + ";" + sValue;
+				    		sDirectReports = sValue;
+				    	}
 				    	
 				    	if (sAttr.equalsIgnoreCase(tagEmployeeType)) 
 				    		bGeneric=false;
@@ -521,6 +638,8 @@ public class CommonLdap {
 					cLDAP.setString(tagPhone, "", cIndex);
 				if (!bManager)
 					cLDAP.setString(tagManager, "", cIndex);
+				if (!bDirectReports)
+					cLDAP.setString(tagDirectReports, "", cIndex);
 									
 				if (!bGeneric) 
 					nEmployees++;
@@ -552,7 +671,7 @@ public class CommonLdap {
 			String filter = "(&(!(objectclass=computer))(&(objectclass=person)(sAMAccountName=*)))";
 			
 			// Specify the ids of the attributes to return
-			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType, tagManager};
+			String[] attrIDs = {tagSAMAccountName, tagDisplayName, tagDN, tagPhone, tagMail, tagEmployeeType, tagManager, tagDirectReports};
 			ctls.setReturningAttributes(attrIDs);
 	
 			// Search for objects that have those matching attributes
@@ -747,10 +866,14 @@ public class CommonLdap {
 		return true;
 	}
 	
-	
+	public void readLDAPUserGroupToContainer(String sDLLDAPUserGroup, 
+                                             JCaContainer cDLUsers) {
+		readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers, null);
+	}	
 	
 	public void readLDAPUserGroupToContainer(String sDLLDAPUserGroup, 
-			                                 JCaContainer cDLUsers)
+			                                 JCaContainer cDLUsers,
+			                                 JCaContainer cLDAP)
 	{
 		try {
 			// Retrieve attributes for a specific container
@@ -793,11 +916,20 @@ public class CommonLdap {
 						         )
 						    {
 						    	String dn = (String)e.next();
-						    	//printLog("DN:" + dn);
-						    	int iStart = dn.indexOf("CN=");
-						    	int iEnd   = dn.indexOf(',', iStart);
-						    	String pmfkey = dn.substring(iStart+3, iEnd);
-						    	int iDL[] = cDLUsers.find("member", pmfkey);
+						    	int iDL[];
+						    	String pmfkey = "<<<>>>";
+						    	if (cLDAP == null) {
+							    	int iStart = Math.max(dn.indexOf("CN="),dn.indexOf("cn="));
+							    	int iEnd   = dn.indexOf(',', iStart);
+							    	pmfkey = dn.substring(iStart+3, iEnd);
+						    	}
+						    	else {
+						    		iDL = cLDAP.find(tagDN, dn);
+						    		if (iDL.length > 0) 
+						    			pmfkey = cLDAP.getString(tagSAMAccountName, iDL[0]);
+						    	}
+					    		iDL = cDLUsers.find("member", pmfkey);
+						    	
 						    	if (iDL.length == 0) {
 						    		cDLUsers.setString("dn",     dn,     cIndex);
 						    		cDLUsers.setString("member", pmfkey, cIndex++);
@@ -812,6 +944,8 @@ public class CommonLdap {
 			        }
 			    }
 			    loopValue++;
+			    if (cIndex == 0) // nothing in this DL
+			    	endString = false;
 			}
 			
 			//printLog("Number of Entries: "+cIndex);
@@ -827,7 +961,7 @@ public class CommonLdap {
 		}	
 	}
 	
-	private void processLDAPGroupUsers(JCaContainer cLDAP,
+	public void processLDAPGroupUsers(JCaContainer cLDAP,
 								       JCaContainer cDLUsers,
 						               JCaContainer cAddUsers, 
 						               JCaContainer cDelUsers,
@@ -841,9 +975,9 @@ public class CommonLdap {
 		boolean found=false;
 		
 		// 1. Active user accounts in CA.COM but with no DLUser privilege
-		printLog("1. Remove "+sAppName+" Users ");
 		if (!cDelUsers.isEmpty())
 		{
+			printLog("Remove "+sAppName+" Users ");
 			for (int i=0; i<cDelUsers.getKeyElementCount("pmfkey"); i++ )
 			{
 				String sID = cDelUsers.getString("pmfkey", i);
@@ -865,9 +999,9 @@ public class CommonLdap {
 		}	/* Delete List is not empty */
 		
 		// 2. LDAP users with no RTC user account
-		printLog("2. Add "+sAppName+" Users");
 		if (!cAddUsers.isEmpty())
 		{
+			printLog("Add "+sAppName+" Users");
 			for (int i=0; i<cAddUsers.getKeyElementCount("pmfkey"); i++ )
 			{					
 				String sID = cAddUsers.getString("pmfkey", i);
@@ -892,9 +1026,9 @@ public class CommonLdap {
 		} /* Add list is not empty */	
 		
 		// 3. Dump Request
-		printLog("3. Dump "+sAppName+" User DL");
 		if (!sDumpFile.isEmpty())
 		{		
+			printLog("Dump "+sAppName+" User DL");
 			File file = new File(sDumpFile);
 			
 			// if file doesnt exists, then create it
@@ -953,7 +1087,7 @@ public class CommonLdap {
 				String sDLLDAPUserGroup = aDLLDAPGroupFormat[iUserType][j].replaceAll("%s", aAuthSchemas[iUserType][j]);
 				//String sDLLDAPUserGroup = aDLLDAPGroup[j].format(aDLLDAPGroupFormat[iUserType][j],aAuthSchemas[iUserType][j]);
 				
-				readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers[i]);
+				readLDAPUserGroupToContainer(sDLLDAPUserGroup, cDLUsers[i], cLDAP);
 				processLDAPGroupUsers(cLDAP,
 					                  cDLUsers[i],
                                       cAddUsers, 
@@ -963,9 +1097,8 @@ public class CommonLdap {
 			}
 		}
 	}
-	
-	
-	public String expandDistributionListforEmail(String sDLLDAPUserGroup, JCaContainer cLDAP) {
+
+	public String expandDistributionListforId(String sDLLDAPUserGroup, JCaContainer cLDAP) {
 		String sResult = "";
 		try {
 			boolean endString = true;
@@ -979,7 +1112,7 @@ public class CommonLdap {
 			    returnedAttrs[0] = "member;range=" + range;
 			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 			    searchCtls.setReturningAttributes(returnedAttrs);
-			    int iIndex = sDLLDAPUserGroup.indexOf("cn=");
+			    int iIndex = Math.max(sDLLDAPUserGroup.indexOf("cn="),sDLLDAPUserGroup.indexOf("CN="));
 			    int jIndex = sDLLDAPUserGroup.indexOf(',');
 			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
 			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
@@ -1001,21 +1134,83 @@ public class CommonLdap {
 						         )
 						    {
 						    	String dn = (String)e.next();
-						    	//printLog("DN:" + dn);
-						    	int iStart = dn.indexOf("CN=");
-						    	int iEnd   = dn.indexOf(',', iStart);
-						    	String pmfkey = dn.substring(iStart+3, iEnd);
-						    	
-						    	int[] iLDAP = cLDAP.find(tagSAMAccountName, pmfkey);
+						    	int[] iLDAP = cLDAP.find(tagDN, dn);
+						    	if (iLDAP.length > 0) {
+						    		String pmfkey=cLDAP.getString(tagSAMAccountName, iLDAP[0]);
+						    		String sID = cLDAP.getString(tagMail, iLDAP[0]);
+						    	    sResult += sResult.isEmpty()?"":";" + sID;
+						    	} // DN found in directory users
+						    } // loop over member attributes
+						} // attr contains "member"		        	
+			        }
+			        
+			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {
+			            endString = false;
+			        }
+			    }
+			    loopValue++;
+			}
+			
+			//printLog("Number of Entries: "+cIndex);
+			
+		} catch (javax.naming.AuthenticationException e) {
+			iReturnCode = 1006;
+		    printErr(e.getLocalizedMessage());
+		    System.exit(iReturnCode);		    
+	    // attempt to reacquire the authentication information
+		} catch (NamingException e)
+		{
+			//printErr(e.getLocalizedMessage());
+		}	
+		
+		return sResult;
+	}
+	
+	public String expandDistributionListforEmail(String sDLLDAPUserGroup, JCaContainer cLDAP) {
+		String sResult = "";
+		try {
+			boolean endString = true;
+			int loopValue = 0;
+			while (endString) {
+			    int startValue = loopValue * 1000;
+			    int endvalue = (loopValue + 1) * 1000;
+			    SearchControls searchCtls = new SearchControls();
+			    String[] returnedAttrs = new String[1];
+			    String range = startValue + "-" + endvalue;
+			    returnedAttrs[0] = "member;range=" + range;
+			    searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+			    searchCtls.setReturningAttributes(returnedAttrs);
+			    int iIndex = Math.max(sDLLDAPUserGroup.indexOf("cn="),sDLLDAPUserGroup.indexOf("CN="));
+			    int jIndex = sDLLDAPUserGroup.indexOf(',');
+			    String sName = sDLLDAPUserGroup.substring(iIndex+3, jIndex);
+			    String sRegion = sDLLDAPUserGroup.substring(jIndex+1);
+			    String sFilter = "(&(objectClass=group)(sAMAccountName="+sName+"))";
+			    
+			    NamingEnumeration answer = ctx.search(sRegion, sFilter, searchCtls);
+			    while (answer.hasMore()) {
+			        SearchResult entry = (SearchResult) answer.next();
+			        
+			        Attributes attributes = entry.getAttributes();
+			        for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+					    Attribute attr = (Attribute)ae.next();
+					    
+					    if (attr.getID().indexOf("member")==0)
+					    {
+						    // Process each member attribute 
+						    for (NamingEnumeration e = attr.getAll(); 
+						         e.hasMore();
+						         )
+						    {
+						    	String dn = (String)e.next();
+						    	int[] iLDAP = cLDAP.find(tagDN, dn);
 						    	if (iLDAP.length > 0) {
 						    		String eMail = cLDAP.getString(tagMail, iLDAP[0]);
 						    		if (!eMail.equalsIgnoreCase("unknown")) {
 						    			sResult += ";" + eMail;
 						    		}
-						    	}
-						    }
-						}
-			        	
+						    	} // DN found in LDAP users
+						    } // loop over member attributes
+						} // attribute contains "member"		        	
 			        }
 			        
 			        if (entry.getAttributes().toString().contains("{member;range=" + startValue + "-*")) {

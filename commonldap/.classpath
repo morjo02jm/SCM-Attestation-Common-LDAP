@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/com.ibm.icu_4.2.1.v20100412.jar"/>
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/com.ibm.rational.wvcm.ct_3.0.300.v20121026_0059.jar"/>
