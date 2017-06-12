@@ -1249,6 +1249,7 @@ public class CommonLdap {
 				switch(cContacts.getString("PROD_STAT", iIndex).toLowerCase()) {
 				case "end of life":
 					bActive = false;
+					// drop through
 				case "active":
 				case "stabilized":
 				case "internal":
