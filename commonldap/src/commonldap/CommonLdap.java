@@ -1236,7 +1236,7 @@ public class CommonLdap {
 	}
 	
 		
-	public void readSourceMinderContacts(JCaContainer cApplicationContacts, String sApplication) {
+	public void readSourceMinderContacts(JCaContainer cApplicationContacts, String sApplication, JCaContainer cLDAP) {
 		int nIndex = 0;
 		JCaContainer cContacts = new JCaContainer();
 		
@@ -1286,8 +1286,12 @@ public class CommonLdap {
 							JSONArray ja = new JSONArray(sApprovers);
 							sApprovers = "";
 							for (int j=0; j<ja.length(); j++) {
-								if (!sApprovers.isEmpty()) sApprovers += ";";
-								sApprovers += ja.getJSONObject(j).getString("PMFKEY");
+								String sApprover = ja.getJSONObject(j).getString("PMFKEY");
+								int[] iLDAP = cLDAP.find("sAMAccountName", sApprover);
+								if (iLDAP.length > 0) {
+									if (!sApprovers.isEmpty()) sApprovers += ";";
+									sApprovers += sApprover;
+								}
 							}
 						}  catch (JSONException e) {
 							iReturnCode = 1008;
@@ -1299,7 +1303,8 @@ public class CommonLdap {
 						cApplicationContacts.setString("Release",  sRelease, nIndex);
 						cApplicationContacts.setString("Location", sLocation, nIndex);
 						cApplicationContacts.setString("Active", bActive? "Y":"N", nIndex);
-						cApplicationContacts.setString("Approver", sApprovers, nIndex++);								
+						cApplicationContacts.setString("Approver", sApprovers, nIndex);
+						nIndex++;
 					}
 					break;
 					
