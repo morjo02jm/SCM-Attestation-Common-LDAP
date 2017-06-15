@@ -1,0 +1,52 @@
+select distinct
+     R1.Application as 'Application',
+     R1.EntitlementOwner1 as 'Product', 
+     R1.EntitlementOwner2+'/Resmask:'+R1.EntitlementName as 'Resource', 
+     case 
+        when len(R1.ContactEmail) < 1 then 'Unknown' 
+        else left(R1.ContactEmail, charindex('@',R1.ContactEmail)-1)+'@ca.com'  
+     end as 'Primary Contact', 
+     case
+        when charindex(';',R1.ContactEmail) < 1 then '' 
+        else substring(R1.ContactEmail, charindex(';',R1.ContactEmail)+1, len(R1.ContactEmail)-charindex('@',R1.ContactEmail)) 
+     end as 'Alternate Contacts',             
+     '' as 'Product Status'              
+FROM GITHUB_REVIEW R1 
+WHERE R1.Application = 'Mainframe'
+union all
+select distinct
+     R1.application as 'Application',
+     R1.EntitlementOwner1 as 'Product', 
+     R1.EntitlementOwner2+'/Resmask:'+R1.EntitlementName as 'Resource', 
+     case 
+        when len(R1.ContactEmail) < 1 then 'Unknown' 
+        else left(R1.ContactEmail, charindex('@',R1.ContactEmail)-1)+'@ca.com'  
+     end as 'Primary Contact',             
+     case
+        when charindex(';',R1.ContactEmail) < 1 then '' 
+        else substring(R1.ContactEmail, charindex(';',R1.ContactEmail)+1, len(R1.ContactEmail)-charindex('@',R1.ContactEmail)) 
+     end as 'Alternate Contacts',              
+     '' as 'Product Status'              
+FROM GITHUB_REVIEW R1 
+WHERE R1.Application = 'CA Endevor'
+union all
+select distinct
+     R1.Application as 'Application',
+     case
+      when len(R1.EntitlementAttributes)<9 then 'Unknown'
+      else substring(R1.EntitlementAttributes,9,len(R1.EntitlementAttributes)-8) 
+     end as 'Product',
+     R1.EntitlementOwner1+'/Project:'+R1.EntitlementOwner2 as 'Resource', 
+     case 
+        when len(R1.ContactEmail) < 1 then 'Unknown' 
+        else left(R1.ContactEmail, charindex('@',R1.ContactEmail)-1)+'@ca.com'   
+     end as 'Primary Contact',        
+     case
+        when charindex(';',R1.ContactEmail) < 1 then '' 
+        else substring(R1.ContactEmail, charindex(';',R1.ContactEmail)+1, len(R1.ContactEmail)-charindex('@',R1.ContactEmail)) 
+     end as 'Alternate Contacts', 
+     'Active' as 'Product Status'              
+FROM GITHUB_REVIEW R1 
+WHERE R1.application = 'CA Harvest SCM'
+ AND  R1.ApplicationLocation like 'L1AGUSDB00%'
+order by 1,2,3,4
