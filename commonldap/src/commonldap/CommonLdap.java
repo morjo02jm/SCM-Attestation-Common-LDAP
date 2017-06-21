@@ -1248,6 +1248,8 @@ public class CommonLdap {
 				sApplication.equalsIgnoreCase("mainframe")) {
 				switch(cContacts.getString("PROD_STAT", iIndex).toLowerCase()) {
 				case "end of life":
+				case "retired":
+				case "inactive":	
 					bActive = false;
 					// drop through
 				case "active":
