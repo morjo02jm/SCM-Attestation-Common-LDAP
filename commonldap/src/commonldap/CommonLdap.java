@@ -1310,6 +1310,13 @@ public class CommonLdap {
 						cApplicationContacts.setString("Location", sLocation, nIndex);
 						cApplicationContacts.setString("Active", bActive? "Y":"N", nIndex);
 						cApplicationContacts.setString("Approver", sApprovers, nIndex);
+						switch (sApplication.toLowerCase()) {
+						case "mainframe":
+							cApplicationContacts.setString("SourceResources", cContacts.getString("SRC_RESOURCES", iIndex), nIndex);
+							break;
+						default:
+							break;
+						}
 						nIndex++;
 					}
 					break;
