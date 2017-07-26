@@ -1262,7 +1262,7 @@ public class CommonLdap {
 					switch (sApplication.toLowerCase()) {
 					case "harvest":
 						bDoit = sLocation.toLowerCase().contains("cscr") &&
-						        !sLocation.contains("CSCRE");
+								cContacts.getString("SRC_RESOURCES", iIndex).isEmpty();
 						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
 						sLocation = sLocation.replace("\"", "");
 						break;
@@ -1274,8 +1274,7 @@ public class CommonLdap {
 					case "mainframe":
 					default: // mainframe
 						bDoit = cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null") &&
-						        (!sLocation.toLowerCase().contains("cscr") ||
-						         sLocation.contains("CSCRE"));
+						       !cContacts.getString("SRC_RESOURCES", iIndex).isEmpty();
 						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
 						sLocation = sLocation.replace("\"", "");
 						break;
@@ -1312,7 +1311,8 @@ public class CommonLdap {
 						cApplicationContacts.setString("Approver", sApprovers, nIndex);
 						switch (sApplication.toLowerCase()) {
 						case "mainframe":
-							cApplicationContacts.setString("SourceResources", cContacts.getString("SRC_RESOURCES", iIndex), nIndex);
+							cApplicationContacts.setString("SourceResources", cContacts.getString("SRC_RESOURCES", iIndex),  nIndex);
+							cApplicationContacts.setString("VMVSELocation",   cContacts.getString("VM_VSE_SRC_LOC", iIndex), nIndex);
 							break;
 						default:
 							break;
