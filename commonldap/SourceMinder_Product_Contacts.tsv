@@ -676,6 +676,7 @@ VTAPE		Active	CSCRE/Endevor	VTAPE		"[{""PMFKEY"":""stoda04""}]"	angth01	giero01	
 VTERM	3.3	Active	CMS	null	Type:;CMS;DISK;Directories:;CAVTERM	"[{""PMFKEY"":""jambr01""}]"		jambr01		VMVSE	"[{""location"":""CAVTERM"",""type"":""VMMDISK""}]"
 Web Viewer CCI Client	r12;12.1	Internal	CSCR/Harvest	null	cscr809/WebView CCI Client	"[{""PMFKEY"":""raubr02""},{""PMFKEY"":""kokja01""}]"		kokja01	raubr02		
 WIZ		Active	CSCRE/Endevor	WIZ		"[{""PMFKEY"":""damda01""}]"			damda01		
+Workload Automation		Active	GitHub	null	github-isl-01.ca.com/WLA	"[{""PMFKEY"":""bobsr01"",""TYPE"":""Team"",""NAME"":""Agents""},{""PMFKEY"":""bobsr01"",""TYPE"":""Repository"",""NAME"":""ae""}]"			bobsr01		
 Workload Automation Test Scripts		Active	CSCR/Harvest	null	CSCR111	"[{""PMFKEY"":""veeka01""}]"			veeka01		
 Workload Control Center		Active	CSCR/Harvest	null	CSCR113	"[{""PMFKEY"":""chinna08""},{""PMFKEY"":""parkr02""}]"			chinna08;parkr02		
 Workstation Common - XGN	r12;r14;r14.5;r15;16.0;17.0;999	Internal	SCLM	null	XGN.PRD+++S.;XGN.HLD+++S.;XGN.BLD+++S.;XGN.INP+++S.;XGN.WRK+++S.;XGN.WK++++S.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
