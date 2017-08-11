@@ -1256,10 +1256,18 @@ public class CommonLdap {
 				case "stabilized":
 				case "internal":
 					boolean bDoit = false;
+					boolean bGitHub = false;
 					String sProduct = "", sLocation = "";
 					sLocation = cContacts.getString("SRC_PHYS_LOC", iIndex);
 					
 					switch (sApplication.toLowerCase()) {
+					case "github":
+						bDoit = sLocation.contains("github-isl-01.ca.com") ||
+						        sLocation.contains("github.com");
+						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
+						sLocation = sLocation.replace("\"", "");
+						bGitHub = true;
+						break;
 					case "harvest":
 						bDoit = sLocation.toLowerCase().contains("cscr") &&
 								cContacts.getString("SRC_RESOURCES", iIndex).isEmpty();
@@ -1286,6 +1294,8 @@ public class CommonLdap {
 						sApprovers = sApprovers.replace("\"[", "[");
 						sApprovers = sApprovers.replace("]\"", "]");
 						sApprovers = sApprovers.replace("\"\"", "\"");
+						String sTeamTypes = "";
+						String sTeamNames = "";
 						
 						try {				
 							JSONArray ja = new JSONArray(sApprovers);
@@ -1294,8 +1304,24 @@ public class CommonLdap {
 								String sApprover = ja.getJSONObject(j).getString("PMFKEY");
 								int[] iLDAP = cLDAP.find("sAMAccountName", sApprover);
 								if (iLDAP.length > 0) {
-									if (!sApprovers.isEmpty()) sApprovers += ";";
+									if (!sApprovers.isEmpty()) {
+										sApprovers += ";";
+										if (bGitHub) {
+											sTeamTypes += ";";
+											sTeamNames += ";";
+										}
+									}
 									sApprovers += sApprover;
+									if (bGitHub) try {
+										String sTeamType = ja.getJSONObject(j).getString("TYPE");
+										String sTeamName = ja.getJSONObject(j).getString("NAME");
+										sTeamTypes += sTeamType;
+										sTeamNames += sTeamName;
+									}
+									catch (JSONException e) {
+										sTeamTypes += "Organization";
+										sTeamNames += "***this***";
+									}
 								}
 							}
 						}  catch (JSONException e) {
@@ -1310,6 +1336,10 @@ public class CommonLdap {
 						cApplicationContacts.setString("Active", bActive? "Y":"N", nIndex);
 						cApplicationContacts.setString("Approver", sApprovers, nIndex);
 						switch (sApplication.toLowerCase()) {
+						case "github":
+							cApplicationContacts.setString("Type", sTeamTypes,  nIndex);
+							cApplicationContacts.setString("Name", sTeamNames,  nIndex);
+							break;
 						case "mainframe":
 							cApplicationContacts.setString("SourceResources", cContacts.getString("SRC_RESOURCES", iIndex),  nIndex);
 							cApplicationContacts.setString("VMVSELocation",   cContacts.getString("VM_VSE_SRC_LOC", iIndex), nIndex);
