@@ -189,9 +189,9 @@ public class CommonLdap {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
 		String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/teams?access_token="+sAccessToken+"&&per_page=1000";
 		
-		int iIndex = 0;
+		int iIndex = cTeam.getKeyElementCount("Organization"); // was 0
 		
-		try {		
+		try {	
 			JSONArray ja = readJsonArrayFromUrl(sURL);
 			for (int j=0; j<ja.length(); j++) {
 				String sNameJSON = ja.getJSONObject(j).getString("name");
