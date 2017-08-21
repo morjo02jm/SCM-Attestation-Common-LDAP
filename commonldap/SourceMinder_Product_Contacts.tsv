@@ -377,7 +377,8 @@ Mainframe Application Tuner	8.5;9.0;10.0;11.0;Base	Active	CSCRE/Endevor	"TTUNE,A
 Mainframe Application Tuner Eclipse UI		Active	CSCR/Harvest	null	CSCR801/MF	"[{""PMFKEY"":""dubmi01""}]"		dubmi01			
 Mainframe Connector for Linux on System z	v1.0;r2.0	Active	Endevor	NETM	GIS Islandia data center	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02		
 Mainframe Connector for Linux on System z	v1.0;r2.0	Active	PDS	null	AUPK0.DL72.GL1105.*.VSAM;AUDE0.MOT+.;AUDE0.NMV2SMS.**.SOURCE;AUDE0.NMV2SMS.**.LIST;AUDE0.NMDE1.*TST;AUCM0.FIXREG.*	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02	DSN	
-Mainframe Software Manager (MSM)	5.1;6.0;6.1;7.0	Active	Endevor(MFSO);RTC;GitHub	MSM	CSCRRTC003;TSO-Endevor-MFSO;github-isl-01.ca.com/MSM/MSME.git	"[{""PMFKEY"":""newja04""},{""PMFKEY"":""yafna01""}]"		gulga01	newja04;yafna01		
+Mainframe Software Manager (MSM)	5.1;6.0;6.1;7.0	Active	Endevor(MFSO);RTC	MSM	CSCRRTC003;TSO-Endevor-MFSO	"[{""PMFKEY"":""newja04""},{""PMFKEY"":""yafna01""}]"		gulga01	newja04;yafna01		
+Mainframe Software Manager (MSM)	5.1;6.0;6.1;7.0	Active	GitHub	null	github-isl-01.ca.com/MSM	"[{""PMFKEY"":""uslsu01""}]"			uslsu01		
 Mastercat	4.3	Active	CSCR/Harvest	null	ASMDSK.CSCRE.MCAT.*;ASM.ISML2.R432.MCAT.*;ASM.ISMDV.R430.MCAT.*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""hurro01""}]"			cafjo01;hurro01	DSN	
 MASTERCAT/VSE	r3.4; r3.3; r2.9	Active	CMS	null	CMS;Disks:;MCATVSE;SFS;Directories:;COLSFS.MCAT;VSEDEV.MCATVSE;ISMQA.SHARED	"[{""PMFKEY"":""stoda04""},{""PMFKEY"":""cafjo01""}]"		stoda04	cafjo01	 VMVSE	"[{""location"":""MCATVSE"",""type"":""VMMDISK""},{""location"":""COLSFS.MCAT"",""type"":""DIRECTRY""},{""location"":""VSEDEV.MCATVSE"",""type"":""DIRECTRY""},{""location"":""ISMQA.SHARED"",""type"":""DIRECTRY""}]"
 MATUN		Active	CSCRE/Endevor	MATUN		"[{""PMFKEY"":""svami01""},{""PMFKEY"":""mormi08""}]"		minni01	svami01;mormi08		
@@ -676,7 +677,6 @@ VTAPE		Active	CSCRE/Endevor	VTAPE		"[{""PMFKEY"":""stoda04""}]"	angth01	giero01	
 VTERM	3.3	Active	CMS	null	Type:;CMS;DISK;Directories:;CAVTERM	"[{""PMFKEY"":""jambr01""}]"		jambr01		VMVSE	"[{""location"":""CAVTERM"",""type"":""VMMDISK""}]"
 Web Viewer CCI Client	r12;12.1	Internal	CSCR/Harvest	null	cscr809/WebView CCI Client	"[{""PMFKEY"":""raubr02""},{""PMFKEY"":""kokja01""}]"		kokja01	raubr02		
 WIZ		Active	CSCRE/Endevor	WIZ		"[{""PMFKEY"":""damda01""}]"			damda01		
-Workload Automation		Active	GitHub	null	github-isl-01.ca.com/WLA	"[{""PMFKEY"":""bobsr01"",""TYPE"":""Team"",""NAME"":""Agents""},{""PMFKEY"":""bobsr01"",""TYPE"":""Repository"",""NAME"":""ae""}]"			bobsr01		
 Workload Automation Test Scripts		Active	CSCR/Harvest	null	CSCR111	"[{""PMFKEY"":""veeka01""}]"			veeka01		
 Workload Control Center		Active	CSCR/Harvest	null	CSCR113	"[{""PMFKEY"":""chinna08""},{""PMFKEY"":""parkr02""}]"			chinna08;parkr02		
 Workstation Common - XGN	r12;r14;r14.5;r15;16.0;17.0;999	Internal	SCLM	null	XGN.PRD+++S.;XGN.HLD+++S.;XGN.BLD+++S.;XGN.INP+++S.;XGN.WRK+++S.;XGN.WK++++S.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
