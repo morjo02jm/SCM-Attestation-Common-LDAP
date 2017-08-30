@@ -24,8 +24,10 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-
 import java.lang.*;
+import java.sql.*;
+import java.util.*;
+
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
@@ -1504,7 +1506,167 @@ public class CommonLdap {
 	// *******************  Harvest Processing Routines *****
 	
 	public boolean removeUserAccessFromHarvestProject(String sID, String sBroker, String sProject, String sPassword, boolean bProcessChanges) {
-		return false;
+		boolean bSuccess = false;
+		String sqlError = "DB2. Unable to execute query.";
+		
+		try {			
+			PreparedStatement pstmt = null; 
+			String sqlStmt;
+			String sJDBC = "";
+			String[] aJDBC = getHarvestJDBCConnections();
+			
+			for (int i=0; sJDBC.isEmpty() && i<aJDBC.length; i++) {
+				if (aJDBC[i].contains(sBroker.toLowerCase())) 
+					sJDBC = aJDBC[i];
+			}
+
+			int nIndex, lIndex;
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			String sURL = sJDBC + "password=" + sPassword+";";
+			if (sID.endsWith("?"))
+				sID=sID.substring(0, sID.lastIndexOf("?"));
+			sID=sID.toLowerCase();
+			sProject=sProject.toUpperCase();
+			
+			Connection conn = DriverManager.getConnection(sURL);
+			
+			List<String> aUserGroups = new ArrayList<String>();
+			
+			sqlError = "SQLServer.  Error retrieving list of user groups for user, "+sID+", on broker, "+sBroker+", for project, "+sProject+".";
+			sqlStmt = 
+					"select distinct usergroupname from harusergroup where usrgrpobjid in "+
+			        "( "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  left outer join harenvironment E on E.envobjid > \'0\' "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and UG.usergroupname = \'Administrator\' "+
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harharvest HA on HA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  left outer join harenvironment E on E.envobjid > \'0\' "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (HA.viewenvironment = \'Y\' or HA.adminuser = \'Y\' or  "+
+			        "         HA.adminenvironment = \'Y\' or HA.adminuser = \'Y\' or "+
+			        "         HA.secureharvest = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harenvironmentaccess EA on EA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harenvironment E on E.envobjid = EA.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (EA.secureaccess = \'Y\' or EA.updateaccess = \'Y\' or "+
+			        "         EA.viewaccess = \'Y\' or EA.executeaccess = \'Y\' or "+
+			        "         EA.updateaccess = \'Y\' or EA.secureaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harstateaccess SA on SA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harstate S on S.stateobjid = SA.stateobjid "+
+			        "  join harenvironment E on E.envobjid = S.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (SA.updateaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harstateprocessaccess SPA on SPA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harstateprocess SP on SP.processobjid = SPA.processobjid"+
+			        "  join harstate S on S.stateobjid = SP.stateobjid "+
+			        "  join harenvironment E on E.envobjid = S.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (SPA.executeaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "    and U.usrobjid in ( "+
+			        "     select U2.usrobjid "+
+			        "	  from harenvironmentaccess EA "+ 
+			        "	  join harusersingroup UIG2 on UIG2.usrgrpobjid = EA.usrgrpobjid "+ 
+			        "	  join harenvironment E2 on E2.envobjid = EA.envobjid "+
+			        "     join haruser U2 on U2.usrobjid = UIG2.usrobjid "+
+			        "     where EA.executeaccess = \'Y\' ) "+
+			        " )";
+			
+			pstmt=conn.prepareStatement(sqlStmt);
+			ResultSet rSet = pstmt.executeQuery();
+			boolean hasPublic = false;
+			
+			while (rSet.next()) {		
+				String sUserGroup = rSet.getString("USERGROUPNAME").trim();
+				if (sUserGroup.equalsIgnoreCase("PUBLIC") )
+					hasPublic = true;
+				aUserGroups.add(sUserGroup);
+			}
+			
+			if (!hasPublic && aUserGroups.size()>0) {
+				String sGroups = ""; 
+				String sGroups2 = "";
+				for (int i=0; i<aUserGroups.size(); i++) {
+					String sUserGroup = aUserGroups.get(i);
+					if (!sGroups.isEmpty()) {
+						sGroups  += ",";
+						sGroups2 += ",";
+					}
+					sGroups  += "\'"+sUserGroup+"\'";
+					sGroups2 += sUserGroup;
+				}
+				
+				sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
+				sqlStmt = "delete from harusersingroup "+
+				          "where usrgrpobjid in "+
+						  " (select harusrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
+						  "  and usrobjid in "+
+						  " (select harusrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
+
+				pstmt=conn.prepareStatement(sqlStmt);  
+				int iResult = pstmt.executeUpdate();
+				if (iResult > 0) 
+					bSuccess = true;				
+			}
+			
+			
+			if (aUserGroups.isEmpty() || hasPublic) {				
+				sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
+				sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'N\' where USROBJID in (select USROBJID from harusers where LOWER(USERNAME) in (\'+sID+\') )";
+				
+				pstmt=conn.prepareStatement(sqlStmt);  
+				int iResult = pstmt.executeUpdate();
+				if (iResult > 0) 
+					bSuccess = true;
+			}
+			
+			conn.close();
+			
+		} catch (ClassNotFoundException e) {
+			iReturnCode = 101;
+			printErr(sqlError);
+			printErr(e.getLocalizedMessage());			
+			System.exit(iReturnCode);
+		} catch (SQLException e) {     
+			iReturnCode = 102;
+			printErr(sqlError);
+			printErr(e.getLocalizedMessage());			
+			System.exit(iReturnCode);
+		}			
+		return bSuccess;
 	}
 	
 	public String[] getHarvestJDBCConnections() {
