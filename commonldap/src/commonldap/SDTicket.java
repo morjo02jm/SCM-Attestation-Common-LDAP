@@ -18,16 +18,28 @@ public class SDTicket {
 
     private String username = "bsgautomation@ca.com";
     private String password = "S6mb2hT*gw";
-//    private String cctiCategory = "User Assistance";
-//    private String cctiClass = "Application";
-//    private String cctiType = "github.com";
-//    private String descriptionLong = "Test";
+    private String sCSMLandscape = "csmstaging";
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
-//    private String assignedToIndividualName = "desra04";
-//    private String requesterName = "desra04";
-//    private String ticketDescription = "Test ticket(ignore)";
+    
+	public SDTicket(String sLandscape) {
+		switch (sLandscape.toLowerCase()) {
+		case "test":
+		default:
+			username = "bsgautomation@ca.com";
+			password = "S6mb2hT*gw";
+			sCSMLandscape = "csmstaging";
+			break;
+			
+		case "production":
+			username = "bsgautomation@ca.com";
+			password = "S6mb2hT*gw";
+			sCSMLandscape = "csms3";
+			break;
+		}
+	}
 
-    public String serviceTicket(String ticketDescription, String descriptionLong, String requesterName) {
+
+    public String serviceTicket(String ticketDescription, String descriptionLong, String requesterName, CommonLdap frame) {
         String resp = null;
         String payload = "";
         payload += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\"> ";
@@ -52,7 +64,7 @@ public class SDTicket {
         payload += "</soapenv:Envelope>";
 
         try {
-            URL _url = new URL("https://csmstaging.serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/");
+            URL _url = new URL("https://"+sCSMLandscape+".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/");
             HttpURLConnection con = (HttpURLConnection) _url.openConnection();
             con.setRequestProperty("Content-Type", "application/xop+xml;charset=UTF-8;action=\"urn:logServiceRequest\"");
             con.setDoOutput(true);
@@ -80,16 +92,16 @@ public class SDTicket {
             Document doc = Jsoup.parse(response);
             String text = doc.getElementsByTag("ax254:responseText").text();
             int cIndex = text.indexOf("}]");
-            if (cIndex >=0)
+            if (cIndex >= 0)
             	text=text.substring(0, cIndex+2);
             JsonParser jsonparser = new JsonParser();
             JsonElement jo = jsonparser.parse(text);
             JsonArray arr = jo.getAsJsonArray();
             JsonObject je = (JsonObject)arr.get(0);
-            System.out.print(je.get("ticket_identifier").getAsString());
+            frame.printLog(je.get("ticket_identifier").getAsString());
             resp = je.get("ticket_identifier").getAsString();
         } catch (Exception e) {
-            System.err.print(e.getStackTrace().toString());
+            frame.printErr(e.getStackTrace().toString());
         }
         return resp;
     }
