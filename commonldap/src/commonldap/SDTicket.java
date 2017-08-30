@@ -79,14 +79,17 @@ public class SDTicket {
             String response = sb.toString().split("apache.org>")[1].split("--MIMEBoundary")[0];
             Document doc = Jsoup.parse(response);
             String text = doc.getElementsByTag("ax254:responseText").text();
+            int cIndex = text.indexOf("}]");
+            if (cIndex >=0)
+            	text=text.substring(0, cIndex+2);
             JsonParser jsonparser = new JsonParser();
             JsonElement jo = jsonparser.parse(text);
             JsonArray arr = jo.getAsJsonArray();
             JsonObject je = (JsonObject)arr.get(0);
-            System.out.println(je.get("ticket_identifier").getAsString());
+            System.out.print(je.get("ticket_identifier").getAsString());
             resp = je.get("ticket_identifier").getAsString();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.print(e.getStackTrace().toString());
         }
         return resp;
     }

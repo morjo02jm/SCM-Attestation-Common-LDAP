@@ -137,6 +137,8 @@ public class CommonLdap {
 		
 	}
 	
+	// *** JSON Routines ***
+	
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -168,6 +170,8 @@ public class CommonLdap {
 	    }
 	}	
 	
+	// *** Logging Routines ****
+	
 	public void printLog(String str)
 	{
 		System.out.println(str);
@@ -184,6 +188,8 @@ public class CommonLdap {
 	{
 		printLog(sMessage);
 	}
+	
+	// ***GitHub routines ***
 	
 	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
@@ -268,6 +274,8 @@ public class CommonLdap {
 		}
 	}
 	
+	// *** Email Handling ****
+	
 	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
         // sets SMTP server properties
 		
@@ -337,6 +345,8 @@ public class CommonLdap {
 	          mex.printStackTrace();
 	       }	      
 	}
+	
+	// *** Basic 2D Array File Processing ***
 	
 	public void setFileAppend(boolean bAppend) {
 		bFileAppend = bAppend;
@@ -578,7 +588,7 @@ public class CommonLdap {
 		return bodyText;
 	}
 
-	// LDAP-related routines
+	// *** LDAP-related routines ***
 	private static void processLDAPAttrs(Attributes attributes, 
 			                             JCaContainer cLDAP,
 			                             boolean isNormalUser) 
@@ -793,7 +803,7 @@ public class CommonLdap {
         } 	
 	}
 	
-// LDAP-related routines
+// *** LDAP-related routines ***
 	
 	public boolean addUserToLDAPGroup(String sDLLDAPUserGroup, 
 			                          String sUserDN)
@@ -1489,6 +1499,9 @@ public class CommonLdap {
 		
 		return bIsActive;
 	} // processProjectReleases
+	
+	
+	// *******************  Harvest Processing Routines *****
 	
 	public boolean removeUserAccessFromHarvestProject(String sID, String sBroker, String sProject, String sPassword, boolean bProcessChanges) {
 		return false;
