@@ -1645,7 +1645,7 @@ public class CommonLdap {
 			
 			if (aUserGroups.isEmpty() || hasPublic) {				
 				sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
-				sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'N\' where USROBJID in (select USROBJID from harusers where LOWER(USERNAME) in (\'"+sID+"\') )";
+				sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'N\' where USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
 				
 				pstmt=conn.prepareStatement(sqlStmt);  
 				int iResult = pstmt.executeUpdate();
