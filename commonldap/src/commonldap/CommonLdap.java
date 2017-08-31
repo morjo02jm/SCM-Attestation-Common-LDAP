@@ -1621,6 +1621,7 @@ public class CommonLdap {
 				String sGroups2 = "";
 				for (int i=0; i<aUserGroups.size(); i++) {
 					String sUserGroup = aUserGroups.get(i);
+					if (sUserGroup.equalsIgnoreCase("PUBLIC")) continue;
 					if (!sGroups.isEmpty()) {
 						sGroups  += ",";
 						sGroups2 += ",";
@@ -1629,27 +1630,37 @@ public class CommonLdap {
 					sGroups2 += sUserGroup;
 				}
 				
-				sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
-				sqlStmt = "delete from harusersingroup "+
-				          "where usrgrpobjid in "+
-						  " (select harusrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
-						  "  and usrobjid in "+
-						  " (select harusrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
-
-				pstmt=conn.prepareStatement(sqlStmt);  
-				int iResult = pstmt.executeUpdate();
-				if (iResult > 0) 
-					bSuccess = true;				
+				if (!sGroups.isEmpty()) {					
+					if (bProcessChanges && !sGroups.isEmpty()) {
+						sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
+						sqlStmt = "delete from harusersingroup "+
+						          "where usrgrpobjid in "+
+								  " (select harusrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
+								  "  and usrobjid in "+
+								  " (select harusrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
+	
+						pstmt=conn.prepareStatement(sqlStmt);  
+						int iResult = pstmt.executeUpdate();
+						if (iResult > 0) 
+							bSuccess = true;									
+					}
+					else 
+						bSuccess = true;
+				}
 			}
 			
 			
-			if (aUserGroups.isEmpty() || hasPublic) {				
-				sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
-				sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'Y\' where USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
-				
-				pstmt=conn.prepareStatement(sqlStmt);  
-				int iResult = pstmt.executeUpdate();
-				if (iResult > 0) 
+			if (aUserGroups.isEmpty() || hasPublic) {	
+				if (bProcessChanges) {					
+					sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
+					sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'Y\' where ACCOUNTDISABLED=\'N\' and USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
+					
+					pstmt=conn.prepareStatement(sqlStmt);  
+					int iResult = pstmt.executeUpdate();
+					if (iResult > 0) 
+						bSuccess = true;
+				}
+				else
 					bSuccess = true;
 			}
 			
