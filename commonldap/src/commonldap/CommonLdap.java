@@ -1616,7 +1616,7 @@ public class CommonLdap {
 				aUserGroups.add(sUserGroup);
 			}
 			
-			if (!hasPublic && aUserGroups.size()>0) {
+			if (/*!hasPublic &&*/ aUserGroups.size()>0) {
 				String sGroups = ""; 
 				String sGroups2 = "";
 				for (int i=0; i<aUserGroups.size(); i++) {
