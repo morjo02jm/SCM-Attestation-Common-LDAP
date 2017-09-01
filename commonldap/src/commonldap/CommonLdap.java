@@ -1637,7 +1637,7 @@ public class CommonLdap {
 						          "where usrgrpobjid in "+
 								  " (select usrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
 								  "  and usrobjid in "+
-								  " (select usrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
+								  " (select usrobjid from haruser where LOWER(username) in (\'"+sID+"\') ) ";
 	
 						pstmt=conn.prepareStatement(sqlStmt);  
 						int iResult = pstmt.executeUpdate();
