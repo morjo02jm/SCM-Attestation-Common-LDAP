@@ -24,8 +24,10 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-
 import java.lang.*;
+import java.sql.*;
+import java.util.*;
+
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
@@ -137,6 +139,8 @@ public class CommonLdap {
 		
 	}
 	
+	// *** JSON Routines ***
+	
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -168,6 +172,8 @@ public class CommonLdap {
 	    }
 	}	
 	
+	// *** Logging Routines ****
+	
 	public void printLog(String str)
 	{
 		System.out.println(str);
@@ -184,6 +190,8 @@ public class CommonLdap {
 	{
 		printLog(sMessage);
 	}
+	
+	// ***GitHub routines ***
 	
 	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
@@ -268,6 +276,8 @@ public class CommonLdap {
 		}
 	}
 	
+	// *** Email Handling ****
+	
 	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
         // sets SMTP server properties
 		
@@ -337,6 +347,8 @@ public class CommonLdap {
 	          mex.printStackTrace();
 	       }	      
 	}
+	
+	// *** Basic 2D Array File Processing ***
 	
 	public void setFileAppend(boolean bAppend) {
 		bFileAppend = bAppend;
@@ -578,7 +590,7 @@ public class CommonLdap {
 		return bodyText;
 	}
 
-	// LDAP-related routines
+	// *** LDAP-related routines ***
 	private static void processLDAPAttrs(Attributes attributes, 
 			                             JCaContainer cLDAP,
 			                             boolean isNormalUser) 
@@ -793,7 +805,7 @@ public class CommonLdap {
         } 	
 	}
 	
-// LDAP-related routines
+// *** LDAP-related routines ***
 	
 	public boolean addUserToLDAPGroup(String sDLLDAPUserGroup, 
 			                          String sUserDN)
@@ -1489,5 +1501,295 @@ public class CommonLdap {
 		
 		return bIsActive;
 	} // processProjectReleases
+	
+	
+	// *******************  Harvest Processing Routines *****
+	
+	public boolean removeUserAccessFromHarvestProject(String sID, String sBroker, String sProject, String sPassword, boolean bProcessChanges) {
+		boolean bSuccess = false;
+		String sqlError = "DB2. Unable to execute query.";
+		
+		try {			
+			PreparedStatement pstmt = null; 
+			String sqlStmt;
+			String sJDBC = "";
+			String[] aJDBC = getHarvestJDBCConnections();
+			
+			for (int i=0; sJDBC.isEmpty() && i<aJDBC.length; i++) {
+				if (aJDBC[i].contains(sBroker.toLowerCase())) 
+					sJDBC = aJDBC[i];
+			}
+
+			int nIndex, lIndex;
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			String sURL = sJDBC + "password=" + sPassword+";";
+			if (sID.endsWith("?"))
+				sID=sID.substring(0, sID.lastIndexOf("?"));
+			sID=sID.toLowerCase();
+			sProject=sProject.toUpperCase();
+			
+			Connection conn = DriverManager.getConnection(sURL);
+			
+			List<String> aUserGroups = new ArrayList<String>();
+			
+			sqlError = "SQLServer.  Error retrieving list of user groups for user, "+sID+", on broker, "+sBroker+", for project, "+sProject+".";
+			sqlStmt = 
+					"select distinct usergroupname from harusergroup where usrgrpobjid in "+
+			        "( "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  left outer join harenvironment E on E.envobjid > \'0\' "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and UG.usergroupname = \'Administrator\' "+
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harharvest HA on HA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  left outer join harenvironment E on E.envobjid > \'0\' "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (HA.viewenvironment = \'Y\' or HA.adminuser = \'Y\' or  "+
+			        "         HA.adminenvironment = \'Y\' or HA.adminuser = \'Y\' or "+
+			        "         HA.secureharvest = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harenvironmentaccess EA on EA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harenvironment E on E.envobjid = EA.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (EA.secureaccess = \'Y\' or EA.updateaccess = \'Y\' or "+
+			        "         EA.viewaccess = \'Y\' or EA.executeaccess = \'Y\' or "+
+			        "         EA.updateaccess = \'Y\' or EA.secureaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harstateaccess SA on SA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harstate S on S.stateobjid = SA.stateobjid "+
+			        "  join harenvironment E on E.envobjid = S.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (SA.updateaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "union all "+
+					"  select UG.usrgrpobjid from harusergroup UG "+							
+					"  join harusersingroup UIG on UIG.usrgrpobjid = UG.usrgrpobjid "+
+			        "  join haruser U on U.usrobjid = UIG.usrobjid "+
+			        "  join haruserdata UD on (UD.usrobjid = U.usrobjid and UD.accountdisabled = \'N\') "+
+			        "  join harstateprocessaccess SPA on SPA.usrgrpobjid = UIG.usrgrpobjid "+
+			        "  join harstateprocess SP on SP.processobjid = SPA.processobjid"+
+			        "  join harstate S on S.stateobjid = SP.stateobjid "+
+			        "  join harenvironment E on E.envobjid = S.envobjid "+ 
+			        "  where E.envisactive = \'Y\' "+ 
+			        "    and UPPER(E.environmentname) in (\'"+sProject+"\') "+ 
+			        "    and (SPA.executeaccess = \'Y\' ) "+ 
+			        "    and LOWER(U.username) in (\'"+sID+"\') "+
+			        "    and U.usrobjid in ( "+
+			        "     select U2.usrobjid "+
+			        "	  from harenvironmentaccess EA "+ 
+			        "	  join harusersingroup UIG2 on UIG2.usrgrpobjid = EA.usrgrpobjid "+ 
+			        "	  join harenvironment E2 on E2.envobjid = EA.envobjid "+
+			        "     join haruser U2 on U2.usrobjid = UIG2.usrobjid "+
+			        "     where EA.executeaccess = \'Y\' ) "+
+			        " )";
+			
+			pstmt=conn.prepareStatement(sqlStmt);
+			ResultSet rSet = pstmt.executeQuery();
+			boolean hasPublic = false;
+			
+			while (rSet.next()) {		
+				String sUserGroup = rSet.getString("USERGROUPNAME").trim();
+				if (sUserGroup.equalsIgnoreCase("PUBLIC") )
+					hasPublic = true;
+				aUserGroups.add(sUserGroup);
+			}
+			
+			if (/*!hasPublic &&*/ aUserGroups.size()>0) {
+				String sGroups = ""; 
+				String sGroups2 = "";
+				for (int i=0; i<aUserGroups.size(); i++) {
+					String sUserGroup = aUserGroups.get(i);
+					if (sUserGroup.equalsIgnoreCase("PUBLIC")) continue;
+					if (!sGroups.isEmpty()) {
+						sGroups  += ",";
+						sGroups2 += ",";
+					}
+					sGroups  += "\'"+sUserGroup+"\'";
+					sGroups2 += sUserGroup;
+				}
+				
+				if (!sGroups.isEmpty()) {					
+					if (bProcessChanges && !sGroups.isEmpty()) {
+						sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
+						sqlStmt = "delete from harusersingroup "+
+						          "where usrgrpobjid in "+
+								  " (select usrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
+								  "  and usrobjid in "+
+								  " (select usrobjid from haruser where LOWER(username) in (\'"+sID+"\') ) ";
+	
+						pstmt=conn.prepareStatement(sqlStmt);  
+						int iResult = pstmt.executeUpdate();
+						if (iResult > 0) 
+							bSuccess = true;									
+					}
+					else 
+						bSuccess = true;
+				}
+			}
+			
+			
+			if (aUserGroups.isEmpty() || hasPublic) {	
+				if (bProcessChanges) {					
+					sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
+					sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'Y\' where ACCOUNTDISABLED=\'N\' and USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
+					
+					pstmt=conn.prepareStatement(sqlStmt);  
+					int iResult = pstmt.executeUpdate();
+					if (iResult > 0) 
+						bSuccess = true;
+				}
+				else
+					bSuccess = true;
+			}
+			
+			conn.close();
+			
+		} catch (ClassNotFoundException e) {
+			iReturnCode = 101;
+			printErr(sqlError);
+			printErr(e.getLocalizedMessage());			
+			System.exit(iReturnCode);
+		} catch (SQLException e) {     
+			iReturnCode = 102;
+			printErr(sqlError);
+			printErr(e.getLocalizedMessage());			
+			System.exit(iReturnCode);
+		}			
+		return bSuccess;
+	}
+	
+	public String[] getHarvestJDBCConnections() {
+		String[] cscrBrokers = 
+		{						
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr001;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr003;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr004;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr005;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr007;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr009;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr101;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr102;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr104;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr105;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr106;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr108;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr109;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr110;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr111;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr112;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr113;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr201;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr402;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr403;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			//"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr501;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			//"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr502;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr503;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr504;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr601;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr602;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr603;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			//"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr604;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr605;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr606_12.5;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			//"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr607;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr608;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr609;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr610;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr611;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr612;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr616;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr617;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr618;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr619;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr620;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr621;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr622;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr623;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr624;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr625;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr626;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr701;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr702;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr703;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr704;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr706;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr707;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr708;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",			
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr709;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",			
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr801;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr802;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr803;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr804;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr805;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr806;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr807;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr808;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr809;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr810;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr811;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr901;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr902;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr903;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr904;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr905;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr906;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr907;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr911;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr911-a;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr912;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr913;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr914;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr917;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr919;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr920;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr921;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr922;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr924;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr925;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr927;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr929;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",			
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1001;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1002;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1101;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1102;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1103;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1201;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1203;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1301;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			//"jdbc:sqlserver://L1AGUSDB004P-1;databaseName=cscr1302;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1303;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1304;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1305;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1306;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1307;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1308;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1309;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
+			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1400;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;"
+		};
+		
+		return cscrBrokers;
+	}
 	
 } //end of class definition

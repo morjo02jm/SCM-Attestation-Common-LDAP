@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="json.jar"/>
 	<classpathentry kind="lib" path="C:/CACSCR/RTC Utils/jsoup-1.10.3.jar"/>
 	<classpathentry kind="lib" path="C:/CACSCR/RTC Utils/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="sqljdbc4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
