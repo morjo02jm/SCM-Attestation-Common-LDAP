@@ -1635,9 +1635,9 @@ public class CommonLdap {
 						sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
 						sqlStmt = "delete from harusersingroup "+
 						          "where usrgrpobjid in "+
-								  " (select harusrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
+								  " (select usrgrpobjid from harusergroup where usergroupname in ("+sGroups+") ) "+
 								  "  and usrobjid in "+
-								  " (select harusrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
+								  " (select usrobjid from harusers where LOWER(username) in (\'"+sID+"\') ) ";
 	
 						pstmt=conn.prepareStatement(sqlStmt);  
 						int iResult = pstmt.executeUpdate();
