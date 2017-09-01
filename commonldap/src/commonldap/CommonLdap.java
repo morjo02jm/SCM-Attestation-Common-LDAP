@@ -1294,6 +1294,7 @@ public class CommonLdap {
 					case "mainframe":
 					default: // mainframe
 						bDoit = cContacts.getString("ENDEVOR_PRODUCT", iIndex).equalsIgnoreCase("null") &&
+						       !sLocation.isEmpty() &&
 						       !cContacts.getString("SRC_RESOURCES", iIndex).isEmpty();
 						sProduct  = cContacts.getString("PROD_NAME", iIndex).replace("\"", "");
 						sLocation = sLocation.replace("\"", "");
