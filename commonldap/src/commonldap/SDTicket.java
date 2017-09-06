@@ -20,6 +20,7 @@ public class SDTicket {
     private String password = "S6mb2hT*gw";
     private String sCSMLandscape = "csmstaging";
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
+    private String requestorName = "faudo01";
     
 	public SDTicket(String sLandscape) {
 		switch (sLandscape.toLowerCase()) {
@@ -39,9 +40,14 @@ public class SDTicket {
 	}
 
 
-    public String serviceTicket(String ticketDescription, String descriptionLong, String requesterName, CommonLdap frame) {
-        String resp = null;
+    public String serviceTicket(String ticketDescription, String descriptionLong, String sGroup, String sRequestor, CommonLdap frame) {
+        String resp = "";
         String payload = "";
+        if (!sRequestor.isEmpty())
+        	requestorName = sRequestor.trim();
+        if (!sGroup.isEmpty())
+        	assignedToGroupName = sGroup.trim();
+        
         payload += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\"> ";
         payload += "    <soapenv:Header/> ";
         payload += "    <soapenv:Body> ";
@@ -56,7 +62,7 @@ public class SDTicket {
         payload += "            <wrap:srqBean> ";
         payload += "                <xsd:description_long>" + descriptionLong + "</xsd:description_long> ";
         payload += "                <xsd:assigned_to_group_name>" + assignedToGroupName + "</xsd:assigned_to_group_name> ";
-        payload += "                <xsd:requester_name>" + requesterName + "</xsd:requester_name> ";
+        payload += "                <xsd:requester_name>" + requestorName + "</xsd:requester_name> ";
         payload += "                <xsd:ticket_description>" + ticketDescription + "</xsd:ticket_description>  ";
         payload += "            </wrap:srqBean> ";
         payload += "        </wrap:logServiceRequest> ";
