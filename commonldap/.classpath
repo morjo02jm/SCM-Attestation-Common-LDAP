@@ -8,10 +8,9 @@
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/db2jcc_license_cu.jar"/>
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/javax.mail.jar"/>
 	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/junit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/faudo01/eclipse3.5.1/workspace/ccollabldap/ccollabldap/sqljdbc.jar"/>
-	<classpathentry kind="lib" path="json.jar"/>
-	<classpathentry kind="lib" path="C:/CACSCR/RTC Utils/jsoup-1.10.3.jar"/>
-	<classpathentry kind="lib" path="C:/CACSCR/RTC Utils/gson-2.6.2.jar"/>
-	<classpathentry kind="lib" path="sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/json.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/jsoup-1.10.3.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
