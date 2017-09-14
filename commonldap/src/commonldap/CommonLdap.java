@@ -634,6 +634,70 @@ public class CommonLdap {
 	}
 
 	// *** LDAP-related routines ***
+	
+	public void readLDAPEntry(JCaContainer cUsers, JCaContainer cLDAP, String sID, boolean bGroup, boolean bRecurse, boolean bForceGeneric) {
+		if (bGroup) {
+			String sUsers = expandDistributionListforId(sID, cLDAP);
+			
+			while (!sUsers.isEmpty()) {
+				int nIndex = sUsers.indexOf(';');
+				String sReportID = sUsers;
+				if (nIndex > 0) {
+					sReportID = sUsers.substring(0, nIndex);
+					sUsers = sUsers.substring(nIndex+1);
+				}
+				else
+					sUsers = "";
+
+				int cIndex = cUsers.getKeyElementCount("id");
+				cUsers.setString("pmfkey", sReportID, cIndex);					
+			}
+		}
+		else {
+			int[] iLDAP = cLDAP.find("sAMAccountName", sID);	
+			if (iLDAP.length > 0) {
+				boolean bUser = cLDAP.getString("haspmfkey", iLDAP[0]).equalsIgnoreCase("y");
+				if (bUser) {
+					if (bRecurse) {
+						String sDirectReports = cLDAP.getString("directReports", iLDAP[0]);
+						while (!sDirectReports.isEmpty()) {
+							int nIndex = sDirectReports.indexOf(';');
+							String sReportID = sDirectReports;
+							if (nIndex > 0) {
+								sReportID = sDirectReports.substring(0, nIndex);
+								sDirectReports = sDirectReports.substring(nIndex+1);
+							}
+							else
+								sDirectReports = "";
+							
+							int[] iLDAP2 = cLDAP.find("sAMAccountName", sReportID);
+							if (iLDAP2.length >0 && cLDAP.getString("haspmfkey", iLDAP2[0]).equalsIgnoreCase("y")) {
+								readLDAPEntry(cUsers, cLDAP, sReportID, false, true, false);
+							} // only interested in non-generic direct Reports
+						}
+					}
+					int cIndex = cUsers.getKeyElementCount("pmfkey");
+					cUsers.setString("pmfkey", sID, cIndex);					
+				} // user account
+				else { 
+					String sManagerID = cLDAP.getString("manager", iLDAP[0]);
+					if (sManagerID.isEmpty() && !bForceGeneric)
+						bForceGeneric = true;
+					
+					if (!sManagerID.isEmpty() || bForceGeneric) {
+					    int[] iLDAP2 = cLDAP.find("sAMAccountName", sManagerID);
+						if (iLDAP2.length > 0 || bForceGeneric) {
+							int cIndex = cUsers.getKeyElementCount("pmfkey");
+							cUsers.setString("pmfkey", sID, cIndex);
+						}
+					}
+				} // generic account
+			}			
+		}
+	}
+	
+	
+	
 	private static void processLDAPAttrs(Attributes attributes, 
 			                             JCaContainer cLDAP,
 			                             boolean isNormalUser) 
