@@ -261,26 +261,24 @@ public class CommonLdap {
 	public void readGitHubInstanceUsers(JCaContainer cUsers, String sAccessToken, String sType) {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
 		
-		int nPage = 1;
-		int nUsers = 0;
 		int iIndex = 0;
+		int nLast = 1;
+		int length = 0;
 		
 		do {
-			nUsers = 0;
 			// Run the API to get the organizations repositories.
-			String sURL = "https://"+ sAPI + "/users?access_token="+sAccessToken+"&&page="+nPage+"&&per_page=100";
+			String sURL = "https://"+ sAPI + "/users?access_token="+sAccessToken+(nLast>1?"&&since="+nLast:"");
 			
 			try {		
 				JSONArray ja = readJsonArrayFromUrl(sURL);
+				length = ja.length();
 				for (int j=0; j<ja.length(); j++) {
 					try {
 						String sNameJSON = ja.getJSONObject(j).getString("login");
 						String sLdapJSON = ja.getJSONObject(j).getString("ldap_dn");
 						
-						cUsers.setString("login", sNameJSON, iIndex++);
+						cUsers.setString("login", sNameJSON, iIndex);
 						cUsers.setString("ldap_dn", sLdapJSON, iIndex++);
-						
-						nUsers++;
 					}
 					catch (JSONException e) {
 						// skipping entries with no ldap counterpart
@@ -297,8 +295,8 @@ public class CommonLdap {
 			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}	
-			nPage++;
-		} while (nUsers>=100);	
+			nLast += length;
+		} while (length>0);	
 	}
 
 	
