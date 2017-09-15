@@ -194,7 +194,22 @@ public class CommonLdap {
 	// ***GitHub routines ***
 	
 	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
-		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
 		String sURL = "https://"+ sAPI + "/orgs/"+ sOrg + "/teams?access_token="+sAccessToken+"&&per_page=1000";
 		
 		int iIndex = cTeam.getKeyElementCount("Organization"); // was 0
@@ -223,7 +238,22 @@ public class CommonLdap {
 	} //readGitHubOrganizationTeams
 	
 	public void readGitHubOrganizationRepositories(String sOrg, JCaContainer cRepo, String sAccessToken, String sType) {
-		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
 		
 		int nPage = 1;
 		int nRepos = 0;
@@ -259,7 +289,22 @@ public class CommonLdap {
 	}
 	
 	public void readGitHubInstanceUsers(JCaContainer cUsers, String sAccessToken, String sType) {
-		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
 		
 		int iIndex = 0;
 		int nLast = 1;
@@ -302,7 +347,23 @@ public class CommonLdap {
 	
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
-		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
+		
 		String sCommand = "curl -X \"DELETE\" -H \"Authorization: token "+sAccessToken+
 				          "\"  https://"+sAPI+"/orgs/"+sOrg+"/memberships/"+sID;
 		try {
