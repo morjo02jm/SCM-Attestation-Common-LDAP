@@ -257,6 +257,49 @@ public class CommonLdap {
 			nPage++;
 		} while (nRepos>=100);	
 	}
+	
+	public void readGitHubInstanceUsers(JCaContainer cUsers, String sAccessToken, String sType) {
+		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
+		
+		int iIndex = 0;
+		int nLast = 1;
+		int length = 0;
+		
+		do {
+			// Run the API to get the organizations repositories.
+			String sURL = "https://"+ sAPI + "/users?access_token="+sAccessToken+(nLast>1?"&&since="+nLast:"");
+			
+			try {		
+				JSONArray ja = readJsonArrayFromUrl(sURL);
+				length = ja.length();
+				for (int j=0; j<ja.length(); j++) {
+					try {
+						String sNameJSON = ja.getJSONObject(j).getString("login");
+						String sLdapJSON = ja.getJSONObject(j).getString("ldap_dn");
+						
+						cUsers.setString("login", sNameJSON, iIndex);
+						cUsers.setString("ldap_dn", sLdapJSON, iIndex++);
+					}
+					catch (JSONException e) {
+						// skipping entries with no ldap counterpart
+					}
+				}
+			}
+			catch (IOException e) {
+				iReturnCode = 2;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}
+			catch (JSONException e) {
+				iReturnCode = 3;
+			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}	
+			nLast += length;
+		} while (length>0);	
+	}
+
+	
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
 		String sAPI = (sType.equalsIgnoreCase("ghe"))? "github-isl-01.ca.com/api/v3":"api.github.com";
@@ -591,6 +634,70 @@ public class CommonLdap {
 	}
 
 	// *** LDAP-related routines ***
+	
+	public void readLDAPEntry(JCaContainer cUsers, JCaContainer cLDAP, String sID, boolean bGroup, boolean bRecurse, boolean bForceGeneric) {
+		if (bGroup) {
+			String sUsers = expandDistributionListforId(sID, cLDAP);
+			
+			while (!sUsers.isEmpty()) {
+				int nIndex = sUsers.indexOf(';');
+				String sReportID = sUsers;
+				if (nIndex > 0) {
+					sReportID = sUsers.substring(0, nIndex);
+					sUsers = sUsers.substring(nIndex+1);
+				}
+				else
+					sUsers = "";
+
+				int cIndex = cUsers.getKeyElementCount("id");
+				cUsers.setString("pmfkey", sReportID, cIndex);					
+			}
+		}
+		else {
+			int[] iLDAP = cLDAP.find("sAMAccountName", sID);	
+			if (iLDAP.length > 0) {
+				boolean bUser = cLDAP.getString("haspmfkey", iLDAP[0]).equalsIgnoreCase("y");
+				if (bUser) {
+					if (bRecurse) {
+						String sDirectReports = cLDAP.getString("directReports", iLDAP[0]);
+						while (!sDirectReports.isEmpty()) {
+							int nIndex = sDirectReports.indexOf(';');
+							String sReportID = sDirectReports;
+							if (nIndex > 0) {
+								sReportID = sDirectReports.substring(0, nIndex);
+								sDirectReports = sDirectReports.substring(nIndex+1);
+							}
+							else
+								sDirectReports = "";
+							
+							int[] iLDAP2 = cLDAP.find("sAMAccountName", sReportID);
+							if (iLDAP2.length >0 && cLDAP.getString("haspmfkey", iLDAP2[0]).equalsIgnoreCase("y")) {
+								readLDAPEntry(cUsers, cLDAP, sReportID, false, true, false);
+							} // only interested in non-generic direct Reports
+						}
+					}
+					int cIndex = cUsers.getKeyElementCount("pmfkey");
+					cUsers.setString("pmfkey", sID, cIndex);					
+				} // user account
+				else { 
+					String sManagerID = cLDAP.getString("manager", iLDAP[0]);
+					if (sManagerID.isEmpty() && !bForceGeneric)
+						bForceGeneric = true;
+					
+					if (!sManagerID.isEmpty() || bForceGeneric) {
+					    int[] iLDAP2 = cLDAP.find("sAMAccountName", sManagerID);
+						if (iLDAP2.length > 0 || bForceGeneric) {
+							int cIndex = cUsers.getKeyElementCount("pmfkey");
+							cUsers.setString("pmfkey", sID, cIndex);
+						}
+					}
+				} // generic account
+			}			
+		}
+	}
+	
+	
+	
 	private static void processLDAPAttrs(Attributes attributes, 
 			                             JCaContainer cLDAP,
 			                             boolean isNormalUser) 
@@ -979,7 +1086,7 @@ public class CommonLdap {
 						               JCaContainer cDelUsers,
 						               String DLLDAPUserGroup,
 						               String sAuthName) 
-{
+	{
 
 	printLog("Processing: " + sAuthName);
 	
