@@ -719,8 +719,16 @@ public class CommonLdap {
 				else
 					sUsers = "";
 
-				int cIndex = cUsers.getKeyElementCount("id");
-				cUsers.setString("pmfkey", sReportID, cIndex);					
+				int[] iGHE = {};
+				
+				if (cGHEUsers!=null) {
+					iGHE = cGHEUsers.find("pmfkey", sReportID);
+				}
+
+				if (iGHE.length==0) {
+					int cIndex = cUsers.getKeyElementCount("id");
+					cUsers.setString("pmfkey", sReportID, cIndex);										
+				}
 			}
 		}
 		else {
