@@ -322,7 +322,12 @@ public class CommonLdap {
 						String sNameJSON = ja.getJSONObject(j).getString("login");
 						String sLdapJSON = ja.getJSONObject(j).getString("ldap_dn");
 						
+						int beginIndex = Integer.max(sLdapJSON.indexOf("cn=")+3,sLdapJSON.indexOf("CN=")+3);
+						int endIndex=sLdapJSON.indexOf(',');
+						String sID = sLdapJSON.substring(beginIndex, endIndex);
+						
 						cUsers.setString("login", sNameJSON, iIndex);
+						cUsers.setString("pmfkey", sID, iIndex);
 						cUsers.setString("ldap_dn", sLdapJSON, iIndex++);
 					}
 					catch (JSONException e) {
@@ -697,6 +702,10 @@ public class CommonLdap {
 	// *** LDAP-related routines ***
 	
 	public void readLDAPEntry(JCaContainer cUsers, JCaContainer cLDAP, String sID, boolean bGroup, boolean bRecurse, boolean bForceGeneric) {
+		readLDAPEntry(cUsers, cLDAP, sID, bGroup, bRecurse, bForceGeneric, null);
+	}
+	
+	public void readLDAPEntry(JCaContainer cUsers, JCaContainer cLDAP, String sID, boolean bGroup, boolean bRecurse, boolean bForceGeneric, JCaContainer cGHEUsers) {
 		if (bGroup) {
 			String sUsers = expandDistributionListforId(sID, cLDAP);
 			
@@ -715,8 +724,13 @@ public class CommonLdap {
 			}
 		}
 		else {
-			int[] iLDAP = cLDAP.find("sAMAccountName", sID);	
-			if (iLDAP.length > 0) {
+			int[] iLDAP = cLDAP.find("sAMAccountName", sID);
+			int[] iGHE = {};
+			
+			if (cGHEUsers!=null) {
+				iGHE = cGHEUsers.find("sAMAccountName", sID);
+			}
+			if (iLDAP.length > 0 && iGHE.length==0) {
 				boolean bUser = cLDAP.getString("haspmfkey", iLDAP[0]).equalsIgnoreCase("y");
 				if (bUser) {
 					if (bRecurse) {
