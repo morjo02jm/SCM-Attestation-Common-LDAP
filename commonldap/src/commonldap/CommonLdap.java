@@ -728,7 +728,7 @@ public class CommonLdap {
 			int[] iGHE = {};
 			
 			if (cGHEUsers!=null) {
-				iGHE = cGHEUsers.find("sAMAccountName", sID);
+				iGHE = cGHEUsers.find("pmfkey", sID);
 			}
 			if (iLDAP.length > 0 && iGHE.length==0) {
 				boolean bUser = cLDAP.getString("haspmfkey", iLDAP[0]).equalsIgnoreCase("y");
