@@ -349,6 +349,62 @@ public class CommonLdap {
 		} while (length>0);	
 	}
 
+	public void readGitHubSuspendedUsers(JCaContainer cUsers, String sAccessToken, String sType) {
+		String sAPI = "";
+		int connecting = 0;
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
+		
+		boolean bDone = false;
+		int cIndex = 0;
+		
+		while (connecting<5 && !bDone) {	
+			try {
+		        String command = "curl -k -L -u toolsadmin:" + sAccessToken + "https://"+sAPI+"/stafftools/reports/suspended_users.csv";
+		        Process p = Runtime.getRuntime().exec(command);
+		        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		        boolean isHeader = true;
+		        // reading the output from the command
+		        String s;
+		        while ((s = stdInput.readLine()) != null) {
+		            if (!"".equals(s.trim())) {
+		                // below are the headers
+		                // created_at,id,login,email,role,suspended?,last_logged_ip,repos,ssh_keys,org_memberships,dormant?,last_active,raw_login,2fa_enabled?
+		
+		                // ignore the first line, as it is a header
+		            	bDone = true;
+		                if (!isHeader) {
+	                        cUsers.setString("login", s.split(",")[2], cIndex);// login header
+	                        String sID = s.split(",")[12];
+	                        String sLDAP = "CN="+sID+",ou=users,ou=north america,dc=ca,dc=com";
+	                        cUsers.setString("ldap_dn", sLDAP, cIndex);
+	                        cUsers.setString("pmfkey", sID, cIndex++);// rawlogin header
+		               }
+		               isHeader = false;
+		            }
+		        }
+			}
+			catch (IOException e) {
+				iReturnCode = 2;
+			    printErr("Couldn't read user report: "+e.getLocalizedMessage());			
+			    System.exit(iReturnCode);						
+			}
+	        connecting++;
+		}
+	}
 	
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
