@@ -373,7 +373,7 @@ public class CommonLdap {
 		
 		while (connecting<5 && !bDone) {	
 			try {
-		        String command = "curl -k -L -u toolsadmin:" + sAccessToken + "https://"+sAPI+"/stafftools/reports/suspended_users.csv";
+		        String command = "curl -k -L -u toolsadmin:" + sAccessToken + " https://"+sAPI+"/stafftools/reports/suspended_users.csv";
 		        Process p = Runtime.getRuntime().exec(command);
 		        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		        boolean isHeader = true;
