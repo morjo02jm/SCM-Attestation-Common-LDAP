@@ -898,7 +898,7 @@ public class CommonLdap {
 	} // end ProcessLDAPRegion
 	
 	
-// Encrption/Decryption	
+// Encryption/Decryption	
 	public String AESEncrypt(String sDecrypted) {
 		String sEncrypted = "";
 		try {
