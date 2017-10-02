@@ -33,7 +33,7 @@ public class SDTicket {
 			
 		case "production":
 			username = "bsgautomation@ca.com";
-			password = "S6mb2hT*gw";
+			password = "";
 			sCSMLandscape = "csms3";
 			break;
 		}
@@ -68,47 +68,50 @@ public class SDTicket {
         payload += "        </wrap:logServiceRequest> ";
         payload += "    </soapenv:Body> ";
         payload += "</soapenv:Envelope>";
+        
+        if (!password.isEmpty()) {
+            try {
+                URL _url = new URL("https://"+sCSMLandscape+".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/");
+                HttpURLConnection con = (HttpURLConnection) _url.openConnection();
+                con.setRequestProperty("Content-Type", "application/xop+xml;charset=UTF-8;action=\"urn:logServiceRequest\"");
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                con.setRequestMethod("POST");
 
-        try {
-            URL _url = new URL("https://"+sCSMLandscape+".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/");
-            HttpURLConnection con = (HttpURLConnection) _url.openConnection();
-            con.setRequestProperty("Content-Type", "application/xop+xml;charset=UTF-8;action=\"urn:logServiceRequest\"");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setRequestMethod("POST");
+                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+                wr.writeBytes(payload);
+                wr.flush();
+                wr.close();
 
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.writeBytes(payload);
-            wr.flush();
-            wr.close();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer sb = null;
-            while ((inputLine = in.readLine()) != null) {
-                if (sb == null) {
-                    sb = new StringBuffer();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer sb = null;
+                while ((inputLine = in.readLine()) != null) {
+                    if (sb == null) {
+                        sb = new StringBuffer();
+                    }
+                    sb.append(inputLine);
                 }
-                sb.append(inputLine);
-            }
-            in.close();
-            System.out.println(sb);
-            
-            String response = sb.toString().split("apache.org>")[1].split("--MIMEBoundary")[0];
-            Document doc = Jsoup.parse(response);
-            String text = doc.getElementsByTag("ax254:responseText").text();
-            int cIndex = text.indexOf("}]");
-            if (cIndex >= 0)
-            	text=text.substring(0, cIndex+2);
-            JsonParser jsonparser = new JsonParser();
-            JsonElement jo = jsonparser.parse(text);
-            JsonArray arr = jo.getAsJsonArray();
-            JsonObject je = (JsonObject)arr.get(0);
-            frame.printLog(je.get("ticket_identifier").getAsString());
-            resp = je.get("ticket_identifier").getAsString();
-        } catch (Exception e) {
-            frame.printErr(e.getStackTrace().toString());
+                in.close();
+                System.out.println(sb);
+                
+                String response = sb.toString().split("apache.org>")[1].split("--MIMEBoundary")[0];
+                Document doc = Jsoup.parse(response);
+                String text = doc.getElementsByTag("ax254:responseText").text();
+                int cIndex = text.indexOf("}]");
+                if (cIndex >= 0)
+                	text=text.substring(0, cIndex+2);
+                JsonParser jsonparser = new JsonParser();
+                JsonElement jo = jsonparser.parse(text);
+                JsonArray arr = jo.getAsJsonArray();
+                JsonObject je = (JsonObject)arr.get(0);
+                frame.printLog(je.get("ticket_identifier").getAsString());
+                resp = je.get("ticket_identifier").getAsString();
+            } catch (Exception e) {
+                frame.printErr(e.getStackTrace().toString());
+            }        	
         }
+
         return resp;
     }
 }
