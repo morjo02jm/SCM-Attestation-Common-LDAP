@@ -1053,10 +1053,10 @@ public class CommonLdap {
 	
 // *** LDAP-related routines ***
 	public void clearLDAPGroup(String sDLLDAPUserGroup, JCaContainer cUsers) {
-		for (int i=0; i<cUsers.getKeyElementCount("pmfkey"); i++) {
-			String sDN = cUsers.getString("ldap_dn", i);
+		for (int i=0; i<cUsers.getKeyElementCount("dn"); i++) {
+			String sDN = cUsers.getString("dn", i);
 			if (removeUserFromLDAPGroup(sDLLDAPUserGroup, sDN)) {
-				printLog(">>>User (deactive): "+sDN);															
+				printLog(">>>User (deactivate): "+sDN);															
 			}
 		}
 	}
