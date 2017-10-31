@@ -1510,6 +1510,7 @@ public class CommonLdap {
 		
 		for (int iIndex=0; iIndex<cContacts.getKeyElementCount("PROD_NAME"); iIndex++) {
 			boolean bActive = true;
+			boolean bExempt = false;
 			if (cContacts.getString("SRC_MNGMT_TOOL", iIndex).contains(sApplication) ||
 				sApplication.equalsIgnoreCase("mainframe")) {
 				switch(cContacts.getString("PROD_STAT", iIndex).toLowerCase()) {
@@ -1517,6 +1518,9 @@ public class CommonLdap {
 				case "retired":
 				case "inactive":	
 					bActive = false;
+					// drop through
+				case "exempt":
+					bExempt = true;
 					// drop through
 				case "active":
 				case "stabilized":
@@ -1600,7 +1604,7 @@ public class CommonLdap {
 						cApplicationContacts.setString("Product",  sProduct, nIndex);
 						cApplicationContacts.setString("Release",  sRelease, nIndex);
 						cApplicationContacts.setString("Location", sLocation, nIndex);
-						cApplicationContacts.setString("Active", bActive? "Y":"N", nIndex);
+						cApplicationContacts.setString("Active", bActive?(bExempt? "E":"Y"):"N", nIndex);
 						cApplicationContacts.setString("Approver", sApprovers, nIndex);
 						switch (sApplication.toLowerCase()) {
 						case "github":
