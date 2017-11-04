@@ -2,9 +2,16 @@ package commonldap;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +21,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import gvjava.org.json.JSONObject;
+
 public class SDTicket {
 
     private String username = "bsgautomation@ca.com";
@@ -21,97 +30,192 @@ public class SDTicket {
     private String sCSMLandscape = "csmstaging";
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
     private String requestorName = "faudo01";
-    
-	public SDTicket(String sLandscape) {
-		switch (sLandscape.toLowerCase()) {
-		case "test":
-		default:
-			username = "bsgautomation@ca.com";
-			password = "S6mb2hT*gw";
-			sCSMLandscape = "csmstaging";
-			break;
-			
-		case "production":
-			username = "bsgautomation@ca.com";
-			password = "";
-			sCSMLandscape = "csms3";
-			break;
-		}
-	}
 
+    public SDTicket(String sLandscape) {
+        switch (sLandscape.toLowerCase()) {
+        case "test":
+        default:
+            username = "bsgautomation@ca.com";
+            password = "S6mb2hT*gw";
+            sCSMLandscape = "csmstaging";
+            break;
 
+        case "production":
+            username = "bsgautomation@ca.com";
+            password = "";
+            sCSMLandscape = "csms3";
+            break;
+        }
+    }
+
+    @SuppressWarnings("static-access")
     public String serviceTicket(String ticketDescription, String descriptionLong, String sGroup, String sRequestor, CommonLdap frame) {
         String resp = "";
-        String payload = "";
+
         if (!sRequestor.isEmpty())
-        	requestorName = sRequestor.trim();
+            requestorName = sRequestor.trim();
         if (!sGroup.isEmpty())
-        	assignedToGroupName = sGroup.trim();
-        
-        payload += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\"> ";
-        payload += "    <soapenv:Header/> ";
-        payload += "    <soapenv:Body> ";
-        payload += "        <wrap:logServiceRequest> ";
-        payload += "            <wrap:credentials> ";
-        payload += "                <xsd:userName>" + username + "</xsd:userName> ";
-        payload += "                <xsd:userPassword>" + password + "</xsd:userPassword> ";
-        payload += "            </wrap:credentials> ";
-        payload += "            <wrap:extendedSettings> ";
-        payload += "                <xsd:responseFormat>JSON</xsd:responseFormat> ";
-        payload += "            </wrap:extendedSettings> ";
-        payload += "            <wrap:srqBean> ";
-        payload += "                <xsd:description_long>" + descriptionLong + "</xsd:description_long> ";
-        payload += "                <xsd:assigned_to_group_name>" + assignedToGroupName + "</xsd:assigned_to_group_name> ";
-        payload += "                <xsd:requester_name>" + requestorName + "</xsd:requester_name> ";
-        payload += "                <xsd:ticket_description>" + ticketDescription + "</xsd:ticket_description>  ";
-        payload += "            </wrap:srqBean> ";
-        payload += "        </wrap:logServiceRequest> ";
-        payload += "    </soapenv:Body> ";
-        payload += "</soapenv:Envelope>";
-        
+            assignedToGroupName = sGroup.trim();
+
         if (!password.isEmpty()) {
             try {
-                URL _url = new URL("https://"+sCSMLandscape+".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/");
-                HttpURLConnection con = (HttpURLConnection) _url.openConnection();
-                con.setRequestProperty("Content-Type", "application/xop+xml;charset=UTF-8;action=\"urn:logServiceRequest\"");
-                con.setDoOutput(true);
-                con.setDoInput(true);
-                con.setRequestMethod("POST");
+                String payload = generateServiceRequestPayload(descriptionLong, ticketDescription);
+                String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/";
+                String sb = connectToServiceDesk(url, payload);
 
-                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-                wr.writeBytes(payload);
-                wr.flush();
-                wr.close();
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuffer sb = null;
-                while ((inputLine = in.readLine()) != null) {
-                    if (sb == null) {
-                        sb = new StringBuffer();
-                    }
-                    sb.append(inputLine);
-                }
-                in.close();
-                System.out.println(sb);
-                
-                String response = sb.toString().split("apache.org>")[1].split("--MIMEBoundary")[0];
-                Document doc = Jsoup.parse(response);
+                Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
                 String text = doc.getElementsByTag("ax254:responseText").text();
                 int cIndex = text.indexOf("}]");
                 if (cIndex >= 0)
-                	text=text.substring(0, cIndex+2);
+                    text = text.substring(0, cIndex + 2);
                 JsonParser jsonparser = new JsonParser();
                 JsonElement jo = jsonparser.parse(text);
                 JsonArray arr = jo.getAsJsonArray();
-                JsonObject je = (JsonObject)arr.get(0);
+                JsonObject je = (JsonObject) arr.get(0);
                 frame.printLog(je.get("ticket_identifier").getAsString());
                 resp = je.get("ticket_identifier").getAsString();
             } catch (Exception e) {
                 frame.printErr(e.getStackTrace().toString());
-            }        	
+            }
         }
 
         return resp;
     }
+
+    public Set<String> getActiveTickets() throws IOException {
+        String payload = activeTicketsPayload();
+        String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/";
+        String sb = connectToServiceDesk(url, payload);
+
+        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
+        String text = doc.getElementsByTag("ax286:responseText").text();
+
+        int cIndex = text.indexOf("}]");
+        if (cIndex >= 0)
+            text = text.substring(0, cIndex + 2);
+        JsonParser jsonparser = new JsonParser();
+        JsonElement jo = jsonparser.parse(text);
+        JsonArray arr = jo.getAsJsonArray();
+        Set<String> tickets = null;
+        for (JsonElement ele : arr) {
+            JsonObject json = ele.getAsJsonObject();
+
+            if (json.get("ticket_description").getAsString().contains("Notification of Problematic GitHub") || json.get("ticket_description").getAsString().contains("Notification of Problematic github")) {
+                if (tickets == null) {
+                    tickets = new HashSet<>();
+                }
+                String[] ticketDetails = json.get("ticket_details").getAsString().split("\n");
+                for (String t : ticketDetails) {
+                    tickets.add(t);
+                }
+            }
+        }
+
+        return tickets;
+    }
+
+    private String generateServiceRequestPayload(String descriptionLong, String ticketDescription) {
+        StringBuilder payload = new StringBuilder();
+        payload.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\"> ");
+        payload.append("    <soapenv:Header/> ");
+        payload.append("    <soapenv:Body> ");
+        payload.append("        <wrap:logServiceRequest> ");
+        payload.append("            <wrap:credentials> ");
+        payload.append("                <xsd:userName>" + username + "</xsd:userName> ");
+        payload.append("                <xsd:userPassword>" + password + "</xsd:userPassword> ");
+        payload.append("            </wrap:credentials> ");
+        payload.append("            <wrap:extendedSettings> ");
+        payload.append("                <xsd:responseFormat>JSON</xsd:responseFormat> ");
+        payload.append("            </wrap:extendedSettings> ");
+        payload.append("            <wrap:srqBean> ");
+        payload.append("                <xsd:description_long>" + descriptionLong + "</xsd:description_long> ");
+        payload.append("                <xsd:assigned_to_group_name>" + assignedToGroupName + "</xsd:assigned_to_group_name> ");
+        payload.append("                <xsd:requester_name>" + requestorName + "</xsd:requester_name> ");
+        payload.append("                <xsd:ticket_description>" + ticketDescription + "</xsd:ticket_description>  ");
+        payload.append("            </wrap:srqBean> ");
+        payload.append("        </wrap:logServiceRequest> ");
+        payload.append("    </soapenv:Body> ");
+        payload.append("</soapenv:Envelope>");
+
+        return payload.toString();
+    }
+
+    private String activeTicketsPayload() {
+        StringBuilder payload = new StringBuilder();
+        payload.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\">");
+        payload.append("    <soapenv:Header/>");
+        payload.append("    <soapenv:Body>");
+        payload.append("        <wrap:getSQLQueryResults>");
+        payload.append("            <wrap:credentials>");
+        payload.append("                <xsd:userName>bsgautomation@ca.com</xsd:userName>");
+        payload.append("                <xsd:userPassword>S6mb2hT*gw</xsd:userPassword>");
+        payload.append("            </wrap:credentials>");
+        payload.append("            <wrap:extendedSettings>");
+        payload.append("                <xsd:responseFormat>JSON</xsd:responseFormat>");
+        payload.append("            </wrap:extendedSettings>");
+        payload.append("            <wrap:declareSection></wrap:declareSection>  ");
+        payload.append("            <wrap:sqlSelect>SELECT slice, ticket_id, ticket_description, ticket_details, ticket_status, assigned_to_name, created_by_name, ccti_class FROM vapp_item (NOLOCK) where assigned_to_group_name = '" + assignedToGroupName + "' and ticket_status in ('Active','Queued')  </wrap:sqlSelect>");
+        payload.append("            <wrap:orderByClause></wrap:orderByClause>");
+        payload.append("        </wrap:getSQLQueryResults>");
+        payload.append("    </soapenv:Body>");
+        payload.append("</soapenv:Envelope>");
+
+        return payload.toString();
+    }
+
+    private String connectToServiceDesk(String url, String payload) throws IOException {
+
+        URL _url = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) _url.openConnection();
+        con.setRequestProperty("Content-Type", "application/xop+xml;charset=UTF-8;action=\"urn:logServiceRequest\"");
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestMethod("POST");
+
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(payload);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer sb = null;
+        while ((inputLine = in.readLine()) != null) {
+            if (sb == null) {
+                sb = new StringBuffer();
+            }
+            sb.append(inputLine);
+        }
+        in.close();
+
+        return sb.toString();
+    }
+
+    public static void main(String[] a) {
+        try {
+            SDTicket sd = new SDTicket("");
+            Set<String> existingTickets = sd.getActiveTickets();
+            String[] set_values = new String[] { 
+                    "Organization, ATK, has a contact, bida02@ca.com, that isn't in the CA directory.", 
+                    "Organization, flowdock, has a contact, gel@ca.com, that isn't in the CA directory.", 
+                    "Organization, DevTestSolutions, has a contact, binda02@ca.com, that isn't in the CA directory.", 
+                    "Organization, waffleio, has a contact, support@waffle.io, that isn't in the CA directory." 
+            };
+            Set<String> ticketProblems = new HashSet<String>(Arrays.asList(set_values));
+            System.out.println(existingTickets);
+            List<String> list = new ArrayList<String>(ticketProblems);
+            for (String prbm : list) {
+                if (existingTickets.contains(prbm)) {
+                    ticketProblems.remove(prbm);
+                }
+            }
+            System.out.println("------------------------------");
+            for (String prbm : ticketProblems) {
+                System.out.println(prbm);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
