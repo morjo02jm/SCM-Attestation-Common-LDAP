@@ -191,6 +191,7 @@ public class SDTicket {
         return sb.toString();
     }
 
+/*    
     public static void main(String[] a) {
         try {
             SDTicket sd = new SDTicket("");
@@ -217,5 +218,5 @@ public class SDTicket {
             e.printStackTrace();
         }
     }
-
+*/
 }

@@ -72,13 +72,13 @@ CA Products--Datacom		Active	CSCR/Harvest	null	CSCR805	"[{""PMFKEY"":""behka01""
 CA Products--Easy View / Intraccess		End of Life	CSCR/Harvest	null	CSCR804	"[{""PMFKEY"":""shika01""}]"			shika01		
 CA TechServices CA-AA		Exempt	CSCR/Harvest	null	CSCR1001/CA-AA	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
 CA TechServices CA-DLP		Exempt	CSCR/Harvest	null	CSCR1001/CA-DLP	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
-CA TechServices Clarity Analytics and Reports		Exempt	CSCR/Harvest	null	CSCR1001/Clarity-	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
+CA TechServices Clarity Analytics and Reports		Exempt	CSCR/Harvest	null	CSCR1001/Clarity-	"[{""PMFKEY"":""saisa02""},{""PMFKEY"":""bosar04""}]"		mausi01	saisa02;bosar04		
 CA TechServices ESM		Exempt	CSCR/Harvest	null	CSCR1001/ESM	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
 CA TechServices eTrust		Exempt	CSCR/Harvest	null	CSCR1001/eTrust	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
-CA TechServices GD-PPM		Inactive	CSCR/Harvest	null	CSCR1001/GD_PPM	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
-CA TechServices GD-PWP		Exempt	CSCR/Harvest	null	CSCR1001/GD_PWP	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
-CA TechServices GD-SA		Exempt	CSCR/Harvest	null	CSCR1001/GD_SA	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
-CA TechServices GD-VSA		Exempt	CSCR/Harvest	null	CSCR1001/GD_VSA	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
+CA TechServices GD-PPM		Exempt	CSCR/Harvest	null	CSCR1001/GD_PPM	"[{""PMFKEY"":""saisa02""},{""PMFKEY"":""bosar04""}]"		mausi01	saisa02;bosar04		
+CA TechServices GD-PWP		Exempt	CSCR/Harvest	null	CSCR1001/GD_PWP	"[{""PMFKEY"":""saisa02""},{""PMFKEY"":""bosar04""}]"		mausi01	saisa02;bosar04		
+CA TechServices GD-SA		Exempt	CSCR/Harvest	null	CSCR1001/GD_SA	"[{""PMFKEY"":""saisa02""},{""PMFKEY"":""bosar04""}]"		mausi01	saisa02;bosar04		
+CA TechServices GD-VSA		Exempt	CSCR/Harvest	null	CSCR1001/GD_VSA	"[{""PMFKEY"":""saisa02""},{""PMFKEY"":""bosar04""}]"		mausi01	saisa02;bosar04		
 CA TechServices Gen-DotNet		Exempt	CSCR/Harvest	null	CSCR1001/Gen-	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
 CA TechServices GRCF		Exempt	CSCR/Harvest	null	CSCR1001/GRCF	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
 CA TechServices IM		Exempt	CSCR/Harvest	null	CSCR1001/IM-	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
@@ -541,8 +541,8 @@ SMR		Active	CSCRE/Endevor	SMR		"[{""PMFKEY"":""baljo03""},{""PMFKEY"":""madca02"
 SMR	3.4	Active	PDS	null	MFBUMISC.APCMTL.PL34.+;MFBUMISC.OMMTL.SRC.PL34.+;OMMTL.CSCRE.SMR.PL34.+	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 Snapshot General Services	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	Endevor	DBT	Source resides on DEV DASD packs.;The GA releases of the datasets are stored on DEVR volumes which are tier-1 backed up DASD volumes.   For the pre-beta and BETA releases;the datasets are allocated on DEV volumes which are not part of DR.    When the products are moved into GA;the datasets are moved to the DEVR volumes.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02		
 Snapshot General Services	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	SCLM	null	TGR.PRD+++S.;TGR.HLD+++S.;TGR.BLD+++S.;TGR.INP+++S.;TGR.WRK+++S.;TGR.WK++++S.;ENDB2.MOTM.DBT*	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
-Solution Integrations		Active	CSCR/Harvest	null	CSCR709/scom-catalyst	"[{""PMFKEY"":""bhara20""}]"			bhara20		
-Solution Integrations		Inactive	CSCR/Harvest	null	"CSCR709/bmc,ciscoworks,cloudstack,emc,hp-operationsmanager,hp-bsm,hp-paw,hp-ucmdb,hp-service-manager,hp-system-insight,ibm-netcool,ibm-systems-director,ibm-tec,ibm-tsrm,itm-teps,ibm-tivoli,netapp-sanscreen,nim-common,normalized-service-manager,odbc-jdbc-catalyst,oracle-gridcontrol,sap-hcm-fi,scom-catalyst,servicenow-connector,snmp-generic,vmware-vcloud"	"[{""PMFKEY"":""bhara20""}]"			bhara20		
+Solution Integrations		Active	CSCR/Harvest	null	CSCR709/scom-catalyst	"[{""PMFKEY"":""bhara20""},{""PMFKEY"":""taoyu04""}]"			bhara20;taoyu04		
+Solution Integrations		Inactive	CSCR/Harvest	null	"CSCR709/bmc,ciscoworks,cloudstack,emc,hp-operationsmanager,hp-bsm,hp-paw,hp-ucmdb,hp-service-manager,hp-system-insight,ibm-netcool,ibm-systems-director,ibm-tec,ibm-tsrm,itm-teps,ibm-tivoli,netapp-sanscreen,nim-common,normalized-service-manager,odbc-jdbc-catalyst,oracle-gridcontrol,sap-hcm-fi,servicenow-connector,snmp-generic,vmware-vcloud"	"[{""PMFKEY"":""bhara20""}]"			bhara20		
 Solutions Engineering		Active	GitHub	null	github-isl-01.ca.com/SolutionsEng	"[{""PMFKEY"":""dwyst01""},{""PMFKEY"":""baini01"",""TYPE"":""Repository"",""NAME"":""CSDP""},{""PMFKEY"":""baini01"",""TYPE"":""Repository"",""NAME"":""CSDP1.1""},{""PMFKEY"":""baini01"",""TYPE"":""Repository"",""NAME"":""CSDP-1.2""},{""PMFKEY"":""baini01"",""TYPE"":""Repository"",""NAME"":""MaaS""}]"		mrobi01	dwyst01;baini01		
 Solve CPT	6.1	Stabilized	CSCRE/Endevor;CMS	null	MFBUMISC.NTWRKIT.TAPE+	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN;VMVSE	"[{""location"":""ACCMAINT"",""type"":""DIRECTRY""},{""location"":""ACCMAINT.CPT.CPT520"",""type"":""DIRECTRY""},{""location"":""ACCMAINT.CPT.CPT600"",""type"":""DIRECTRY""},{""location"":""ACCMAINT.CPT.CPT601"",""type"":""DIRECTRY""},{""location"":""ACCMAINT.CPT.CPT610"",""type"":""DIRECTRY""},{""location"":""ACCMAINT.CPT"",""type"":""DIRECTRY""}]"
 Solve:Access	r5.0	Active	Endevor	NETM	GIS Islandia data center	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02		
