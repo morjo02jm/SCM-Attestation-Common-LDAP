@@ -352,7 +352,7 @@ InterTest for CICS	8.5;9.1;Base	Active	CSCRE/Endevor	"INTCI,INTERT"	Mainframe	"[
 InterTest for CICS VSE	4.4;6.0	Active	Librarian	null	AD1DEV.INTERT44.*;AD1DEV.INTERT60.*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN	
 IPC		Active	CSCRE/Endevor	IPC		"[{""PMFKEY"":""abavi01""},{""PMFKEY"":""shuke01""}]"		shuke01	abavi01		
 iTechnology IGateway		Inactive	CSCR/Harvest	null	CSCR707	"[{""PMFKEY"":""kumra10""}]"			kumra10		
-ITPAM Connectors		Inactive	CSCR/Harvest	null	CSCR709/itpam	"[{""PMFKEY"":""bn$ba01""}]"			bn$ba01		
+ITPAM Connectors		Active	CSCR/Harvest	null	"CSCR709/itpam,ITPAM"	"[{""PMFKEY"":""nekma01""}]"		bn$ba01	nekma01		
 JARS		Active	CSCRE/Endevor	JARS		"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01		
 JARS Resource Management for CICS	6.2	Stabilized	CSCRE	null	QCAT.CSCRE.JARSCICS.R62*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 JARS/VSE and JARS/CICS for VSE	r7; r6.2	Active	CMS	null	SFS;Directories:;VSEDEV.JARSCVSE;VSEDEV.JARSVSE	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	VMVSE	"[{""location"":""VSEDEV.JARSCVSE"",""type"":""DIRECTRY""},{""location"":""VSEDEV.JARSVSE"",""type"":""DIRECTRY""}]"
@@ -465,7 +465,7 @@ Plan Analyzer	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Active	Endevor	DBT	Sourc
 Plan Analyzer	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Active	SCLM	null	PPA.PRD+++S.;PPA.HLD+++S.;PPA.BLD+++S.;PPA.INP+++S.;PPA.WRK+++S.;PPA.WK++++S.;ENDB2.MOTM.DBT*	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
 Plan Analyzer Common for DB2	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	Endevor	DBT	Source resides on DEV DASD packs.;The GA releases of the datasets are stored on DEVR volumes which are tier-1 backed up DASD volumes.   For the pre-beta and BETA releases;the datasets are allocated on DEV volumes which are not part of DR.    When the products are moved into GA;the datasets are moved to the DEVR volumes.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02		
 Plan Analyzer Common for DB2	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	SCLM	null	PAS.PRD+++S.;PAS.HLD+++S.;PAS.BLD+++S.;PAS.INP+++S.;PAS.WRK+++S.;PAS.WK++++S.;ENDB2.MOTM.DBT*	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
-Plex	5.1;5.5;6.0;6.1;7.0;7.1;7.2	Inactive	CSCR/Harvest	null	CSCR808	"[{""PMFKEY"":""chera14""},{""PMFKEY"":""paiar01""}]"		dalal01	paiar01		
+Plex	5.1;5.5;6.0;6.1;7.0;7.1;7.2	Active	CSCR/Harvest	null	CSCR808	"[{""PMFKEY"":""paiar01""},{""PMFKEY"":""chera14""}]"		dalal01	paiar01		
 PMA Chargeback	12.5-12.7	Active	CSCRE	null	PMSREST.MOTM.PMACB;PMAREST.MOTM.PMACB125;PMAREST.MOTM.PMACB126;PMAREST.MOTM.PMACB127	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 PMACB		Active	CSCRE/Endevor	PMACB		"[{""PMFKEY"":""wasch01""},{""PMFKEY"":""jambr01""}]"		wasch01; jambr01			
 PMO	4.3;4.4	Active	Endevor	PMO	MFBUMISC.ASX.PMO.+;MFBUMISC.MFPROD.PMO.+;MFBUMISC.ASX.NESAS01.PMO.+;MFPROD.MOTM.PMO.	"[{""PMFKEY"":""baljo03""},{""PMFKEY"":""madca02""}]"		stoda04	baljo03;madca02		
@@ -589,7 +589,7 @@ TCPaccess X.25 Server	v7.0	Active	PDS	null	AUDE0.X25.;AUCM0.FIXREG.*	"[{""PMFKEY
 TDM		Active	CSCRE/Endevor	TDM		"[{""PMFKEY"":""ricar01""},{""PMFKEY"":""mormi08""}]"			ricar01;mormi08		
 TechInfo Publications		Active	CSCR/Harvest	null	CSCR001	"[{""PMFKEY"":""strki04""},{""PMFKEY"":""skopa01""}]"		strki04	skopa01		
 Technical Support Reporting		Inactive	CSCR/Harvest	null	CSCR007	"[{""PMFKEY"":""samap01""}]"			samap01		
-TechStack / MDB		Inactive	CSCR/Harvest	null	CSCR706	"[{""PMFKEY"":""deyar02""}]"			deyar02		
+TechStack / MDB		Active	CSCR/Harvest	null	CSCR706	"[{""PMFKEY"":""palha04""}]"		vensu02	palha04		
 Teleview	4.4	Active	PDS	null	MFBUMISC.TV+;TV.CSCRE+;TV.*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 Telon	5.1	Active	CSCR/Endevor	TELON	MOTM volumes	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"			cafjo01		
 Telon PWS 	4.0;4.1;5.0	Active	CSCR/Harvest	null	CSCR803	"[{""PMFKEY"":""svami01""},{""PMFKEY"":""konda02""}]"		svami01	hopmi01;konda02		
