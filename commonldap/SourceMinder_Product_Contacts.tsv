@@ -55,8 +55,9 @@ C20		End of Life	CSCR/Harvest	null	CSCR619	"[{""PMFKEY"":""ganra08""}]"			ganra0
 CA Access Control		Active	CSCR/Harvest	null	"CSCR402/AC,FLASH,GORDON,HAWKEYE,SC"	"[{""PMFKEY"":""sarav02""},{""PMFKEY"":""matsu04""}]"		matsu04	sarav02		
 CA Access Control Other		Active	CSCR/Harvest	null	CSCR402	"[{""PMFKEY"":""sarav02""},{""PMFKEY"":""matsu04""}]"		matsu04	sarav02		
 CA APIM -Concierge - Orchestrator	r1.0	Inactive	CSCR/Harvest	null	CSCR807	"[{""PMFKEY"":""munbh01""}]"		bhara24	munbh01		
-CA Application Lifecycle Conductor	r12	Inactive	CSCR/Harvest	null	CSCR606_R12.5/ACMEW	"[{""PMFKEY"":""thaka08""}]"			thaka08		
-CA Application Lifecycle Conductor	v17;v18	Inactive	CSCR/Harvest	null	"CSCR606_R12.5/AEECL,AENWS"	"[{""PMFKEY"":""thaka08""}]"			thaka08		
+CA Application Lifecycle Conductor		Inactive	CSCR/Harvest	null	CSCR606_R12.5/ACMEW	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
+CA Application Lifecycle Conductor		Inactive	CSCR/Harvest	null	CSCR606_R12.5/AEECL	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
+CA Application Lifecycle Conductor		Active	CSCR/Harvest	null	CSCR606_R12.5/AENWS	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
 CA CATALYST / USM Connector Project / SSA	1.*2.0;2.5;3.0	Active	CSCR/Harvest	null	CSCR929	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
 CA CATALYST / USM Connector Project / SSA	1.7;trunk	Active	CSCR/Harvest	null	"CSCR709/spectrum-sa,nimsoft"	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
 CA Clarity PPM	13.0;13.1;13.2;13.3;14.1;14.2;14.3;trunk	Inactive	CSCR/Harvest	null	CSCR612	"[{""PMFKEY"":""papgo01""}]"		aruma01	papgo01		
