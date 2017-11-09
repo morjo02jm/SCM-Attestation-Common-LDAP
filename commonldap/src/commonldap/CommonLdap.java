@@ -410,6 +410,39 @@ public class CommonLdap {
 		}
 	}
 	
+	public void removeTerminatedUserFromCollaborators(String sID, String sOrg, String sRepository, String sAccessToken, String sType) {
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
+		
+		String sCommand = "curl -X \"DELETE\" -H \"Authorization: token "+sAccessToken+
+				          "\"  https://"+sAPI+"/repos/"+sOrg+"/"+sRepository+"/collaborators/"+sID;
+		try {
+			Process p = Runtime.getRuntime().exec(sCommand);
+	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));	
+	        //BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        
+	        // read the output from the command
+	        printLog(">>>Removing collaborator access for user: "+ sID +" from repository, "+sRepository+", in organization, "+sOrg+".");
+	        String s;
+	        while ((s = stdInput.readLine()) != null) {
+	        }	
+		} catch (IOException e) {             
+		}		
+	}
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
 		String sAPI = "";
