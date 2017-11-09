@@ -82,7 +82,7 @@ public class SDTicket {
         return resp;
     }
 
-    public Set<String> getActiveTickets() throws IOException {
+    public Set<String> getActiveTickets(String sTicketDescription) throws IOException {
         String payload = activeTicketsPayload();
         String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/";
         String sb = connectToServiceDesk(url, payload);
@@ -100,7 +100,7 @@ public class SDTicket {
         for (JsonElement ele : arr) {
             JsonObject json = ele.getAsJsonObject();
 
-            if (json.get("ticket_description").getAsString().contains("Notification of Problematic GitHub") || json.get("ticket_description").getAsString().contains("Notification of Problematic github")) {
+            if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
                 if (tickets == null) {
                     tickets = new HashSet<>();
                 }
@@ -147,8 +147,8 @@ public class SDTicket {
         payload.append("    <soapenv:Body>");
         payload.append("        <wrap:getSQLQueryResults>");
         payload.append("            <wrap:credentials>");
-        payload.append("                <xsd:userName>bsgautomation@ca.com</xsd:userName>");
-        payload.append("                <xsd:userPassword>S6mb2hT*gw</xsd:userPassword>");
+        payload.append("                <xsd:userName>" + username + "</xsd:userName>");
+        payload.append("                <xsd:userPassword>" + password + "</xsd:userPassword>");
         payload.append("            </wrap:credentials>");
         payload.append("            <wrap:extendedSettings>");
         payload.append("                <xsd:responseFormat>JSON</xsd:responseFormat>");
