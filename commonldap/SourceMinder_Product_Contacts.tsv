@@ -60,7 +60,6 @@ CA Application Lifecycle Conductor		Inactive	CSCR/Harvest	null	CSCR606_R12.5/AEE
 CA Application Lifecycle Conductor		Active	CSCR/Harvest	null	CSCR606_R12.5/AENWS	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
 CA CATALYST / USM Connector Project / SSA	1.*2.0;2.5;3.0	Active	CSCR/Harvest	null	CSCR929	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
 CA CATALYST / USM Connector Project / SSA	1.7;trunk	Active	CSCR/Harvest	null	"CSCR709/spectrum-sa,nimsoft"	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
-CA Clarity PPM	13.0;13.1;13.2;13.3;14.1;14.2;14.3;trunk	Inactive	CSCR/Harvest	null	CSCR612	"[{""PMFKEY"":""papgo01""}]"		aruma01	papgo01		
 CA Clarity PPM Catalyst Connector	r14.2;trunk	Inactive	CSCR/Harvest	null	CSCR709/clarity	"[{""PMFKEY"":""papgo01""},{""PMFKEY"":""yadga02""}]"		aruma01	papgo01		
 CA CMDB		Active	CSCR/Harvest	null	CSCR616/CA-CMDB	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01		
 CA GWT		Active	CSCR/Harvest	null	CSCR618	"[{""PMFKEY"":""mitsa06""}]"			mitsa06		
@@ -316,7 +315,6 @@ GIS - CPQ		Active	CSCR/Harvest	null	CSCR1101/CPQ	"[{""PMFKEY"":""gansu08""}]"			
 GIS - Clarity		Active	CSCR/Harvest	null	CSCR1101/GIS - Clarity	"[{""PMFKEY"":""raydi02""}]"			raydi02		
 GIS - Other		Inactive	CSCR/Harvest	null	CSCR1101	"[{""PMFKEY"":""banma06""}]"			banma06		
 GIS DBA		Inactive	CSCR/Harvest	null	CSCR1103	"[{""PMFKEY"":""kotra06""}]"			kotra06		
-GPO-Translation Services		Inactive	CSCR/Harvest	null	CSCR009	"[{""PMFKEY"":""rajap01""},{""PMFKEY"":""iijku01""}]"			iijku01;rajap01		
 GSS		Active	CSCRE/Endevor	GSS		"[{""PMFKEY"":""davfe01""}]"			davfe01		
 GTS		Active	CSCRE/Endevor	GTS		"[{""PMFKEY"":""davfe01""}]"			davfe01		
 Hardware Interface Service	v1.0;r2.0	Active	Endevor	NETM	GIS Islandia data center	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02		
@@ -354,6 +352,7 @@ InterTest for CICS VSE	4.4;6.0	Active	Librarian	null	AD1DEV.INTERT44.*;AD1DEV.IN
 IPC		Active	CSCRE/Endevor	IPC		"[{""PMFKEY"":""abavi01""},{""PMFKEY"":""shuke01""}]"		shuke01	abavi01		
 iTechnology IGateway		Inactive	CSCR/Harvest	null	CSCR707	"[{""PMFKEY"":""kumra10""}]"			kumra10		
 ITPAM Connectors		Active	CSCR/Harvest	null	"CSCR709/itpam,ITPAM"	"[{""PMFKEY"":""nekma01""}]"		bn$ba01	nekma01		
+Ivy		Active	CSCR/Harvest	null	CSCR612	"[{""PMFKEY"":""vemha04""}]"		vensu02	vemha04		
 JARS		Active	CSCRE/Endevor	JARS		"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01		
 JARS Resource Management for CICS	6.2	Stabilized	CSCRE	null	QCAT.CSCRE.JARSCICS.R62*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 JARS/VSE and JARS/CICS for VSE	r7; r6.2	Active	CMS	null	SFS;Directories:;VSEDEV.JARSCVSE;VSEDEV.JARSVSE	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	VMVSE	"[{""location"":""VSEDEV.JARSCVSE"",""type"":""DIRECTRY""},{""location"":""VSEDEV.JARSVSE"",""type"":""DIRECTRY""}]"
@@ -590,7 +589,7 @@ TCPaccess X.25 Server	v7.0	Active	PDS	null	AUDE0.X25.;AUCM0.FIXREG.*	"[{""PMFKEY
 TDM		Active	CSCRE/Endevor	TDM		"[{""PMFKEY"":""ricar01""},{""PMFKEY"":""mormi08""}]"			ricar01;mormi08		
 TechInfo Publications		Active	CSCR/Harvest	null	CSCR001	"[{""PMFKEY"":""strki04""},{""PMFKEY"":""skopa01""}]"		strki04	skopa01		
 Technical Support Reporting		Inactive	CSCR/Harvest	null	CSCR007	"[{""PMFKEY"":""samap01""}]"			samap01		
-TechStack / MDB		Active	CSCR/Harvest	null	CSCR706	"[{""PMFKEY"":""palha04""}]"		vensu02	palha04		
+TechStack / MDB		Active	CSCR/Harvest	null	CSCR706	"[{""PMFKEY"":""vakmo01""}]"		vensu02	vakmo01		
 Teleview	4.4	Active	PDS	null	MFBUMISC.TV+;TV.CSCRE+;TV.*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 Telon	5.1	Active	CSCR/Endevor	TELON	MOTM volumes	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"			cafjo01		
 Telon PWS 	4.0;4.1;5.0	Active	CSCR/Harvest	null	CSCR803	"[{""PMFKEY"":""svami01""},{""PMFKEY"":""konda02""}]"		svami01	hopmi01;konda02		
@@ -611,6 +610,7 @@ TPX	5.2; 5.3; 5.4	Active	CSCRE/Endevor	"TPX,CATPX"	N/A	"[{""PMFKEY"":""baljo03""
 TPX	5.2; 5.3; 5.4	Active	PDS	null	TPX.CSCRE.CATPX.R53+;TPX.MOTM.*;TPX.CSCRE.CATPX.R52+	"[{""PMFKEY"":""baljo03""},{""PMFKEY"":""madca02""}]"		jambr01	baljo03;madca02	DSN	
 TPX VM	4	Active	PDS	null	MFBUMISC.NVI.NVI40+;MFBUMISC.NVI.TPX+	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""jambr01""}]"		cafjo01;jambr01		DSN	
 Transit	3.1	Active	CSCRE/Endevor	null	ASM.TRANS*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN	
+Translation Center		Active	CSCR/Harvest	null	CSCR009	"[{""PMFKEY"":""iijku01""}]"			iijku01		
 TRILOGexpert Performance Desktop		Active	CSCR/Harvest	null	CSCR801/Trilog	"[{""PMFKEY"":""dubmi01""}]"		dubmi01			
 TSO/MON	6.2	End of Life	PDS	null	MFBUMISC.MFPROD.TSOMON.*;MFBUMISC.TSOMON.*;MFPROD.TMON.;MFPROD.TSOMON.;TSOMON.	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 UCANDU	3.3	Active	CSCRE/Endevor	null	ASMDSK.CSCRE.UCAN.*;ASM.UCANDUL2.*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN	

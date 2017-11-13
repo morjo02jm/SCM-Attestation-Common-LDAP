@@ -31,7 +31,7 @@ public class SDTicket {
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
     private String requestorName = "faudo01";
 
-    public SDTicket(String sLandscape) {
+    public SDTicket(String sLandscape, String sGroup, String sRequestor) {
         switch (sLandscape.toLowerCase()) {
         case "test":
         default:
@@ -46,6 +46,11 @@ public class SDTicket {
             sCSMLandscape = "csms3";
             break;
         }
+        
+        if (!sRequestor.isEmpty())
+            requestorName = sRequestor.trim();
+        if (!sGroup.isEmpty())
+            assignedToGroupName = sGroup.trim();   
     }
 
     @SuppressWarnings("static-access")
@@ -99,6 +104,7 @@ public class SDTicket {
         Set<String> tickets = null;
         for (JsonElement ele : arr) {
             JsonObject json = ele.getAsJsonObject();
+            //System.out.println(json.get("ticket_description").getAsString());
 
             if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
                 if (tickets == null) {

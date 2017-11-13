@@ -484,7 +484,7 @@ public class CommonLdap {
         String tagUL="<ul> ";
         int nCount = 0;
 
-        SDTicket sd = new SDTicket("production");
+        SDTicket sd = new SDTicket("production", sGroup, sRequestor);
         try {
 	        // Check for duplicate tickets
 	        Set<String> existingTickets = sd.getActiveTickets(ticketDescription);
