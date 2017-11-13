@@ -20,6 +20,10 @@ import javax.naming.directory.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+
 import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -86,7 +90,7 @@ public class CommonLdap {
 			FileOutputStream osLogStream = new FileOutputStream(sLogName);
 	        Log = new PrintWriter(osLogStream, true);
 		} catch (FileNotFoundException e) {
-			iReturnCode = 1001;
+			iReturnCode = 101;
 		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 		}
@@ -94,7 +98,7 @@ public class CommonLdap {
 		try {
 			cipher = Cipher.getInstance("AES");			
 		} catch(Exception e) {
-			iReturnCode = 1003;
+			iReturnCode = 102;
 		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
         } 
@@ -123,7 +127,7 @@ public class CommonLdap {
 		} catch (NamingException e) {
 		    // attempt to re-acquire the authentication information
 		    // Handle the error
-			iReturnCode = 1002;
+			iReturnCode = 103;
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);			    
 		}
@@ -226,12 +230,12 @@ public class CommonLdap {
 			}
 		}
 		catch (IOException e) {
-			iReturnCode = 2;
+			iReturnCode = 201;
 		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 		    System.exit(iReturnCode);						
 		}
 		catch (JSONException e) {						
-			iReturnCode = 3;
+			iReturnCode = 202;
 		    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 		    System.exit(iReturnCode);						
 		}									
@@ -275,12 +279,12 @@ public class CommonLdap {
 				}
 			}
 			catch (IOException e) {
-				iReturnCode = 2;
+				iReturnCode = 301;
 			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}
 			catch (JSONException e) {						
-				iReturnCode = 3;
+				iReturnCode = 302;
 			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}	
@@ -336,12 +340,12 @@ public class CommonLdap {
 				}
 			}
 			catch (IOException e) {
-				iReturnCode = 2;
+				iReturnCode = 401;
 			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}
 			catch (JSONException e) {
-				iReturnCode = 3;
+				iReturnCode = 402;
 			    printErr("Couldn't read JSON Object from: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}	
@@ -398,7 +402,7 @@ public class CommonLdap {
 		        }
 			}
 			catch (IOException e) {
-				iReturnCode = 2;
+				iReturnCode = 501;
 			    printErr("Couldn't read user report: "+e.getLocalizedMessage());			
 			    System.exit(iReturnCode);						
 			}
@@ -406,6 +410,39 @@ public class CommonLdap {
 		}
 	}
 	
+	public void removeTerminatedUserFromCollaborators(String sID, String sOrg, String sRepository, String sAccessToken, String sType) {
+		String sAPI = "";
+		switch (sType.toLowerCase()) {
+		case "ghe":
+			sAPI = "github-isl-01.ca.com/api/v3";
+			break;
+		case "ghe-dev":
+			sAPI = "github-isl-dev-01.ca.com/api/v3";
+			break;
+		case "ghe-test":
+			sAPI = "github-isl-test-01.ca.com/api/v3";
+			break;
+		case "github.com":
+		default:
+			sAPI = "api.github.com";
+			break;
+		}
+		
+		String sCommand = "curl -X \"DELETE\" -H \"Authorization: token "+sAccessToken+
+				          "\"  https://"+sAPI+"/repos/"+sOrg+"/"+sRepository+"/collaborators/"+sID;
+		try {
+			Process p = Runtime.getRuntime().exec(sCommand);
+	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));	
+	        //BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        
+	        // read the output from the command
+	        printLog(">>>Removing collaborator access for user: "+ sID +" from repository, "+sRepository+", in organization, "+sOrg+".");
+	        String s;
+	        while ((s = stdInput.readLine()) != null) {
+	        }	
+		} catch (IOException e) {             
+		}		
+	}
 
 	public void removeTerminatedUserFromOrganization(String sID, String sOrg, String sAccessToken, String sType) {
 		String sAPI = "";
@@ -441,46 +478,99 @@ public class CommonLdap {
 		}
 	}
 	
+	// *** CSM Ticket Handling
+	public void createServiceTicket(String sProblems, String ticketDescription, List<String> ticketProblems, String sGroup, String sRequestor) {
+        String prblms = "";
+        String tagUL="<ul> ";
+        int nCount = 0;
+
+        SDTicket sd = new SDTicket("production");
+        try {
+	        // Check for duplicate tickets
+	        Set<String> existingTickets = sd.getActiveTickets(ticketDescription);
+	        if (existingTickets != null) {
+		        List<String> list = new ArrayList(ticketProblems);
+		        for (String prbm : list) {
+		            if (existingTickets.contains(prbm.replace("\n", ""))) {
+		                ticketProblems.remove(prbm);
+		            }
+		        }	        	
+	        }
+        } catch (IOException e) {
+        	iReturnCode = 601;
+        	printErr(e.getStackTrace().toString());
+        	System.exit(iReturnCode);
+        }
+        
+
+        for(String prbm: ticketProblems){
+            prblms += prbm + "\n\n";
+            nCount++;
+            if (nCount%10==0) {
+	        	String ticket = "";
+	            ticket = sd.serviceTicket(ticketDescription, prblms, sGroup, sRequestor, this);
+	        	if (!ticket.isEmpty()) {	
+	        		if (sProblems.isEmpty()) 
+	        			sProblems += tagUL;
+	        		sProblems += "<li>CSM ticket, <b>SRQ#"+ticket+"</b> created.</li>";
+	        	}			            	
+	            prblms="";
+            }
+        }
+        
+        if(!prblms.isEmpty()) {
+        	String ticket = "";
+            ticket = sd.serviceTicket(ticketDescription, prblms, sGroup, sRequestor, this);
+        	if (!ticket.isEmpty()) {	
+        		if (sProblems.isEmpty()) 
+        			sProblems += tagUL;
+        		sProblems += "<li>CSM ticket, <b>SRQ#"+ticket+"</b> created.</li>";
+        	}	
+        }
+		
+	}
+	
 	// *** Email Handling ****
 	
 	public void sendEmailNotification(String email, String subjectText, String bodyText, boolean bHTML) {
-        // sets SMTP server properties
+         // sets SMTP server properties
 		
-	     // Recipient's email ID needs to be mentioned.
-	      String to = email;
-	      // Sender's email ID needs to be mentioned
-	      String from = "ToolsSolutionsCommunications@ca.com";
-	      String include = sBCC ;
-	      // Assuming you are sending email from localhost
-	      String host = "mail.ca.com";
-	      // Get system properties
-	      Properties properties = System.getProperties();
-	      // Setup mail server
-	      properties.setProperty("mail.smtp.host", host);
-	      // Get the default Session object.
-	      Session session = Session.getDefaultInstance(properties);	
-	      
-	      try{
-	          // Create a default MimeMessage object.
-	          MimeMessage message = new MimeMessage(session);
-
-	          // Set From: header field of the header.
-	          message.setFrom(new InternetAddress(from));
-
-	          // Set To: header field of the header.
-	          String recipient = to;
-	          String[] recipientList = recipient.split(";");
-	          InternetAddress[] recipientAddress = new InternetAddress[recipientList.length];
-	          int counter = 0;
-	          for (String recip : recipientList) {
-	              recipientAddress[counter] = new InternetAddress(recip.trim());
-	              counter++;
-	          }
-	          message.setRecipients(Message.RecipientType.TO, recipientAddress);
-
-	          // Set To: header field of the header.
-	          if (!include.isEmpty()) {
-	        	  //message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
+		 // Recipient's email ID needs to be mentioned.
+		  String to = email;
+		  // Sender's email ID needs to be mentioned
+		  String from = "ToolsSolutionsCommunications@ca.com";
+		  String include = sBCC ;
+		  // Assuming you are sending email from localhost
+		  String host = "mail.ca.com";
+		  // Get system properties
+		  Properties properties = System.getProperties();
+		  // Setup mail server
+		  properties.setProperty("mail.smtp.host", host);
+		  // Get the default Session object.
+		  Session session = Session.getDefaultInstance(properties);	
+		  boolean haveAttachment = false;
+		  
+		  try{
+		      // Create a default MimeMessage object.
+		      MimeMessage message = new MimeMessage(session);
+		
+		      // Set From: header field of the header.
+		      message.setFrom(new InternetAddress(from));
+		
+		      // Set To: header field of the header.
+		      String recipient = to;
+		      String[] recipientList = recipient.split(";");
+		      InternetAddress[] recipientAddress = new InternetAddress[recipientList.length];
+		      int counter = 0;
+		      for (String recip : recipientList) {
+		          recipientAddress[counter] = new InternetAddress(recip.trim());
+		          counter++;
+		      }
+		      message.setRecipients(Message.RecipientType.TO, recipientAddress);
+		
+		      // Set To: header field of the header.
+		      if (!include.isEmpty()) {
+		    	  //message.addRecipient(Message.RecipientType.BCC, new InternetAddress(include));
 		          String[] includeList = include.split(";");
 		          InternetAddress[] includeAddress = new InternetAddress[includeList.length];
 		          counter = 0;
@@ -489,28 +579,55 @@ public class CommonLdap {
 		              counter++;
 		          }
 		          message.setRecipients(Message.RecipientType.BCC, includeAddress);
-	          }
-	          
-	          // Set Subject: header field
-	          message.setSubject(subjectText);
-	          
-	          MimeBodyPart mbp = new MimeBodyPart(); 
-	          mbp.setContent(bodyText, "text/html"); 
-	          MimeMultipart multipart = new MimeMultipart(); 
-	          
-	          if (bHTML) {
+		      }
+		      
+		      // Set Subject: header field
+		      message.setSubject(subjectText);
+		      
+		      MimeMultipart multipart = new MimeMultipart(); 
+		      // Add attachments if any
+		      if (bodyText.length() > 500000) {
+		          MimeBodyPart mattach = new MimeBodyPart();
+		          String filename = "/c/fileattachment.txt";
+		          try {	            	  
+		        	  File file = new File(filename);
+		        	  FileWriter fileWriter = new FileWriter(file);
+		        	  fileWriter.write(bodyText);
+		        	  fileWriter.flush();
+		        	  fileWriter.close();	  
+		        	  file.deleteOnExit();
+		          } catch (IOException e) {
+		        	  iReturnCode = 602;
+		        	  printErr(e.getMessage());
+		        	  System.exit(iReturnCode);
+		          }
+				  DataSource source = new FileDataSource(filename);
+		          mattach.setDataHandler(new DataHandler(source));
+		          mattach.setFileName(filename);
+		          multipart.addBodyPart(mattach);	 
+		          haveAttachment = true;
+		      }
+		      
+		      // Set body of message
+		      MimeBodyPart mbp = new MimeBodyPart(); 
+		      if (!haveAttachment)
+		    	  mbp.setContent(bodyText, "text/html"); 
+		      else 
+		    	  mbp.setContent("<b>Please refer to the attached file.</b>", "text/html");
+		      
+		      if (bHTML) {
 		          multipart.addBodyPart(mbp);
 		          message.setContent(multipart);
-	          }
-	          else
-	        	  message.setText(bodyText);
-
-	          // Send message
-	          Transport.send(message);
-	          printLog("Sent message successfully to: "+email);
-	       } catch (MessagingException mex) {
-	          mex.printStackTrace();
-	       }	      
+		      }
+		      else
+		    	  message.setText(bodyText);	        	  
+		
+		      // Send message
+		      Transport.send(message);
+		      printLog("Sent message successfully to: "+email);
+	     } catch (MessagingException mex) {
+	     	 mex.printStackTrace();
+	     }
 	}
 	
 	// *** Basic 2D Array File Processing ***
@@ -571,11 +688,11 @@ public class CommonLdap {
 		 
 			bw.close();
 		} catch (FileNotFoundException e) {             
-			iReturnCode = 201;
+			iReturnCode = 701;
 		    System.err.println(e);			
 		    System.exit(iReturnCode);
 		} catch (IOException e) {             
-			iReturnCode = 202;
+			iReturnCode = 702;
 		    System.err.println(e);			
 		    System.exit(iReturnCode);
 		}
@@ -907,7 +1024,7 @@ public class CommonLdap {
 			 
 			} catch (NamingException e) {
 			    // Handle the error
-				iReturnCode = 1005;
+				iReturnCode = 801;
 			    printErr(e.getLocalizedMessage());
 			    System.exit(iReturnCode);
 			}
@@ -941,7 +1058,7 @@ public class CommonLdap {
 			    processLDAPAttrs(sr.getAttributes(), cLDAP, isNormalUser);
 			}			
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1004;
+			iReturnCode = 901;
 			System.err.println(e);
 			System.exit(iReturnCode);			
 		} catch (NamingException e) {
@@ -966,7 +1083,7 @@ public class CommonLdap {
             	sEncrypted += ":"+ Integer.toHexString(iB & 0xFF);
             }
 		} catch(Exception e) {
-			iReturnCode = 1003;
+			iReturnCode = 1001;
 		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 	    }
@@ -1001,7 +1118,7 @@ public class CommonLdap {
 		    byte[] decrypted = cipher.doFinal(bb);
 	        sDecrypted = new String(decrypted);		
 		} catch(Exception e) {
-			iReturnCode = 1003;
+			iReturnCode = 1101;
 		    printErr(e.getLocalizedMessage());			
 		    System.exit(iReturnCode);		    
 	    }
@@ -1077,7 +1194,7 @@ public class CommonLdap {
 			ctx.modifyAttributes(sDLLDAPUserGroup, roleMods );  
 
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1;
+			iReturnCode = 1201;
 			printErr(e.getLocalizedMessage());
 			System.exit(iReturnCode);
 			
@@ -1087,7 +1204,7 @@ public class CommonLdap {
 			String sException = e.getMessage();
 			if (sException.indexOf("ENTRY_EXISTS") < 0 ) 
 			{
-				iReturnCode = 2;
+				iReturnCode = 1202;
 			    printErr(e.getLocalizedMessage());
 			    System.exit(iReturnCode);
 			}
@@ -1112,7 +1229,7 @@ public class CommonLdap {
 			ctx.modifyAttributes( sDLLDAPUserGroup, roleMods );  
 		
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1;
+			iReturnCode = 1301;
 			printErr(e.getLocalizedMessage());
 			System.exit(iReturnCode);
 		
@@ -1123,7 +1240,7 @@ public class CommonLdap {
 			if (sException.indexOf("ENTRY_NOT_FOUND") < 0 &&
 				sException.indexOf("WILL_NOT_PERFORM") < 0) //forced deletion
 			{
-				iReturnCode = 1007;
+				iReturnCode = 1302;
 				printErr(e.getLocalizedMessage());
 				System.exit(iReturnCode);
 			}
@@ -1217,7 +1334,7 @@ public class CommonLdap {
 			//printLog("Number of Entries: "+cIndex);
 			
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1006;
+			iReturnCode = 1401;
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);		    
 	    // attempt to reacquire the authentication information
@@ -1420,7 +1537,7 @@ public class CommonLdap {
 			//printLog("Number of Entries: "+cIndex);
 			
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1006;
+			iReturnCode = 1501;
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);		    
 	    // attempt to reacquire the authentication information
@@ -1489,7 +1606,7 @@ public class CommonLdap {
 			//printLog("Number of Entries: "+cIndex);
 			
 		} catch (javax.naming.AuthenticationException e) {
-			iReturnCode = 1006;
+			iReturnCode = 1601;
 		    printErr(e.getLocalizedMessage());
 		    System.exit(iReturnCode);		    
 	    // attempt to reacquire the authentication information
@@ -1596,7 +1713,7 @@ public class CommonLdap {
 								}
 							}
 						}  catch (JSONException e) {
-							iReturnCode = 1008;
+							iReturnCode = 1701;
 						    printErr(e.getLocalizedMessage());
 						    System.exit(iReturnCode);		    							
 						}
@@ -1926,12 +2043,12 @@ public class CommonLdap {
 			conn.close();
 			
 		} catch (ClassNotFoundException e) {
-			iReturnCode = 101;
+			iReturnCode = 1801;
 			printErr(sqlError);
 			printErr(e.getLocalizedMessage());			
 			System.exit(iReturnCode);
 		} catch (SQLException e) {     
-			iReturnCode = 102;
+			iReturnCode = 1802;
 			printErr(sqlError);
 			printErr(e.getLocalizedMessage());			
 			System.exit(iReturnCode);
