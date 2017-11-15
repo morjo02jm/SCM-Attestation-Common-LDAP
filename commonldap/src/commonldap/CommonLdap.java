@@ -1885,6 +1885,11 @@ public class CommonLdap {
 		boolean bSuccess = false;
 		String sqlError = "DB2. Unable to execute query.";
 		
+		if (sID.equalsIgnoreCase("appcheck") ||
+			sID.equalsIgnoreCase("nsmwmo")) {
+			return false; // don't remove monitor 
+		}
+		
 		try {			
 			PreparedStatement pstmt = null; 
 			String sqlStmt;
@@ -1989,10 +1994,13 @@ public class CommonLdap {
 				String sUserGroup = rSet.getString("USERGROUPNAME").trim();
 				if (sUserGroup.equalsIgnoreCase("PUBLIC") )
 					hasPublic = true;
+				if (sUserGroup.equalsIgnoreCase("Administrator") ||
+					sUserGroup.equalsIgnoreCase("ServiceDesk L1"))
+					return false; // don't remove Harvest Administrators
 				aUserGroups.add(sUserGroup);
 			}
 			
-			if (/*!hasPublic &&*/ aUserGroups.size()>0) {
+			if (aUserGroups.size()>0) {
 				String sGroups = ""; 
 				String sGroups2 = "";
 				for (int i=0; i<aUserGroups.size(); i++) {
@@ -2007,7 +2015,7 @@ public class CommonLdap {
 				}
 				
 				if (!sGroups.isEmpty()) {					
-					if (bProcessChanges && !sGroups.isEmpty()) {
+					if (bProcessChanges) {
 						sqlError = "SQLServer. Error removing user, "+sID+", on broker, "+sBroker+", from user group set, {"+sGroups2+"}.";
 						sqlStmt = "delete from harusersingroup "+
 						          "where usrgrpobjid in "+
@@ -2026,7 +2034,7 @@ public class CommonLdap {
 			}
 			
 			
-			if (aUserGroups.isEmpty() || hasPublic) {	
+			if (!bSuccess && (aUserGroups.isEmpty() || hasPublic)) {	
 				if (bProcessChanges) {					
 					sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
 					sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'Y\' where ACCOUNTDISABLED=\'N\' and USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
