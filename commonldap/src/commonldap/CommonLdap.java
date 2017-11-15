@@ -1886,6 +1886,7 @@ public class CommonLdap {
 		String sqlError = "DB2. Unable to execute query.";
 		
 		if (sID.equalsIgnoreCase("appcheck") ||
+			sID.equalsIgnoreCase("appcheck?") ||
 			sID.equalsIgnoreCase("nsmwmo")) {
 			return false; // don't remove monitor 
 		}
