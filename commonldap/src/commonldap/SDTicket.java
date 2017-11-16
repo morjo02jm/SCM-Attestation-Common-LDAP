@@ -88,33 +88,36 @@ public class SDTicket {
     }
 
     public Set<String> getActiveTickets(String sTicketDescription) throws IOException {
-        String payload = activeTicketsPayload();
-        String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/";
-        String sb = connectToServiceDesk(url, payload);
-
-        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
-        String text = doc.getElementsByTag("ax286:responseText").text();
-
-        int cIndex = text.indexOf("}]");
-        if (cIndex >= 0)
-            text = text.substring(0, cIndex + 2);
-        JsonParser jsonparser = new JsonParser();
-        JsonElement jo = jsonparser.parse(text);
-        JsonArray arr = jo.getAsJsonArray();
         Set<String> tickets = null;
-        for (JsonElement ele : arr) {
-            JsonObject json = ele.getAsJsonObject();
-            //System.out.println(json.get("ticket_description").getAsString());
-
-            if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
-                if (tickets == null) {
-                    tickets = new HashSet<>();
-                }
-                String[] ticketDetails = json.get("ticket_details").getAsString().split("\n");
-                for (String t : ticketDetails) {
-                    tickets.add(t);
-                }
-            }
+        
+        if (!password.isEmpty()) {
+	        String payload = activeTicketsPayload();
+	        String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/";
+	        String sb = connectToServiceDesk(url, payload);
+	
+	        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
+	        String text = doc.getElementsByTag("ax286:responseText").text();
+	
+	        int cIndex = text.indexOf("}]");
+	        if (cIndex >= 0)
+	            text = text.substring(0, cIndex + 2);
+	        JsonParser jsonparser = new JsonParser();
+	        JsonElement jo = jsonparser.parse(text);
+	        JsonArray arr = jo.getAsJsonArray();
+	        for (JsonElement ele : arr) {
+	            JsonObject json = ele.getAsJsonObject();
+	            //System.out.println(json.get("ticket_description").getAsString());
+	
+	            if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
+	                if (tickets == null) {
+	                    tickets = new HashSet<>();
+	                }
+	                String[] ticketDetails = json.get("ticket_details").getAsString().split("\n");
+	                for (String t : ticketDetails) {
+	                    tickets.add(t);
+	                }
+	            }
+	        }
         }
 
         return tickets;
