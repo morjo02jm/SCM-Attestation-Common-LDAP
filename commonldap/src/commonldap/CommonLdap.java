@@ -2035,7 +2035,7 @@ public class CommonLdap {
 			}
 			
 			
-			if (!bSuccess && (aUserGroups.isEmpty() || hasPublic)) {	
+			if (hasPublic || !bSuccess) {	
 				if (bProcessChanges) {					
 					sqlError = "SQLServer. Error updating disabled status for user, "+sID+", on broker, "+ sBroker + ".";
 					sqlStmt = "update haruserdata set ACCOUNTDISABLED=\'Y\' where ACCOUNTDISABLED=\'N\' and USROBJID in (select USROBJID from haruser where LOWER(USERNAME) in (\'"+sID+"\') )";
