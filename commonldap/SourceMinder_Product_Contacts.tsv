@@ -61,13 +61,13 @@ CA Application Lifecycle Conductor		Active	CSCR/Harvest	null	CSCR606_R12.5/AENWS
 CA CATALYST / USM Connector Project / SSA	1.*2.0;2.5;3.0	Active	CSCR/Harvest	null	CSCR929	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
 CA CATALYST / USM Connector Project / SSA	1.7;trunk	Active	CSCR/Harvest	null	"CSCR709/spectrum-sa,nimsoft"	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
 CA Clarity PPM Catalyst Connector	r14.2;trunk	Inactive	CSCR/Harvest	null	CSCR709/clarity	"[{""PMFKEY"":""papgo01""},{""PMFKEY"":""yadga02""}]"		aruma01	papgo01		
-CA CMDB		Active	CSCR/Harvest	null	CSCR616/CA-CMDB	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01		
+CA CMDB		Inactive	CSCR/Harvest	null	CSCR616/CA-CMDB	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01		
 CA GWT		Active	CSCR/Harvest	null	CSCR618	"[{""PMFKEY"":""mitsa06""}]"			mitsa06		
 CA Labs LabTrack		Inactive	CSCR/Harvest	null	CSCR1308	"[{""PMFKEY"":""munvi02""}]"			munvi02		
 CA LDAP	15.0;15.1	Active	SVN;Endevor	CAEIG	Lisle;IL	"[{""PMFKEY"":""petja04""},{""PMFKEY"":""rozmi02""}]"		tunem01	petja04;rozmi02		
 CA MAT		Active	CSCR/Harvest	null	CSCR801/CA MAT	"[{""PMFKEY"":""svami01""}]"		svami01			
 CA Mainframe Operational Intelligence	"1.0,2.0"	Active	CSCRE/Endevor	Z2L		"[{""PMFKEY"":""carju01""}]"			carju01		
-CA Picasso		Active	CSCR/Harvest	null	CSCR625	"[{""PMFKEY"":""vakmo01""}]"			vakmo01		
+CA Picasso		Inactive	CSCR/Harvest	null	CSCR625	"[{""PMFKEY"":""vakmo01""}]"			vakmo01		
 CA Products--Datacom		Active	CSCR/Harvest	null	CSCR805	"[{""PMFKEY"":""behka01""},{""PMFKEY"":""elwly02""},{""PMFKEY"":""hogmi01""}]"			behka01;elwly02;hogmi01		
 CA Products--Easy View / Intraccess		End of Life	CSCR/Harvest	null	CSCR804	"[{""PMFKEY"":""shika01""}]"			shika01		
 CA TechServices CA-AA		Exempt	CSCR/Harvest	null	CSCR1001/CA-AA	"[{""PMFKEY"":""saisa02""}]"		mausi01	saisa02		
@@ -130,7 +130,7 @@ Cleanup for Top Secret	12.0;12.1	Active	Endevor	ETCLT	Islandia	"[{""PMFKEY"":""w
 Cleanup for Top Secret	12.0;12.1	Active	PDS	null	ENDCLNT	"[{""PMFKEY"":""wasch01""}]"		wasch01		DSN	
 CleverPath Portal		End of Life	CSCR/Harvest	null	CSCR104	"[{""PMFKEY"":""wecca01""}]"			weeca01		
 CleverPath Reporter	4.01; 4.1; 4.2	End of Life	CSCR/Harvest	null	CSCR704	"[{""PMFKEY"":""puiro01""},{""PMFKEY"":""shaha07""}]"		puiro01	shaha07		
-CMDB		Active	CSCR/Harvest	null	CSCR616	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01		
+CMDB		Inactive	CSCR/Harvest	null	CSCR616	"[{""PMFKEY"":""vakmo01""},{""PMFKEY"":""vensu02""}]"		vensu02	vakmo01		
 CMDB Connector for z/OS	r2.0;r1.0	Active	Endevor	NETM	GIS Islandia data center	"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""angth01""},{""PMFKEY"":""norst02""}]"	angth01	norst02	joheu02		
 CMDB Connector for z/OS	r2.0;r1.0	Active	PDS	null	AUPK0.DL69.GL1011.*.VSAM;AUDE0.MOT+.;AUDE0.NMV2SMS.**.SOURCE;AUDE0.NMV2SMS.**.LIST;AUDE0.NMDE1.*TST;AUCM0.FIXREG.*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""jambr01""}]"		cafjo01;jambr01		DSN	
 CMS for OpenVMS		Active		null		"[{""PMFKEY"":""butda07""},{""PMFKEY"":""stoda04""}]"		stoda04	butda07	OTHER;HARVEST	
