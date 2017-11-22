@@ -1,6 +1,5 @@
 package commonldap;
 
-//
 import gvjava.org.json.*;
 
 import java.util.Date;
