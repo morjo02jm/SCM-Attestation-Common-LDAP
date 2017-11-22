@@ -7,6 +7,7 @@ $LSRVDSN		Active	CSCRE/Endevor	$LSRVDSN		"[{""PMFKEY"":""slejo01""},{""PMFKEY"":
 **		Active	CSCRE/Endevor	**		"[{""PMFKEY"":""mcpja01""}]"			mcpja01		
 1 Copycat	11	Active	PDS and Source Code Control System (SCCS)	null	CATC000.*	"[{""PMFKEY"":""davfe01""}]"			davfe01	DSN	
 "7 Distributed Components (Job Flow Illustrator, CPS)"	r11.1;r11.3;r12.0	Active	CSCRE/Endevor	null	APC.MOTM.CA7*;APC.MOTM.IAS*	"[{""PMFKEY"":""davfe01""},{""PMFKEY"":""macco01""}]"		davfe01	macco01	DSN	
+Account Connect		Active	CSCR/Harvest	null	"CSCR1101/Core_AccountConnect,core_aws_"	"[{""PMFKEY"":""timlo01""}]"		udoro01	timlo01		
 ACCUCHECK	1.2	Active	CSCRE/Endevor	null	ASM.ACUCHKL2.CK120011.*;ASMDSK.CSCRE.ACCU.R12.*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN	
 ACF2 for z/OS	r14;r15	Active	Endevor	ACF	Islandia	"[{""PMFKEY"":""petja04""},{""PMFKEY"":""plfda02""}]"		tunem01	petja04;pflda02		
 ACF2 for z/OS	r14;r15	Active	PDS	null	endacf2;ACF2SRC;B1PROJ;ACF2CICS;ACF2IMS;tss	"[{""PMFKEY"":""petja04""},{""PMFKEY"":""plfda02""}]"		tunem01	petja04;pflda02	DSN	
@@ -295,7 +296,7 @@ General Services  for DB2	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	End
 General Services  for DB2	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	SCLM	null	GEN.PRD+++S.;GEN.HLD+++S.;GEN.BLD+++S.;GEN.INP+++S.;GEN.WRK+++S.;GEN.WK+++S.;ENDB2.MOTM.DBT*	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
 General/CICS for DB2	r11.5	End of Life	SCLM	null	GENC.PRD+++S.;GENC.HLD+++S.;GENC.BLD+++S.;GENC.WRK+++S.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
 GENEROL	7.1	Active	CMS;PDS	null	MFBUMISC.SALTLAK+;SALTLAK.*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	 DSN;VMVSE	"[{""location"":""G471NL1.191"",""type"":""VMMDISK""},{""location"":""G471NL1.192"",""type"":""VMMDISK""},{""location"":""SLCVML.191"",""type"":""VMMDISK""},{""location"":""SLCVML.192"",""type"":""VMMDISK""},{""location"":""SLCVML.194"",""type"":""VMMDISK""},{""location"":""SLCVML.195"",""type"":""VMMDISK""},{""location"":""SLCVML.196"",""type"":""VMMDISK""},{""location"":""SLCVML.197"",""type"":""VMMDISK""},{""location"":""SLCVML.199"",""type"":""VMMDISK""},{""location"":""SLCVML.291"",""type"":""VMMDISK""},{""location"":""SLCVML.292"",""type"":""VMMDISK""},{""location"":""SLCVML.293"",""type"":""VMMDISK""},{""location"":""SLCVML.294"",""type"":""VMMDISK""},{""location"":""SLCVML.295"",""type"":""VMMDISK""},{""location"":""SLCVML.296"",""type"":""VMMDISK""},{""location"":""SLCVML.299"",""type"":""VMMDISK""},{""location"":""SLCVML"",""type"":""DIRECTRY""}]"
-GIS - Business Analytics		Inactive	CSCR/Harvest	null	CSCR1101/Business Analytics	"[{""PMFKEY"":""balli02""}]"			balli02		
+GIS - Business Analytics		Inactive	CSCR/Harvest	null	CSCR1101/Business Analytics	"[{""PMFKEY"":""mohpr01""}]"			mohpr01		
 GIS - CASSL		Inactive	CSCR/Harvest	null	CSCR1101/CASSL	"[{""PMFKEY"":""darsw01""}]"			darsw01		
 GIS - Contract Lifecycle Management		Inactive	CSCR/Harvest	null	CSCR1101/ContractLifecycleManagement	"[{""PMFKEY"":""smike11""}]"			unknown		
 GIS - Architecture		Inactive	CSCR/Harvest	null	CSCR1101/Architecture	"[{""PMFKEY"":""morjo02""}]"			morjo02		
