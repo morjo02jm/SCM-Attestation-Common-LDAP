@@ -56,7 +56,7 @@ C20		End of Life	CSCR/Harvest	null	CSCR619	"[{""PMFKEY"":""ganra08""}]"			ganra0
 CA Access Control		Active	CSCR/Harvest	null	"CSCR402/AC,FLASH,GORDON,HAWKEYE,SC"	"[{""PMFKEY"":""sarav02""},{""PMFKEY"":""matsu04""}]"		matsu04	sarav02		
 CA Access Control Other		Active	CSCR/Harvest	null	CSCR402	"[{""PMFKEY"":""sarav02""},{""PMFKEY"":""matsu04""}]"		matsu04	sarav02		
 CA APIM -Concierge - Orchestrator	r1.0	Inactive	CSCR/Harvest	null	CSCR807	"[{""PMFKEY"":""munbh01""}]"		bhara24	munbh01		
-CA Application Lifecycle Conductor		Inactive	CSCR/Harvest	null	CSCR606_R12.5/ACMEW	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
+CA Application Lifecycle Conductor		Active	CSCR/Harvest	null	CSCR606_R12.5/ACMEW	"[{""PMFKEY"":""prape01""}]"	svami01		prape01		
 CA Application Lifecycle Conductor		Inactive	CSCR/Harvest	null	CSCR606_R12.5/AEECL	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
 CA Application Lifecycle Conductor		Active	CSCR/Harvest	null	CSCR606_R12.5/AENWS	"[{""PMFKEY"":""konda02""}]"	svami01		konda02		
 CA CATALYST / USM Connector Project / SSA	1.*2.0;2.5;3.0	Active	CSCR/Harvest	null	CSCR929	"[{""PMFKEY"":""taoyu04""}]"		merja01	taoyu04		
@@ -359,7 +359,7 @@ JARS		Active	CSCRE/Endevor	JARS		"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda0
 JARS Resource Management for CICS	6.2	Stabilized	CSCRE	null	QCAT.CSCRE.JARSCICS.R62*	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 JARS/VSE and JARS/CICS for VSE	r7; r6.2	Active	CMS	null	SFS;Directories:;VSEDEV.JARSCVSE;VSEDEV.JARSVSE	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	VMVSE	"[{""location"":""VSEDEV.JARSCVSE"",""type"":""DIRECTRY""},{""location"":""VSEDEV.JARSVSE"",""type"":""DIRECTRY""}]"
 JCLCheck	r7.1; r11	Active	CSCRE/Endevor	JCK	N/A	"[{""PMFKEY"":""davfe01""},{""PMFKEY"":""macco01""}]"		davfe01	macco01		
-JMO	11.x	End of Life	CSCR/Harvest	null	CSCR907;CSCR912	"[{""PMFKEY"":""srigi02"",""APPROVEStamp"":""none""}]"			srigi02		
+JMO		Active	CSCR/Harvest	null	CSCR907;CSCR912	"[{""PMFKEY"":""parkr02""}]"		ragdi01	parkr02		
 JMR		Active	CSCRE/Endevor	JMR		"[{""PMFKEY"":""baljo03""},{""PMFKEY"":""madca02""}]"		jambr01	baljo03;madca02		
 JMR	4.6	Active	PDS	null	MFBUMISC.APCMTL.PK46.+;MFBUMISC.OMMTL.SRC.PK46.+;OMMTL.CSCRE.JMR.PK46	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	DSN	
 Job Management for OpenVMS	3.0; 3.0 SP1;3.1	Active		null		"[{""PMFKEY"":""butda07""},{""PMFKEY"":""stoda04""}]"		stoda04	butda07	HARVEST;OTHER	
