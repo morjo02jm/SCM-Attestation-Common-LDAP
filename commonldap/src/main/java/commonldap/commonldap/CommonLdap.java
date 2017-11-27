@@ -899,7 +899,7 @@ public class CommonLdap {
 				}
 
 				if (iGHE.length==0) {
-					int cIndex = cUsers.getKeyElementCount("id");
+					int cIndex = cUsers.getKeyElementCount("pmfkey");
 					cUsers.setString("pmfkey", sReportID, cIndex);										
 				}
 			}
@@ -1520,8 +1520,8 @@ public class CommonLdap {
 						    	int[] iLDAP = cLDAP.find(tagDN, dn);
 						    	if (iLDAP.length > 0) {
 						    		String pmfkey=cLDAP.getString(tagSAMAccountName, iLDAP[0]);
-						    		String sID = cLDAP.getString(tagMail, iLDAP[0]);
-						    	    sResult += sResult.isEmpty()?"":";" + sID;
+						    		//String sID = cLDAP.getString(tagMail, iLDAP[0]);
+						    	    sResult += (sResult.isEmpty()?"":";") + pmfkey;
 						    	} // DN found in directory users
 						    } // loop over member attributes
 						} // attr contains "member"		        	
