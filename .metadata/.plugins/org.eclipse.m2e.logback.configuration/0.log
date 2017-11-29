@@ -1,0 +1,527 @@
+2017-11-22 08:57:17,961 [Worker-14] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Collecting project info '/pom.xml' C:\GitHub\commonldap\commonldap\pom.xml
+2017-11-22 08:57:18,700 [Worker-14] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 08:57:19,744 [Worker-14] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /commonldap/src/main/java
+2017-11-22 08:57:19,750 [Worker-14] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /commonldap/src/test/java
+2017-11-22 08:57:19,845 [Worker-14] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 1 sec
+2017-11-22 08:57:20,210 [Worker-3] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 08:57:20,542 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 08:57:20,543 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 08:57:20,545 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 08:57:20,545 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 08:57:20,625 [Worker-12] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 08:57:21,634 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 08:57:21,634 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 08:57:21,635 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 08:57:21,635 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 08:58:15,305 [main] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 08:58:39,618 [Worker-15] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration New_configuration references non-existing project commonldap.
+org.eclipse.core.runtime.CoreException: Launch configuration New_configuration references non-existing project commonldap.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1408) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1283) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:229) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42) [org.eclipse.equinox.common_3.7.0.v20150402-1709.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setDirty(LaunchConfigurationWorkingCopy.java:552) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setAttribute(LaunchConfigurationWorkingCopy.java:425) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:309) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:335) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:747) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:876) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:104) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:166) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:142) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:96) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1348) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:87) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+2017-11-22 08:58:39,621 [Worker-15] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration New_configuration references non-existing project commonldap.
+org.eclipse.core.runtime.CoreException: Launch configuration New_configuration references non-existing project commonldap.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1408) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1283) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:229) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42) [org.eclipse.equinox.common_3.7.0.v20150402-1709.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setDirty(LaunchConfigurationWorkingCopy.java:552) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setAttribute(LaunchConfigurationWorkingCopy.java:425) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:310) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:335) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:747) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:876) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:104) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:166) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:142) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:96) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1348) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:87) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+2017-11-22 08:58:39,627 [Worker-15] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration New_configuration references non-existing project commonldap.
+org.eclipse.core.runtime.CoreException: Launch configuration New_configuration references non-existing project commonldap.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1408) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1283) ~[org.eclipse.jdt.launching_3.8.0.v20150527-0946.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:229) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42) [org.eclipse.equinox.common_3.7.0.v20150402-1709.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager.launchConfigurationChanged(LaunchManager.java:2166) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.writeNewFile(LaunchConfigurationWorkingCopy.java:384) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave0(LaunchConfigurationWorkingCopy.java:250) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave(LaunchConfigurationWorkingCopy.java:220) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave(LaunchConfigurationWorkingCopy.java:173) [org.eclipse.debug.core_3.10.0.v20150303-1130.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:311) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:335) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) [org.eclipse.m2e.jdt_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:747) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:876) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:104) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:166) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:142) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:96) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1348) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:87) [org.eclipse.m2e.core_1.5.2.20150413-2215.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+2017-11-22 09:07:44,815 [Worker-16] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Collecting project info '/pom.xml' C:\GitHub\commonldap\commonldap\pom.xml
+2017-11-22 09:07:44,904 [Worker-16] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:07:45,126 [Worker-16] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /commonldap/src/main/java
+2017-11-22 09:07:45,131 [Worker-16] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /commonldap/src/test/java
+2017-11-22 09:07:45,196 [Worker-16] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 0 sec
+2017-11-22 09:07:45,646 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:07:45,994 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:07:45,994 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:07:45,996 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:07:45,996 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:07:46,301 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:07:47,080 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:07:47,081 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:07:47,082 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:07:47,082 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:08:39,396 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:08:39,396 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:08:39,397 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:08:39,398 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:09:53,170 [Worker-21] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:09:53,229 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:09:53,229 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:09:53,230 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:09:53,231 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:10:43,468 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:10:43,468 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:10:43,469 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:10:43,469 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:11:11,004 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:11:11,004 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:11:11,006 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:11:11,006 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:12:21,736 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:12:22,094 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:12:22,095 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:12:22,096 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:12:22,096 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:14:50,598 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:14:50,598 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:14:50,599 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:14:50,600 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:15:05,079 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:15:05,080 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:15:05,081 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:15:05,082 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:15:16,612 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:15:16,612 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:15:16,614 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:15:16,614 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:16:46,063 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:16:46,064 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:16:46,065 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:16:46,065 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:18:27,839 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:18:27,839 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:18:27,841 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:18:27,841 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:21:34,942 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:21:34,943 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:21:34,945 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:21:34,946 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:21:55,088 [Worker-25] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:21:55,153 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:21:55,153 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:21:55,155 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:21:55,155 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:22:16,617 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:22:16,617 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:22:16,618 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:22:16,619 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:25:36,426 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:25:36,426 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:25:36,427 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:25:36,427 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:25:45,921 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:25:45,922 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:25:45,923 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:25:45,923 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:26:42,252 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:26:42,252 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:26:42,255 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:26:42,255 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:29:20,837 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:29:20,838 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:29:20,840 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:29:20,841 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 09:56:45,513 [Worker-41] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 09:56:45,749 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:56:45,749 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 09:56:45,750 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 09:56:45,750 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 10:00:10,688 [main] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 10:28:22,520 [Worker-64] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 10:28:22,808 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/gson/gson/2.6.2/gson-2.6.2.pom
+2017-11-22 10:28:22,818 [Worker-64] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for gson:gson:jar:2.6.2 is missing, no dependency information available
+2017-11-22 10:28:22,963 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/jsoup/jsoup/1.10.3/jsoup-1.10.3.pom
+2017-11-22 10:28:22,968 [Worker-64] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jsoup:jsoup:jar:1.10.3 is missing, no dependency information available
+2017-11-22 10:28:23,048 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/sqljdbc4/sqljdbc4/4.0/sqljdbc4-4.0.pom
+2017-11-22 10:28:23,053 [Worker-64] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for sqljdbc4:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-22 10:28:23,184 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/gson/gson/2.6.2/gson-2.6.2.jar
+2017-11-22 10:28:23,316 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/jsoup/jsoup/1.10.3/jsoup-1.10.3.jar
+2017-11-22 10:28:23,445 [Worker-64] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/sqljdbc4/sqljdbc4/4.0/sqljdbc4-4.0.jar
+2017-11-22 10:29:20,406 [Worker-48] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-22 10:29:20,467 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 10:29:20,467 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 10:29:20,468 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 10:29:20,468 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 10:29:21,722 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 10:29:21,722 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 10:29:21,723 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 10:29:21,724 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-22 11:09:02,952 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 11:09:02,956 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-22 11:09:02,958 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-22 11:09:02,958 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:29:58,253 [Worker-17] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:30:00,426 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:30:00,426 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:30:00,428 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:30:00,428 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:30:00,675 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:30:01,568 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:30:01,568 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:30:01,570 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:30:01,570 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:34:40,198 [Worker-22] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:34:40,678 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.pom
+2017-11-27 08:34:40,881 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.pom
+2017-11-27 08:34:40,990 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/google/code/gson/gson-parent/2.6.2/gson-parent-2.6.2.pom
+2017-11-27 08:34:41,185 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/google/code/gson/gson-parent/2.6.2/gson-parent-2.6.2.pom
+2017-11-27 08:34:41,396 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar
+2017-11-27 08:34:42,206 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar
+2017-11-27 08:34:42,652 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:34:42,652 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:34:42,653 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:34:42,653 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:34:44,083 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:34:44,083 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:34:44,084 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:34:44,084 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:36:33,457 [Worker-27] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:36:33,560 [Worker-27] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/json/json/20171018/json-20171018.pom
+2017-11-27 08:36:33,774 [Worker-27] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/json/json/20171018/json-20171018.pom
+2017-11-27 08:36:33,943 [Worker-27] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/json/json/20171018/json-20171018.jar
+2017-11-27 08:36:34,203 [Worker-27] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/json/json/20171018/json-20171018.jar
+2017-11-27 08:36:35,670 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:36:35,671 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:36:35,672 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:36:35,672 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:36:37,104 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:36:37,104 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:36:37,105 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:36:37,105 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:38:21,022 [Worker-27] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:38:21,106 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:38:21,106 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:38:21,107 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:38:21,107 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:40:49,791 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:40:49,792 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:40:49,794 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:40:49,794 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:41:20,766 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:41:20,766 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:41:20,768 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:41:20,768 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:43:13,960 [Worker-24] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:43:14,044 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:14,044 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:43:14,045 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:14,045 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:43:46,880 [Worker-29] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:43:49,370 [Worker-32] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.10.3/jsoup-1.10.3.pom
+2017-11-27 08:43:49,477 [Worker-32] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.10.3/jsoup-1.10.3.pom
+2017-11-27 08:43:49,541 [Worker-32] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.10.3/jsoup-1.10.3.jar
+2017-11-27 08:43:50,227 [Worker-32] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.10.3/jsoup-1.10.3.jar
+2017-11-27 08:43:50,482 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:50,482 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:43:50,484 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:50,484 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:43:51,837 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:51,838 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:43:51,839 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:43:51,840 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:45:23,273 [Worker-34] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:45:23,409 [Worker-34] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.pom
+2017-11-27 08:45:23,506 [Worker-34] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 08:45:23,639 [Worker-34] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.jar
+2017-11-27 08:45:23,700 [Worker-34] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:45:23,701 [Worker-34] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:45:23,702 [Worker-34] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:45:23,702 [Worker-34] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:47:02,289 [Worker-26] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 08:47:02,438 [Worker-26] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:47:02,460 [Worker-26] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 08:47:02,525 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:47:02,525 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:47:02,527 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:47:02,527 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:49:34,498 [Worker-38] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:49:34,575 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:49:34,576 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:49:34,577 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:49:34,577 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:49:35,963 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:49:35,964 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:49:35,966 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:49:35,966 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:50:25,393 [Worker-43] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:50:25,537 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/mail/mail/1.4/mail-1.4.pom
+2017-11-27 08:50:25,635 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/mail/mail/1.4/mail-1.4.pom
+2017-11-27 08:50:25,687 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/activation/activation/1.1/activation-1.1.pom
+2017-11-27 08:50:25,754 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/activation/activation/1.1/activation-1.1.pom
+2017-11-27 08:50:25,902 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/mail/mail/1.4/mail-1.4.jar
+2017-11-27 08:50:26,653 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/mail/mail/1.4/mail-1.4.jar
+2017-11-27 08:50:26,768 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/activation/activation/1.1/activation-1.1.jar
+2017-11-27 08:50:26,923 [Worker-43] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/activation/activation/1.1/activation-1.1.jar
+2017-11-27 08:50:28,202 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:28,202 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:50:28,203 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:28,203 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:50:29,553 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:29,554 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:50:29,555 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:29,555 [Worker-41] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:50:35,625 [Worker-40] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:50:35,715 [Worker-40] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:35,716 [Worker-40] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:50:35,717 [Worker-40] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:50:35,717 [Worker-40] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:51:38,180 [Worker-44] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:51:38,276 [Worker-44] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:51:38,276 [Worker-44] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:51:38,277 [Worker-44] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:51:38,277 [Worker-44] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:52:22,158 [Worker-43] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:52:22,250 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:52:22,250 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:52:22,251 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:52:22,251 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:53:04,787 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:53:04,788 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:53:04,789 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:53:04,789 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 08:59:33,230 [Worker-50] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 08:59:37,728 [Worker-50] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.pom
+2017-11-27 08:59:37,734 [Worker-50] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 08:59:38,089 [Worker-50] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.jar
+2017-11-27 08:59:38,165 [Worker-50] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:59:38,165 [Worker-50] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 08:59:38,166 [Worker-50] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 08:59:38,166 [Worker-50] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:00:11,956 [Worker-49] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:00:12,139 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.pom
+2017-11-27 09:00:12,301 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.pom
+2017-11-27 09:00:12,304 [Worker-53] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:00:12,309 [Worker-49] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:00:12,683 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.jar
+2017-11-27 09:00:12,760 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.jar
+2017-11-27 09:00:12,844 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:00:12,844 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:00:12,845 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:00:12,846 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:01:45,289 [Worker-54] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:01:45,528 [Worker-52] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.pom
+2017-11-27 09:01:45,533 [Worker-52] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:01:45,539 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:01:45,903 [Worker-52] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.jar
+2017-11-27 09:01:45,993 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:01:45,993 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:01:45,994 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:01:45,995 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:02:06,507 [Worker-54] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:02:06,721 [Worker-56] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.pom
+2017-11-27 09:02:06,727 [Worker-56] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 09:02:06,732 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:4.0 is missing, no dependency information available
+2017-11-27 09:02:07,114 [Worker-56] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.jar
+2017-11-27 09:02:07,183 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:07,183 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:02:07,185 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:07,185 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:02:25,398 [Worker-55] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:02:25,579 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc/4.0/sqljdbc-4.0.pom
+2017-11-27 09:02:25,697 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc/4.0/sqljdbc-4.0.pom
+2017-11-27 09:02:25,701 [Worker-53] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc:jar:4.0 is missing, no dependency information available
+2017-11-27 09:02:25,703 [Worker-55] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc:jar:4.0 is missing, no dependency information available
+2017-11-27 09:02:26,069 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library/com/microsoft/sqlserver/sqljdbc/4.0/sqljdbc-4.0.jar
+2017-11-27 09:02:26,150 [Worker-53] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/microsoft/sqlserver/sqljdbc/4.0/sqljdbc-4.0.jar
+2017-11-27 09:02:26,246 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:26,246 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:02:26,248 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:26,248 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:02:40,674 [Worker-60] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:02:40,835 [Worker-53] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:02:40,864 [Worker-53] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:02:40,931 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:40,931 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:02:40,932 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:02:40,932 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:03:10,272 [Worker-60] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:03:10,426 [Worker-55] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:03:10,462 [Worker-55] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:03:10,530 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:03:10,530 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:03:10,531 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:03:10,531 [Worker-55] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:06:40,204 [Worker-52] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:06:40,289 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:06:40,289 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:06:40,291 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:06:40,291 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:06:41,668 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:06:41,668 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:06:41,669 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:06:41,669 [Worker-53] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:06:58,846 [Worker-52] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:07:09,707 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:07:09,854 [Worker-52] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:07:09,882 [Worker-52] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.microsoft.sqlserver:sqljdbc4:jar:1.0 is missing, no dependency information available
+2017-11-27 09:07:09,954 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:09,954 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:07:09,955 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:09,956 [Worker-52] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:07:37,293 [Worker-65] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 09:07:37,376 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:37,377 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:07:37,378 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:37,378 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:07:38,782 [Worker-68] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:38,782 [Worker-68] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:07:38,783 [Worker-68] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:07:38,783 [Worker-68] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 09:38:06,025 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:38:06,026 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 09:38:06,028 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 09:38:06,028 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 12:05:37,301 [Worker-21] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-27 12:05:38,103 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 12:05:38,104 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 12:05:38,106 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 12:05:38,106 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 13:58:13,179 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 13:58:13,180 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 13:58:13,181 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 13:58:13,181 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:00:08,331 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:00:08,331 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:00:08,334 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:00:08,334 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:10:33,264 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:10:33,264 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:10:33,266 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:10:33,266 [Worker-66] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:11:10,118 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:10,118 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:11:10,121 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:10,121 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:11:21,503 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:21,504 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:11:21,507 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:21,507 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:11:32,332 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:32,333 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:11:32,336 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:32,336 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-27 14:11:50,853 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:50,853 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-27 14:11:50,855 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-27 14:11:50,855 [Worker-67] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-28 07:58:51,566 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-28 07:58:51,585 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-28 07:58:51,589 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-28 07:58:51,589 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 08:26:44,623 [Worker-22] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-29 08:26:45,437 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://isl-dsdc.ca.com/artifactory/maven-third-party-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.pom
+2017-11-29 08:26:45,761 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com/artifactory/maven-third-party-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.pom
+2017-11-29 08:26:46,612 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://isl-dsdc.ca.com/artifactory/maven-third-party-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.jar
+2017-11-29 08:26:48,024 [Worker-22] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://isl-dsdc.ca.com/artifactory/maven-third-party-local/com/microsoft/sqlserver/sqljdbc4/1.0/sqljdbc4-1.0.jar
+2017-11-29 08:26:49,202 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:26:49,202 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 08:26:49,204 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:26:49,204 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 08:26:50,647 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:26:50,647 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 08:26:50,649 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:26:50,649 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 08:39:34,372 [Worker-26] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-29 08:39:34,481 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:39:34,482 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 08:39:34,483 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 08:39:34,483 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 10:13:24,971 [Worker-43] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: commonldap:commonldap:0.0.1-SNAPSHOT @ C:\GitHub\commonldap\commonldap\pom.xml.
+2017-11-29 10:13:25,085 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:13:25,085 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 10:13:25,086 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:13:25,086 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 10:13:56,548 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:13:56,548 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 10:13:56,550 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:13:56,550 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 10:15:29,213 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:15:29,213 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 10:15:29,216 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:15:29,217 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 10:15:37,244 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:15:37,245 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 10:15:37,248 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 10:15:37,248 [Worker-43] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:05:03,514 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:05:03,523 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:05:03,526 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:05:03,526 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:06:19,212 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:06:19,213 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:06:19,214 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:06:19,215 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:07:21,365 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:07:21,366 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:07:21,368 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:07:21,368 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:11:12,560 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:11:12,560 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:11:12,562 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:11:12,563 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:11:41,125 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:11:41,125 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:11:41,126 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:11:41,126 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:21:01,741 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:21:01,754 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:21:01,788 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:21:01,788 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
+2017-11-29 15:22:40,725 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:22:40,725 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
+2017-11-29 15:22:40,727 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-11-29 15:22:40,727 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
