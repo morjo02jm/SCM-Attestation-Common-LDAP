@@ -39,12 +39,17 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
+		<!-- http://isl-dsdc.ca.com/artifactory/maven-third-party-local -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
-			<id>p2-local</id>
-			<url>http://isl-dsdc.ca.com:80/artifactory/p2-local/commonldap/library</url>
+			<id>sqljdbc4</id>
+			<url>http://isl-dsdc.ca.com/artifactory/maven-third-party-local/</url>
 		</repository>
 	</repositories>
 </project>
