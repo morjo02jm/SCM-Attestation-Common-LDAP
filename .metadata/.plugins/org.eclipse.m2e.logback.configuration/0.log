@@ -525,7 +525,3 @@ org.eclipse.core.runtime.CoreException: Launch configuration New_configuration r
 2017-11-29 15:22:40,725 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
 2017-11-29 15:22:40,727 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2017-11-29 15:22:40,727 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
-2017-11-29 15:25:58,276 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
-2017-11-29 15:25:58,276 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\main\resources
-2017-11-29 15:25:58,278 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
-2017-11-29 15:25:58,278 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\GitHub\commonldap\commonldap\src\test\resources
