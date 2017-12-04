@@ -35,6 +35,7 @@ APPDynamics connector		Inactive	CSCR/Harvest	null	"CSCR709/appdynamics,applogic,
 Appliance Development		Inactive	CSCR/Harvest	null	CSCR624	"[{""PMFKEY"":""bremi05""}]"			bremi05		
 Application Configuration Manager		Inactive	CSCR/Harvest	null	CSCR708	"[{""PMFKEY"":""akupr01""}]"			akupr01;treje05		
 Applications Configuration Manager / CA Configuration Automation Catalyst Connectors	12.8;trunk	Inactive	CSCR/Harvest	null	CSCR709/cca	"[{""PMFKEY"":""thaka08""},{""PMFKEY"":""stoda04""}]"		stoda04	thaka08		
+Archive System		Active	CSCR/Harvest	null	CSCR1101/Archive System	"[{""PMFKEY"":""vinve01""}]"		ramna08	vinve01		
 ARZOS		Active	CSCRE/Endevor	ARZOS		"[{""PMFKEY"":""bosry01""},{""PMFKEY"":""shuke01""}]"		shuke01	bosry01		
 ASM2	4.2	Active	CSCRE/Endevor	null	ASMDSK.CSCRE.*;ASMDSK.ASM2DV.R420.*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN;VMVSE	"[{""location"":""ASM2MS"",""type"":""VMMDISK""}]"
 ASSOC		Active	CSCRE/Endevor	ASSOC		"[{""PMFKEY"":""ricar01""},{""PMFKEY"":""mormi08""}]"			ricar01;mormi08		
@@ -288,6 +289,7 @@ File Master Plus for MVS Eclipse UI	9.0;9.1	Inactive	CSCR/Harvest	null	CSCR801/F
 FINANCE		Active	CSCRE/Endevor	FINANCE		"[{""PMFKEY"":""ricar01""},{""PMFKEY"":""mormi08""}]"			ricar01;mormi08		
 FLEE	r4; r4.1; r3.7; r3.6; r3.1	Active	CMS	null	SFS;Directories:;COLSFS.FLEE;ISMQA.VSE.FLEE	"[{""PMFKEY"":""cafjo01""},{""PMFKEY"":""stoda04""}]"		stoda04	cafjo01	VMVSE	"[{""location"":""COLSFS.FLEE"",""type"":""DIRECTRY""},{""location"":""ISMQA.VSE.FLEE"",""type"":""DIRECTRY""}]"
 Forest & Trees	7.0; 7.1; 7.11	End of Life	CSCR/Harvest	null	CSCR106	"[{""PMFKEY"":""puiro01""},{""PMFKEY"":""shaha07""}]"		puiro01	shaha07		
+FSR		Active	CSCR/Harvest	null	CSCR1101/FSR	"[{""PMFKEY"":""vinve01""}]"		ramna08	vinve01		
 GCS Common Services	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	Endevor	DBT	Source resides on DEV DASD packs.;The GA releases of the datasets are stored on DEVR volumes which are tier-1 backed up DASD volumes.   For the pre-beta and BETA releases;the datasets are allocated on DEV volumes which are not part of DR.    When the products are moved into GA;the datasets are moved to the DEVR volumes.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02		
 GCS Common Services	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Internal	SCLM	null	GCS.PRD+++S.;GCS.HLD+++S.;GCS.BLD+++S.;GCS.INP+++S.;GCS.WRK+++S.;GCS.WK++++S.;ENDB2.MOTM.DBT*	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
 Gen  - non-z/OS code	r8;8.5	Active	CSCR/Harvest	null	CSCR605	"[{""PMFKEY"":""louro01""},{""PMFKEY"":""bureu01""}]"		chera14	louro01;bureu01		
