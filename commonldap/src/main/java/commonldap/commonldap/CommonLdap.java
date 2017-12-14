@@ -1344,11 +1344,24 @@ public class CommonLdap {
 	}
 	
 	public void processLDAPGroupUsers(JCaContainer cLDAP,
+								      JCaContainer cDLUsers,
+								      JCaContainer cAddUsers, 
+								      JCaContainer cDelUsers,
+								      String DLLDAPUserGroup,
+								      String sAuthName) 
+	{
+		processLDAPGroupUsers(cLDAP, cDLUsers, cAddUsers, cDelUsers, DLLDAPUserGroup, sAuthName, null, null);
+	}
+
+	
+	public void processLDAPGroupUsers(JCaContainer cLDAP,
 								       JCaContainer cDLUsers,
 						               JCaContainer cAddUsers, 
 						               JCaContainer cDelUsers,
 						               String DLLDAPUserGroup,
-						               String sAuthName) 
+						               String sAuthName,
+						               JCaContainer cUsersAdded,
+						               JCaContainer cUsersDeleted) 
 	{
 
 	printLog("Processing: " + sAuthName);
@@ -1373,6 +1386,10 @@ public class CommonLdap {
 					// Force removal if a valid user in directory
 					if (removeUserFromLDAPGroup(DLLDAPUserGroup, userDN))
 					{
+						if (cUsersDeleted != null) {
+							int iIndex = cUsersDeleted.getKeyElementCount("pmfkey");
+							cUsersDeleted.setString("pmfkey", sID, iIndex);
+						}
 						printLog(">>>User (deactivate): "+sUser+ "("+ sID+")");									
 					}
 				} // valid directory user
@@ -1399,6 +1416,10 @@ public class CommonLdap {
 					if (iUser.length == 0) {
 						if (addUserToLDAPGroup(DLLDAPUserGroup, userDN))
 						{
+							if (cUsersAdded != null) {
+								int iIndex = cUsersAdded.getKeyElementCount("pmfkey");
+								cUsersAdded.setString("pmfkey", sID, iIndex);
+							}
 							// Add user to LDAP DLUser group
 							printLog(">>>User (activate): "+sUser+ "("+ sID+")");											
 						}							
