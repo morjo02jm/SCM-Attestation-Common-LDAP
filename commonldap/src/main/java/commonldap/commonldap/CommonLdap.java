@@ -221,7 +221,7 @@ public class CommonLdap {
 			JSONArray ja = readJsonArrayFromUrl(sURL);
 			for (int j=0; j<ja.length(); j++) {
 				String sNameJSON = ja.getJSONObject(j).getString("name");
-				String sIdJSON = ja.getJSONObject(j).getString("id");
+				String sIdJSON = Integer.toString(ja.getJSONObject(j).getInt("id"));
 				
 				cTeam.setString("Organization", sOrg, iIndex);
 				cTeam.setString("Team", sNameJSON, iIndex);
