@@ -1350,7 +1350,7 @@ public class CommonLdap {
 								      String DLLDAPUserGroup,
 								      String sAuthName) 
 	{
-		processLDAPGroupUsers(cLDAP, cDLUsers, cAddUsers, cDelUsers, DLLDAPUserGroup, sAuthName, null, null);
+		processLDAPGroupUsers(cLDAP, cDLUsers, cAddUsers, cDelUsers, DLLDAPUserGroup, sAuthName, null, null, 0);
 	}
 
 	
@@ -1361,7 +1361,8 @@ public class CommonLdap {
 						               String DLLDAPUserGroup,
 						               String sAuthName,
 						               JCaContainer cUsersAdded,
-						               JCaContainer cUsersDeleted) 
+						               JCaContainer cUsersDeleted,
+						               int seatCount) 
 	{
 
 	printLog("Processing: " + sAuthName);
@@ -1409,20 +1410,36 @@ public class CommonLdap {
 				if (iLDAP.length > 0)
 				{
 					String sUser  = cLDAP.getString("displayName", iLDAP[0]);
-					String userDN = cLDAP.getString("distinguishedName", iLDAP[0]);									
+					String userDN = cLDAP.getString("distinguishedName", iLDAP[0]);			 						
 					
 					int iUser[] = cDLUsers.find("dn", userDN);
 					
 					if (iUser.length == 0) {
-						if (addUserToLDAPGroup(DLLDAPUserGroup, userDN))
-						{
-							if (cUsersAdded != null) {
-								int iIndex = cUsersAdded.getKeyElementCount("pmfkey");
-								cUsersAdded.setString("pmfkey", sID, iIndex);
+						boolean doAdd = false;
+						if (cUsersAdded != null) {
+							if (seatCount > 0) {
+								doAdd=true;
+								seatCount--;
 							}
-							// Add user to LDAP DLUser group
-							printLog(">>>User (activate): "+sUser+ "("+ sID+")");											
-						}							
+						}
+						else {
+							doAdd = true;
+						}
+						
+						if (doAdd) {
+							if (addUserToLDAPGroup(DLLDAPUserGroup, userDN))
+							{
+								if (cUsersAdded != null) {
+									int iIndex = cUsersAdded.getKeyElementCount("pmfkey");
+									cUsersAdded.setString("pmfkey", sID, iIndex);
+								}
+								// Add user to LDAP DLUser group
+								printLog(">>>User (activate): "+sUser+ "("+ sID+")");											
+							}														
+						}
+						else {
+							printErr(">>>User (exceeded available organization seats): "+sUser+ "("+ sID+")");																		
+						}
 					} // user not found in DL 
 				} //  user in directory 
 			}  // loop over user accounts						
