@@ -353,7 +353,7 @@ Interactive SQL	r12;r14;r14.5;r15;16.0;17.0;999;18.0;19.0	Active	SCLM	null	IQL.P
 Interoperability & Stress Lab		Active	CSCR/Harvest	null	CSCR609	"[{""PMFKEY"":""mcawi01""}]"			mcawi01		
 InterTest Batch	8;8.5;9.1;Base	Active	CSCRE/Endevor	INTBT	Mainframe	"[{""PMFKEY"":""svami01""},{""PMFKEY"":""davsc01""}]"		dubmi01	davsc01;svami01		
 InterTest Batch - Librarian	3.1	Active	Librarian	null	CDE.DEVL.IB31*	"[{""PMFKEY"":""svami01""}]"		svami01		DSN	
-InterTest Common GUI		Inactive	CSCR/Harvest	null	CSCR801/InterTest	"[{""PMFKEY"":""dubmi01""}]"		dubmi01			
+InterTest Common GUI		Inactive	CSCR/Harvest	null	CSCR801/InterTest	"[{""PMFKEY"":""dvoin01""}]"		svami01	dvoin01;morma37		
 InterTest for CICS	8.5;9.1;Base	Active	CSCRE/Endevor	"INTCI,INTERT"	Mainframe	"[{""PMFKEY"":""svami01""},{""PMFKEY"":""davsc01""}]"		dubmi01	svami01;davsc01		
 InterTest for CICS VSE	4.4;6.0	Active	Librarian	null	AD1DEV.INTERT44.*;AD1DEV.INTERT60.*	"[{""PMFKEY"":""cafjo01""}]"			cafjo01	DSN	
 IPC		Active	CSCRE/Endevor	IPC		"[{""PMFKEY"":""abavi01""},{""PMFKEY"":""shuke01""}]"		shuke01	abavi01		
@@ -429,6 +429,7 @@ NIA		Active	CSCRE/Endevor	NIA		"[{""PMFKEY"":""joheu02""},{""PMFKEY"":""hoojo03"
 NSM Database Option	r12; r14; r14.5; r15; 16.0;17.0; 999	End of Life	SCLM	null	DAGT.PRD+++S.;DAGT.HLD+++S.;DAGT.BLD+++S.;DAGT.INP+++S.;DAGT.WRK+++S.;DAGT.WK++++S.	"[{""PMFKEY"":""tucjo02""}]"			tucjo02	DSN	
 NSM System Monitoring Option for OpenVMS	3.0 (VAX); 3.2	Active		null		"[{""PMFKEY"":""butda07""},{""PMFKEY"":""stoda04""}]"		stoda04	butda07	HARVEST;OTHER	
 "NSM, UCM"		End of Life	CSCR/Harvest	null	CSCR914	"[{""PMFKEY"":""srigi02""}]"			srigi02		
+NSM R11.2_HAS		Active	CSCR/Harvest	null	CSCR905/NSM R11.2	"[{""PMFKEY"":""parkr02""}]"			parkr02		
 Oblicore		End of Life	CSCR/Harvest	null	CSCR1301/Oblicore	"[{""PMFKEY"":""kerro06""}]"			kerro06		
 OCTO Grid Composer		End of Life	CSCR/Harvest	null	CSCR701	"[{""PMFKEY"":""abrho01""}]"			abrho01		
 OM LPR	r11.5; r12	Active	CSCR/Harvest	null	cscr809/OM LPR	"[{""PMFKEY"":""raubr02""},{""PMFKEY"":""kenjo07""}]"			raubr02;kenjo07		

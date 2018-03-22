@@ -57,6 +57,9 @@ public class CommonLdap {
 	private static String tagManagerID      = "MANAGERID";
 	
 	private static String sAdminPassword = "";
+
+	// Notification
+	static String tagUL = "<ul> ";
 	
     private static Key aesKey = new SecretKeySpec("Bar12345Bar12345".getBytes(), "AES");
     private static Cipher cipher;    	
@@ -195,6 +198,97 @@ public class CommonLdap {
 	}
 	
 	// ***GitHub routines ***
+	public void readGHCOrganizationSCIMLinkage(JCaContainer cUserInfo, 
+			                                          String sOrg, 
+			                                          String sAccessToken, 
+			                                          String sGraphQLDir,
+			                                          String sProblems,
+			                                          List<String> ticketProblems) {
+		String sCommand1 = "cp -f "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage_tmpl.graphql "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
+		String sCommand2 = "sed -i \'s/%1/"+sOrg+"/g\' "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
+		String sCommand3 = "node "+sGraphQLDir+"\\platform-samples\\graphql\\bin\\run-query "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql "+sAccessToken;
+		boolean bExit = false;
+		
+        try {
+			Process p = Runtime.getRuntime().exec(sCommand1);
+	        //BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));	
+	        BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        
+	        // read the output from the command
+	        String s;
+	        while ((s = stdError.readLine()) != null) {
+	        	printErr(s);
+	        	bExit = true;
+	        }
+	        if (bExit) return;
+	        
+	        stdError.close();
+	        
+	        p = Runtime.getRuntime().exec(sCommand2);
+	        stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        while ((s = stdError.readLine()) != null) {
+	        	printErr(s);
+	        	bExit = true;
+	        }
+	        if (bExit) return;
+	        stdError.close();
+	        
+	        p = Runtime.getRuntime().exec(sCommand3);
+	        BufferedReader stdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        
+	        String sOutput = "";
+	        while ((s = stdOutput.readLine()) != null ) {
+	        	sOutput += s;
+	        }
+	        if (sOutput.isEmpty()) return;
+	        
+			JSONObject json = new JSONObject(sOutput);
+			JSONArray edges = json.getJSONObject("data").getJSONObject("organization").getJSONObject("samlIdentityProvider").getJSONObject("externalIdentities").getJSONArray("edges");
+			for (int j=0; j<edges.length(); j++) {
+				String sLogin = "";
+				String sPmfkey = "";
+				try {
+					JSONObject node = edges.getJSONObject(j).getJSONObject("node");
+					sLogin = node.getJSONObject("user").getString("login");
+					sPmfkey = node.getJSONObject("samlIdentity").getString("nameId");
+					
+					int[] iLogin = cUserInfo.find("login", sLogin);
+					if (iLogin.length > 0) {
+						if (iLogin.length > 2 || (iLogin.length==1 && !sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[0])))) {
+							boolean bError = false;
+							String sSet = "{"+sLogin;
+							for (int k=0; k<iLogin.length; k++) {
+								if (!sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[k]))) {
+									sSet += "," + cUserInfo.getString("pmfkey", iLogin[k]);
+									bError = true;
+								}
+							}
+							sSet += "}";
+							
+							if (bError) {
+								if (sProblems.isEmpty()) 
+									sProblems = tagUL;
+				    		    sProblems+= "<li>"+"The github.com user, <b>"+sLogin+"</b>, has multiple corporate id associations, "+sSet+".<br>Action to be taken: GIS to review mapping and CA IDS DL information for this user.</li>\n";			    
+								ticketProblems.add("The github.com user, "+sLogin+", has has multiple corporate id associations, "+sSet+".");																										
+							}
+						}
+						
+						for (int iIndex=0; iIndex<iLogin.length; iIndex++) {
+							if (!sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[iIndex])) ) {
+								cUserInfo.setString("pmfkey", sPmfkey, iLogin[iIndex]);
+							}
+						}
+					}
+					else {
+						int iIndex = cUserInfo.getKeyElementCount("login");
+						cUserInfo.setString("login", sLogin, iIndex);
+						cUserInfo.setString("pmfkey", sPmfkey, iIndex);
+					}
+				} catch (Exception e) {	}			    	
+			}
+		} catch (Exception e) {	}			    			
+	}
+
 	
 	public void readGitHubOrganizationTeams(String sOrg, JCaContainer cTeam, String sAccessToken, String sType) {
 		String sAPI = "";
@@ -1353,6 +1447,17 @@ public class CommonLdap {
 		processLDAPGroupUsers(cLDAP, cDLUsers, cAddUsers, cDelUsers, DLLDAPUserGroup, sAuthName, null, null, 0);
 	}
 
+	public void processLDAPGroupUsers(JCaContainer cLDAP,
+		      JCaContainer cDLUsers,
+		      JCaContainer cAddUsers, 
+		      JCaContainer cDelUsers,
+		      String DLLDAPUserGroup,
+		      String sAuthName,
+		      JCaContainer cUsersAdded,
+		      JCaContainer cUsersDeleted) 
+	{
+		processLDAPGroupUsers(cLDAP, cDLUsers, cAddUsers, cDelUsers, DLLDAPUserGroup, sAuthName, cUsersAdded, cUsersDeleted, 0);
+	}
 	
 	public void processLDAPGroupUsers(JCaContainer cLDAP,
 								       JCaContainer cDLUsers,
