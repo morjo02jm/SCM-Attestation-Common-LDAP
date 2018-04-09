@@ -31,6 +31,8 @@ import java.lang.*;
 import java.sql.*;
 import java.util.*;
 
+import java.net.HttpURLConnection;
+
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
@@ -198,12 +200,30 @@ public class CommonLdap {
 	}
 	
 	// ***GitHub routines ***
+	
+    public int getPageCount(String url) throws Exception {
+        URL _url = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) _url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setConnectTimeout(0);
+        int count = 1;
+        if (con.getHeaderField("link") != null) {
+            String linkHeader = con.getHeaderField("link").split(", ")[1];
+            if (linkHeader != null && linkHeader.contains("rel=\"last\"")) {
+                count = Integer.parseInt(linkHeader.replaceAll(">; rel=\"last\"", "").split("&page=")[1]);
+            }
+        }
+        return count;
+    } //getPageCount
+	
+	
 	public void readGHCOrganizationSCIMLinkage(JCaContainer cUserInfo, 
-			                                          String sOrg, 
-			                                          String sAccessToken, 
-			                                          String sGraphQLDir,
-			                                          String sProblems,
-			                                          List<String> ticketProblems) {
+	                                           String sOrg, 
+	                                           String sAccessToken, 
+	                                           String sGraphQLDir,
+	                                           String sProblems,
+	                                           List<String> ticketProblems) {
 		String sCommand1 = "cp -f "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage_tmpl.graphql "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
 		String sCommand2 = "sed -i \'s/%1/"+sOrg+"/g\' "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
 		String sCommand3 = "node "+sGraphQLDir+"\\platform-samples\\graphql\\bin\\run-query "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql "+sAccessToken;
