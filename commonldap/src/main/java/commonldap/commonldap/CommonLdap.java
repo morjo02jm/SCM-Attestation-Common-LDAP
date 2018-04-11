@@ -202,17 +202,21 @@ public class CommonLdap {
 	// ***GitHub routines ***
 	
     public int getPageCount(String url) throws Exception {
-        URL _url = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) _url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setConnectTimeout(0);
         int count = 1;
-        if (con.getHeaderField("link") != null) {
-            String linkHeader = con.getHeaderField("link").split(", ")[1];
-            if (linkHeader != null && linkHeader.contains("rel=\"last\"")) {
-                count = Integer.parseInt(linkHeader.replaceAll(">; rel=\"last\"", "").split("&page=")[1]);
-            }
+        try {
+            URL _url = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) _url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setConnectTimeout(0);
+            if (con.getHeaderField("link") != null) {
+                String linkHeader = con.getHeaderField("link").split(", ")[1];
+                if (linkHeader != null && linkHeader.contains("rel=\"last\"")) {
+                    count = Integer.parseInt(linkHeader.replaceAll(">; rel=\"last\"", "").split("&page=")[1]);
+                }
+            }        	
+        } catch (Exception e) {
+        	//
         }
         return count;
     } //getPageCount
