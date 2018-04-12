@@ -2229,7 +2229,7 @@ public class CommonLdap {
 			System.exit(iReturnCode);
 		}			
 		return bSuccess;
-	}
+	} //removeUserAccessFromHarvestProject
 	
 	public String[] getHarvestJDBCConnections() {
 		String[] cscrBrokers = 
@@ -2338,9 +2338,48 @@ public class CommonLdap {
 			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1308;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
 			"jdbc:sqlserver://L1AGUSDB003P-1;databaseName=cscr1309;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;",
 			"jdbc:sqlserver://L1AGUSDB002P-1;databaseName=cscr1400;integratedSecurity=false;selectMethod=cursor;multiSubnetFailover=true;user=harvest;"
-		};
+		}; 
 		
 		return cscrBrokers;
-	}
+	} //getHarvestJDBCConnections
+	
+    public boolean deactivateEndOfLifeProject( String sBroker, String sProject, String sHarvestDBPassword) {
+        boolean bSuccess = false;
+        String sqlError = "DB2. Unable to execute query.";
+        
+        try {           
+            PreparedStatement pstmt = null; 
+            String sqlStmt;
+            String[] aJDBC = getHarvestJDBCConnections();
+            String sJDBC = "";
+            for (int i=0; sJDBC.isEmpty() && i<aJDBC.length; i++) {
+                if (aJDBC[i].contains(sBroker.toLowerCase())) 
+                    sJDBC = aJDBC[i];
+            }
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String sURL = sJDBC + "password=" + sHarvestDBPassword+";";
+            
+            Connection conn = DriverManager.getConnection(sURL);
+            
+            sqlError = "SQLServer. Error updating active status for project, "+sProject+", in broker, "+ sBroker + ".";
+            sqlStmt = "update harenvironment set ENVISACTIVE=\'N\' where ENVIRONMENTNAME=\'"+sProject+"\' and ENVISACTIVE=\'Y\'";           
+
+            pstmt=conn.prepareStatement(sqlStmt);  
+            int iResult = pstmt.executeUpdate();
+            if (iResult > 0) 
+                bSuccess = true;
+        } catch (ClassNotFoundException e) {
+            iReturnCode = 101;
+            printErr(sqlError);
+            printErr(e.getLocalizedMessage());            
+            System.exit(iReturnCode);
+        } catch (SQLException e) {     
+            iReturnCode = 102;
+            printErr(sqlError);
+            printErr(e.getLocalizedMessage());            
+            System.exit(iReturnCode);
+        }           
+        return bSuccess;
+    } //deactivateEndOfLifeProject
 	
 } //end of class definition
