@@ -2343,7 +2343,7 @@ public class CommonLdap {
 		return cscrBrokers;
 	} //getHarvestJDBCConnections
 	
-    public boolean deactivateEndOfLifeProject( String sBroker, String sProject, String sHarvestDBPassword) {
+    public boolean deactivateEndOfLifeProject(String sBroker, String sProject, String sHarvestDBPassword) {
         boolean bSuccess = false;
         String sqlError = "DB2. Unable to execute query.";
         
