@@ -743,7 +743,8 @@ public class CommonLdap {
 		      Transport.send(message);
 		      printLog("Sent message successfully to: "+email);
 	     } catch (MessagingException mex) {
-	     	 mex.printStackTrace();
+	    	 printErr(mex.getLocalizedMessage());
+	     	 //mex.printStackTrace();
 	     }
 	}
 	
