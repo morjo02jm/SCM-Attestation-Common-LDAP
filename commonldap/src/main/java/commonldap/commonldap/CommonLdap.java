@@ -275,6 +275,7 @@ public class CommonLdap {
 					JSONObject node = edges.getJSONObject(j).getJSONObject("node");
 					sLogin = node.getJSONObject("user").getString("login");
 					sPmfkey = node.getJSONObject("samlIdentity").getString("nameId");
+					if (sOrg.equalsIgnoreCase("sts-atlas") && sPmfkey.length()<7) continue;
 					
 					int[] iLogin = cUserInfo.find("login", sLogin);
 					if (iLogin.length > 0) {
