@@ -222,12 +222,13 @@ public class CommonLdap {
     } //getPageCount
 	
 	
-	public void readGHCOrganizationSCIMLinkage(JCaContainer cUserInfo, 
+	public String readGHCOrganizationSCIMLinkage(JCaContainer cUserInfo, 
 	                                           String sOrg, 
 	                                           String sAccessToken, 
 	                                           String sGraphQLDir,
 	                                           String sProblems,
 	                                           List<String> ticketProblems) {
+		String sReturn = sProblems;
 		String sCommand1 = "cp -f "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage_tmpl.graphql "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
 		String sCommand2 = "sed -i \'s/%1/"+sOrg+"/g\' "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql";
 		String sCommand3 = "node "+sGraphQLDir+"\\platform-samples\\graphql\\bin\\run-query "+sGraphQLDir+"\\platform-samples\\graphql\\queries\\linkage.graphql "+sAccessToken;
@@ -244,7 +245,7 @@ public class CommonLdap {
 	        	printErr(s);
 	        	bExit = true;
 	        }
-	        if (bExit) return;
+	        if (bExit) return sReturn;
 	        
 	        stdError.close();
 	        
@@ -254,7 +255,7 @@ public class CommonLdap {
 	        	printErr(s);
 	        	bExit = true;
 	        }
-	        if (bExit) return;
+	        if (bExit) return sReturn;
 	        stdError.close();
 	        
 	        p = Runtime.getRuntime().exec(sCommand3);
@@ -264,7 +265,7 @@ public class CommonLdap {
 	        while ((s = stdOutput.readLine()) != null ) {
 	        	sOutput += s;
 	        }
-	        if (sOutput.isEmpty()) return;
+	        if (sOutput.isEmpty()) return sReturn;
 	        
 			JSONObject json = new JSONObject(sOutput);
 			JSONArray edges = json.getJSONObject("data").getJSONObject("organization").getJSONObject("samlIdentityProvider").getJSONObject("externalIdentities").getJSONArray("edges");
@@ -275,43 +276,42 @@ public class CommonLdap {
 					JSONObject node = edges.getJSONObject(j).getJSONObject("node");
 					sLogin = node.getJSONObject("user").getString("login");
 					sPmfkey = node.getJSONObject("samlIdentity").getString("nameId");
+					// Special case: ignore previous mappings from older enablement on sts-atlas
 					if (sOrg.equalsIgnoreCase("sts-atlas") && sPmfkey.length()<7) continue;
 					
 					int[] iLogin = cUserInfo.find("login", sLogin);
+					boolean bAddit = false;
 					if (iLogin.length > 0) {
-						if (iLogin.length > 2 || (iLogin.length==1 && !sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[0])))) {
-							boolean bError = false;
-							String sSet = "{"+sLogin;
-							for (int k=0; k<iLogin.length; k++) {
-								if (!sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[k]))) {
-									sSet += "," + cUserInfo.getString("pmfkey", iLogin[k]);
-									bError = true;
-								}
-							}
-							sSet += "}";
-							
-							if (bError) {
-								if (sProblems.isEmpty()) 
-									sProblems = tagUL;
-				    		    sProblems+= "<li>"+"The github.com user, <b>"+sLogin+"</b>, has multiple corporate id associations, "+sSet+".<br>Action to be taken: GIS to review mapping and CA IDS DL information for this user.</li>\n";			    
-								ticketProblems.add("The github.com user, "+sLogin+", has has multiple corporate id associations, "+sSet+".");																										
+						boolean bError = false;
+						String sSet = "{"+sPmfkey;
+						for (int k=0; k<iLogin.length; k++) {
+							if (!sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[k]))) {
+								sSet += "," + cUserInfo.getString("pmfkey", iLogin[k]);
+								bAddit = true;
 							}
 						}
+						sSet += "}";
 						
-						for (int iIndex=0; iIndex<iLogin.length; iIndex++) {
-							if (!sPmfkey.equalsIgnoreCase(cUserInfo.getString("pmfkey", iLogin[iIndex])) ) {
-								cUserInfo.setString("pmfkey", sPmfkey, iLogin[iIndex]);
-							}
-						}
+						if (bAddit) {
+							if (sReturn.isEmpty()) 
+								sReturn = tagUL;
+			    		    sReturn+= "<li>"+"The github.com user, <b>"+sLogin+"</b>, has multiple corporate id associations, "+sSet+".<br>Action to be taken: GIS to review mapping and CA IDS DL information for this user.</li>\n";			    
+							ticketProblems.add("The github.com user, "+sLogin+", has has multiple corporate id associations, "+sSet+".");																										
+						}						
 					}
-					else {
+					else 
+						bAddit = true;
+					
+					if (bAddit){
 						int iIndex = cUserInfo.getKeyElementCount("login");
 						cUserInfo.setString("login", sLogin, iIndex);
 						cUserInfo.setString("pmfkey", sPmfkey, iIndex);
 					}
 				} catch (Exception e) {	}			    	
 			}
-		} catch (Exception e) {	}			    			
+		} catch (Exception e) {	}	
+        
+        return sReturn;
 	}
 
 	
