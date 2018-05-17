@@ -36,7 +36,7 @@ import java.net.HttpURLConnection;
 
 public class CommonLdap {
 	private static String sAppName = "commonldap";
-	private static String sBCC= "";
+	public static String sBCC= "";
 	private static PrintWriter Log = null;
 	private static String sLogName = "";
 	private static String sDumpFile = "";
@@ -137,8 +137,10 @@ public class CommonLdap {
 		}
 		
 		if (sBCC.isEmpty()) {
-			sBCC = "faudo01@ca.com;morjo02@ca.com";
+			sBCC = "morjo02@ca.com";
 			sBCC += expandDistributionListforEmail("CN=Team - GIS - Tools Solutions - ITC,OU=Groups,OU=North America", cLDAP);
+			if (sBCC.startsWith(";"))
+				sBCC=sBCC.substring(1);
 		}
 
 		// Show cLDAP statistics

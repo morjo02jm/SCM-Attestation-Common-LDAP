@@ -42,7 +42,7 @@ public class SDTicket {
 
         case "production":
             username = "bsgautomation@ca.com";
-            password = "NCn8vtCcgv";
+            password = "";
             sCSMLandscape = "csm3";
             break;
         }
