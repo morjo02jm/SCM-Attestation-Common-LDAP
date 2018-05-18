@@ -44,6 +44,7 @@ public class CommonLdap {
 	private static int nEmployees = 0;
 	private DirContext ctx;
 	private static boolean bFileAppend = false;
+	public static String sContactFile = "Identity_Governance_Campaign_Product_Contacts.txt";
 
 	// Column names cLDAP 
 	private static String tagSAMAccountName = "sAMAccountName";
@@ -1793,7 +1794,7 @@ public class CommonLdap {
 		int nIndex = 0;
 		JCaContainer cContacts = new JCaContainer();
 		
-		readInputListGeneric(cContacts, "SourceMinder_Product_Contacts.tsv", '\t');
+		readInputListGeneric(cContacts, sContactFile, '\t');
 		
 		for (int iIndex=0; iIndex<cContacts.getKeyElementCount("PROD_NAME"); iIndex++) {
 			boolean bActive = true;
