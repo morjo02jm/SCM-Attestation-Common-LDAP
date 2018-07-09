@@ -42,7 +42,7 @@ public class SDTicket {
 
         case "production":
             username = "bsgautomation@ca.com";
-            password = "";
+            password = "McB93RhD";
             sCSMLandscape = "csm3";
             break;
         }
@@ -65,7 +65,7 @@ public class SDTicket {
         if (!password.isEmpty()) {
             try {
                 String payload = generateServiceRequestPayload(descriptionLong, ticketDescription);
-                String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest.ServiceRequestHttpSoap11Endpoint/";
+                String url = "https://" + sCSMLandscape + ".serviceaide.com/servicedesk/webservices/Ticket?wsdl";
                 String sb = connectToServiceDesk(url, payload);
 
                 Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
@@ -92,7 +92,7 @@ public class SDTicket {
         
         if (!password.isEmpty()) {
 	        String payload = activeTicketsPayload();
-	        String url = "https://" + sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/";
+	        String url = "https://" + sCSMLandscape + ".serviceaide.com/servicedesk/webservices/Ticket?wsdl";
 	        String sb = connectToServiceDesk(url, payload);
 	
 	        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);

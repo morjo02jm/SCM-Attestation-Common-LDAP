@@ -138,8 +138,7 @@ public class CommonLdap {
 		}
 		
 		if (sBCC.isEmpty()) {
-			sBCC = "morjo02@ca.com";
-			sBCC += expandDistributionListforEmail("CN=Team - GIS - Tools Solutions - ITC,OU=Groups,OU=North America", cLDAP);
+			sBCC += expandDistributionListforEmail("CN=Team - Tools - GIS - Kanban,OU=Groups,OU=ITC Hyderabad", cLDAP);
 			if (sBCC.startsWith(";"))
 				sBCC=sBCC.substring(1);
 		}
