@@ -618,7 +618,7 @@ public class CommonLdap {
 	        }
         } catch (IOException e) {
         	iReturnCode = 601;
-        	printErr(e.getStackTrace().toString());
+        	printErr(e.getLocalizedMessage());
         	System.exit(iReturnCode);
         }
         
@@ -863,9 +863,9 @@ public class CommonLdap {
 				bFirst = false;
 			}    
 		} catch (FileNotFoundException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} catch (IOException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} finally {             
 			try {                 
 				if (reader != null) 
@@ -873,7 +873,7 @@ public class CommonLdap {
 					reader.close();                 
 				}             
 			} catch (IOException e) {                 
-				printErr(e.getStackTrace().toString());
+				printErr(e.getLocalizedMessage());
 			}         
 		} 	
 	}
@@ -926,9 +926,9 @@ public class CommonLdap {
 				bFirst = false;
 			}    
 		} catch (FileNotFoundException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} catch (IOException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} finally {             
 			try {                 
 				if (reader != null) 
@@ -936,7 +936,7 @@ public class CommonLdap {
 					reader.close();                 
 				}             
 			} catch (IOException e) {                 
-				printErr(e.getStackTrace().toString());
+				printErr(e.getLocalizedMessage());
 			}         
 		} 	
 	}
@@ -976,9 +976,9 @@ public class CommonLdap {
 				bodyText += text;
 			}    
 		} catch (FileNotFoundException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} catch (IOException e) {             
-			printErr(e.getStackTrace().toString());
+			printErr(e.getLocalizedMessage());
 		} finally {             
 			try {                 
 				if (reader != null) 
@@ -986,7 +986,7 @@ public class CommonLdap {
 					reader.close();                 
 				}             
 			} catch (IOException e) {                 
-				printErr(e.getStackTrace().toString());
+				printErr(e.getLocalizedMessage());
 			}         
 		} 		
 		

@@ -30,6 +30,7 @@ public class SDTicket {
     private String sCSMLandscape = "csmstaging";
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
     private String requestorName = "faudo01";
+    private String sCSMservice = "/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest?wsdl";
 
     public SDTicket(String sLandscape, String sGroup, String sRequestor) {
         switch (sLandscape.toLowerCase()) {
@@ -38,12 +39,14 @@ public class SDTicket {
             username = "bsgautomation@ca.com";
             password = "S6mb2hT*gw";
             sCSMLandscape = "csmstaging";
+            sCSMservice = "/servicedesk/webservices/ServiceRequest?wsdl";
             break;
 
         case "production":
             username = "bsgautomation@ca.com";
             password = "McB93RhD";
             sCSMLandscape = "csm3";
+            sCSMservice = "/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest?wsdl";
             break;
         }
         
@@ -65,7 +68,7 @@ public class SDTicket {
         if (!password.isEmpty()) {
             try {
                 String payload = generateServiceRequestPayload(descriptionLong, ticketDescription);
-                String url = "https://" + sCSMLandscape + ".serviceaide.com/servicedesk/webservices/Ticket?wsdl";
+                String url = "https://" + sCSMLandscape + ".serviceaide.com"+sCSMservice;
                 String sb = connectToServiceDesk(url, payload);
 
                 Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
@@ -80,7 +83,7 @@ public class SDTicket {
                 frame.printLog(je.get("ticket_identifier").getAsString());
                 resp = je.get("ticket_identifier").getAsString();
             } catch (Exception e) {
-                frame.printErr(e.getStackTrace().toString());
+                frame.printErr(e.getLocalizedMessage());
             }
         }
 
@@ -92,7 +95,7 @@ public class SDTicket {
         
         if (!password.isEmpty()) {
 	        String payload = activeTicketsPayload();
-	        String url = "https://" + sCSMLandscape + ".serviceaide.com/servicedesk/webservices/Ticket?wsdl";
+	        String url = "https://" + sCSMLandscape + ".serviceaide.com"+sCSMservice;
 	        String sb = connectToServiceDesk(url, payload);
 	
 	        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
