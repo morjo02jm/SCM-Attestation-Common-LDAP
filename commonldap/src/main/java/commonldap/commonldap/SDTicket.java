@@ -5,12 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -20,8 +16,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.json.JSONObject;
 
 public class SDTicket {
 
@@ -94,33 +88,33 @@ public class SDTicket {
         Set<String> tickets = null;
         
         if (!password.isEmpty()) {
-	        String payload = activeTicketsPayload();
-	        String url = "https://" + sCSMLandscape + ".serviceaide.com"+sCSMservice;
-	        String sb = connectToServiceDesk(url, payload);
-	
-	        Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
-	        String text = doc.getElementsByTag("ax286:responseText").text();
-	
-	        int cIndex = text.indexOf("}]");
-	        if (cIndex >= 0)
-	            text = text.substring(0, cIndex + 2);
-	        JsonParser jsonparser = new JsonParser();
-	        JsonElement jo = jsonparser.parse(text);
-	        JsonArray arr = jo.getAsJsonArray();
-	        for (JsonElement ele : arr) {
-	            JsonObject json = ele.getAsJsonObject();
-	            //System.out.println(json.get("ticket_description").getAsString());
-	
-	            if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
-	                if (tickets == null) {
-	                    tickets = new HashSet<>();
-	                }
-	                String[] ticketDetails = json.get("ticket_details").getAsString().split("\n");
-	                for (String t : ticketDetails) {
-	                    tickets.add(t);
-	                }
-	            }
-	        }
+            String payload = activeTicketsPayload();
+            String url = "https://" + sCSMLandscape + ".serviceaide.com"+sCSMservice;
+            String sb = connectToServiceDesk(url, payload);
+    
+            Document doc = Jsoup.parse(sb.split("apache.org>")[1].split("--MIMEBoundary")[0]);
+            String text = doc.getElementsByTag("ax286:responseText").text();
+    
+            int cIndex = text.indexOf("}]");
+            if (cIndex >= 0)
+                text = text.substring(0, cIndex + 2);
+            JsonParser jsonparser = new JsonParser();
+            JsonElement jo = jsonparser.parse(text);
+            JsonArray arr = jo.getAsJsonArray();
+            for (JsonElement ele : arr) {
+                JsonObject json = ele.getAsJsonObject();
+                //System.out.println(json.get("ticket_description").getAsString());
+    
+                if (json.get("ticket_description").getAsString().toUpperCase().contains(sTicketDescription.toUpperCase()) ) {
+                    if (tickets == null) {
+                        tickets = new HashSet<>();
+                    }
+                    String[] ticketDetails = json.get("ticket_details").getAsString().split("\n");
+                    for (String t : ticketDetails) {
+                        tickets.add(t);
+                    }
+                }
+            }
         }
 
         return tickets;
@@ -203,32 +197,4 @@ public class SDTicket {
         return sb.toString();
     }
 
-/*    
-    public static void main(String[] a) {
-        try {
-            SDTicket sd = new SDTicket("");
-            Set<String> existingTickets = sd.getActiveTickets();
-            String[] set_values = new String[] { 
-                    "Organization, ATK, has a contact, bida02@ca.com, that isn't in the CA directory.", 
-                    "Organization, flowdock, has a contact, gel@ca.com, that isn't in the CA directory.", 
-                    "Organization, DevTestSolutions, has a contact, binda02@ca.com, that isn't in the CA directory.", 
-                    "Organization, waffleio, has a contact, support@waffle.io, that isn't in the CA directory." 
-            };
-            Set<String> ticketProblems = new HashSet<String>(Arrays.asList(set_values));
-            System.out.println(existingTickets);
-            List<String> list = new ArrayList<String>(ticketProblems);
-            for (String prbm : list) {
-                if (existingTickets.contains(prbm)) {
-                    ticketProblems.remove(prbm);
-                }
-            }
-            System.out.println("------------------------------");
-            for (String prbm : ticketProblems) {
-                System.out.println(prbm);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
 }
