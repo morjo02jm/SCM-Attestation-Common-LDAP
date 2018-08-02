@@ -23,7 +23,7 @@ public class SDTicket {
     private String password = "S6mb2hT*gw";
     private String sCSMLandscape = "csmstaging";
     private String assignedToGroupName = "GIS-BSG-RnD-Tools-Support-L2";
-    private String requestorName = "desra04";
+    private String requestorName = "faudo01";
     private String sCSMservice = "/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest?wsdl";
 
     public SDTicket(String sLandscape, String sGroup, String sRequestor) {
@@ -38,7 +38,7 @@ public class SDTicket {
 
         case "production":
             username = "bsgautomation@ca.com";
-            password = ""; //"McB93RhD";
+            password = "McB93RhD";
             sCSMLandscape = "csm3";
             sCSMservice = "/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest?wsdl";
             break;
