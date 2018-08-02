@@ -38,7 +38,7 @@ public class SDTicket {
 
         case "production":
             username = "bsgautomation@ca.com";
-            password = ""; //"McB93RhD";
+            password = "McB93RhD";
             sCSMLandscape = "csm3";
             sCSMservice = "/NimsoftServiceDesk/servicedesk/webservices/ServiceRequest?wsdl";
             break;
