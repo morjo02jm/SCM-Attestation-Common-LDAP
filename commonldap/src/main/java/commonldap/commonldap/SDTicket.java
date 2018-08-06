@@ -196,5 +196,40 @@ public class SDTicket {
 
         return sb.toString();
     }
+    
+    public static void main(String[] a) {
+        try {
+            SDTicket sd = new SDTicket("production", "GIS-BSG-RnD-Tools-Support-L2", "desra04");
+            String ticket = sd.serviceTicket("Notification of GitHub Enterprise (github-isl-01.ca.com) Organization Problems and Changes", "Organization, {}, has a contact, pmfkey@ca.com, that isn't in the CA directory.\n ignore this email ... testing purpose....", "GIS-BSG-RnD-Tools-Support-L2", "desra04", null);
+            System.out.println(ticket);
+//            Set<String> existingTickets = sd.getActiveTickets("Notification of GitHub Enterprise (github-isl-01.ca.com) Organization Problems and Changes");
+////            System.out.println("https://" + sd.sCSMLandscape + ".serviceaide.com/NimsoftServiceDesk/servicedesk/webservices/Utility.UtilityHttpSoap11Endpoint/");
+////            sd.activeTicketsPayload();
+//            String[] set_values = new String[] { 
+//                    "Organization, ATK, has a contact, bida02@ca.com, that isn't in the CA directory.", 
+//                    "Organization, flowdock, has a contact, gel@ca.com, that isn't in the CA directory.", 
+//                    "Organization, DevTestSolutions, has a contact, binda02@ca.com, that isn't in the CA directory.", 
+//                    "Organization, waffleio, has a contact, support@waffle.io, that isn't in the CA directory." 
+//            };
+//            Set<String> ticketProblems = new HashSet<String>(Arrays.asList(set_values));
+//            System.out.println(existingTickets);
+//            for(String tkt:existingTickets)
+//                System.out.println(tkt);
+//            List<String> list = new ArrayList<String>(ticketProblems);
+//            for (String prbm : list) {
+//                if (existingTickets.contains(prbm)) {
+//                    ticketProblems.remove(prbm);
+//                }
+//            }
+//            System.out.println("------------------------------");
+//            for (String prbm : ticketProblems) {
+//                System.out.println(prbm);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
+ 
+    
 
 }
