@@ -145,7 +145,7 @@ public class SDTicket {
 
         return payload.toString();
     }
-
+    
     private String activeTicketsPayload() {
         StringBuilder payload = new StringBuilder();
         payload.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://wrappers.webservice.appservices.core.inteqnet.com\" xmlns:xsd=\"http://beans.webservice.appservices.core.inteqnet.com/xsd\">");
@@ -168,7 +168,7 @@ public class SDTicket {
 
         return payload.toString();
     }
-
+    
     private String connectToServiceDesk(String url, String payload) throws IOException {
 
         URL _url = new URL(url);
@@ -200,6 +200,7 @@ public class SDTicket {
     public static void main(String[] a) {
         try {
             SDTicket sd = new SDTicket("production", "GIS-BSG-RnD-Tools-Support-L2", "desra04");
+            sd.getActiveTickets("Development:Ivy DSDC Support");
             String ticket = sd.serviceTicket("Notification of GitHub Enterprise (github-isl-01.ca.com) Organization Problems and Changes", "Organization, {}, has a contact, pmfkey@ca.com, that isn't in the CA directory.\n ignore this email ... testing purpose....", "GIS-BSG-RnD-Tools-Support-L2", "desra04", null);
             System.out.println(ticket);
 //            Set<String> existingTickets = sd.getActiveTickets("Notification of GitHub Enterprise (github-isl-01.ca.com) Organization Problems and Changes");
@@ -225,7 +226,7 @@ public class SDTicket {
 //            for (String prbm : ticketProblems) {
 //                System.out.println(prbm);
 //            }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     } 

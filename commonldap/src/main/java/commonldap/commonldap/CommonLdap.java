@@ -893,6 +893,7 @@ public class CommonLdap {
 			
 			int index =0;
 			while ((text = reader.readLine()) != null) {
+				printLog("index: "+index);
 				List<String> entries = new ArrayList<String>();
 				int cIndex = -1;
 				while ((cIndex=text.indexOf(sep))>=0) {
